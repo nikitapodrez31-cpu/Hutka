@@ -1,0 +1,2310 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hutka</title>
+
+  <meta
+    name="description"
+    content="Hutka — беларуская сацыяльная сетка"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #f5f5f5;
+      --card: #ffffff;
+      --text: #171717;
+      --muted: #777;
+      --border: #e5e5e5;
+      --accent: #111;
+      --danger: #d33;
+      --radius: 18px;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .app {
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 64px;
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      height: 100%;
+      margin: auto;
+      padding: 0 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      font-size: 13px;
+      color: var(--muted);
+      margin-left: 6px;
+      font-weight: 500;
+    }
+
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #ddd;
+      object-fit: cover;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-weight: 700;
+      color: #555;
+      flex-shrink: 0;
+    }
+
+    .small-btn {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 12px;
+      padding: 8px 12px;
+    }
+
+    /* LAYOUT */
+
+    .layout {
+      max-width: 1100px;
+      margin: auto;
+      padding: 22px 18px;
+
+      display: grid;
+      grid-template-columns: 220px minmax(0, 600px) 220px;
+      gap: 20px;
+    }
+
+    .sidebar,
+    .rightbar {
+      position: sticky;
+      top: 86px;
+      height: fit-content;
+    }
+
+    .nav {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px;
+    }
+
+    .nav button {
+      width: 100%;
+      text-align: left;
+      border: 0;
+      background: transparent;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 2px;
+    }
+
+    .nav button:hover {
+      background: #f1f1f1;
+    }
+
+    .nav button.active {
+      background: #111;
+      color: white;
+    }
+
+    /* SEARCH */
+
+    .search {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 11px 13px;
+      width: 100%;
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: #aaa;
+    }
+
+    /* CARDS */
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 15px;
+    }
+
+    .composer textarea {
+      width: 100%;
+      min-height: 95px;
+      resize: vertical;
+
+      border: 0;
+      outline: 0;
+      font-size: 16px;
+      background: transparent;
+    }
+
+    .composer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .photo-label {
+      cursor: pointer;
+      border: 1px solid var(--border);
+      padding: 9px 13px;
+      border-radius: 12px;
+      background: white;
+    }
+
+    .photo-label input {
+      display: none;
+    }
+
+    .primary {
+      border: 0;
+      background: #111;
+      color: white;
+      padding: 10px 17px;
+      border-radius: 12px;
+      font-weight: 650;
+    }
+
+    .primary:disabled {
+      opacity: .5;
+      cursor: default;
+    }
+
+    /* POST */
+
+    .post-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .post-user {
+      flex: 1;
+    }
+
+    .post-name {
+      font-weight: 700;
+    }
+
+    .post-handle {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .post-date {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .post-text {
+      margin: 14px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.45;
+    }
+
+    .post-image {
+      width: 100%;
+      max-height: 600px;
+      object-fit: cover;
+      border-radius: 14px;
+      margin-top: 10px;
+    }
+
+    .post-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .post-actions button {
+      border: 0;
+      background: #f4f4f4;
+      padding: 8px 12px;
+      border-radius: 10px;
+      color: #444;
+    }
+
+    .post-actions button.liked {
+      background: #111;
+      color: white;
+    }
+
+    /* RIGHT BAR */
+
+    .info-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .info-title {
+      font-weight: 750;
+      margin-bottom: 8px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    /* AUTH */
+
+    .auth-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 15px 50px rgba(0,0,0,.07);
+    }
+
+    .auth-title {
+      font-size: 32px;
+      font-weight: 850;
+      margin-bottom: 5px;
+    }
+
+    .auth-subtitle {
+      color: var(--muted);
+      margin-bottom: 25px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 650;
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      background: white;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .auth-card .primary {
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    .auth-switch {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .link-btn {
+      border: 0;
+      background: transparent;
+      font-weight: 700;
+      padding: 0;
+    }
+
+    /* PROFILE */
+
+    .profile-head {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .profile-avatar {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #ddd;
+    }
+
+    .profile-name {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .profile-stats {
+      display: flex;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .stat strong {
+      display: block;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* MODAL */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 100;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: white;
+      border-radius: 22px;
+      padding: 22px;
+      width: 100%;
+      max-width: 450px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .close {
+      border: 0;
+      background: #f1f1f1;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      font-size: 20px;
+    }
+
+    /* SEARCH RESULTS */
+
+    .result {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .result:last-child {
+      border-bottom: 0;
+    }
+
+    .result-user {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* EMPTY */
+
+    .empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+
+    /* TOAST */
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+
+      background: #111;
+      color: white;
+
+      padding: 11px 17px;
+      border-radius: 12px;
+
+      max-width: calc(100% - 40px);
+      text-align: center;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 850px) {
+      .layout {
+        grid-template-columns: 1fr;
+        max-width: 650px;
+      }
+
+      .sidebar,
+      .rightbar {
+        position: static;
+      }
+
+      .sidebar {
+        order: 2;
+      }
+
+      .rightbar {
+        display: none;
+      }
+
+      .nav {
+        display: flex;
+        gap: 5px;
+        overflow-x: auto;
+      }
+
+      .nav button {
+        width: auto;
+        white-space: nowrap;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .header-inner {
+        padding: 0 12px;
+      }
+
+      .layout {
+        padding: 12px;
+      }
+
+      .card {
+        border-radius: 15px;
+        padding: 14px;
+      }
+
+      .logo span {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="app"></div>
+
+<div id="toast" class="toast hidden"></div>
+
+<!-- AUTH -->
+
+<div id="authScreen" class="auth-screen hidden">
+  <div class="auth-card">
+
+    <div class="auth-title">Hutka</div>
+
+    <div class="auth-subtitle">
+      Маленькая беларуская социальная сеть.
+    </div>
+
+    <!-- LOGIN -->
+
+    <form id="loginForm">
+
+      <div class="field">
+        <label>Username</label>
+        <input
+          id="loginUsername"
+          type="text"
+          autocomplete="username"
+          placeholder="@username"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Пароль</label>
+        <input
+          id="loginPassword"
+          type="password"
+          autocomplete="current-password"
+          placeholder="••••••••"
+          required
+        >
+      </div>
+
+      <button class="primary" type="submit">
+        Увайсці
+      </button>
+
+    </form>
+
+    <!-- REGISTER -->
+
+    <form id="registerForm" class="hidden">
+
+      <div class="field">
+        <label>Имя</label>
+        <input
+          id="registerName"
+          type="text"
+          placeholder="Твоё имя"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Username</label>
+        <input
+          id="registerUsername"
+          type="text"
+          placeholder="username"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Пароль</label>
+        <input
+          id="registerPassword"
+          type="password"
+          autocomplete="new-password"
+          placeholder="Минимум 6 символов"
+          required
+        >
+      </div>
+
+      <button class="primary" type="submit">
+        Стварыць акаунт
+      </button>
+
+    </form>
+
+    <div class="auth-switch">
+
+      <span id="loginSwitch">
+        Нет аккаунта?
+        <button
+          class="link-btn"
+          id="showRegister"
+          type="button"
+        >
+          Регистрация
+        </button>
+      </span>
+
+      <span id="registerSwitch" class="hidden">
+        Уже есть аккаунт?
+        <button
+          class="link-btn"
+          id="showLogin"
+          type="button"
+        >
+          Войти
+        </button>
+      </span>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- MAIN APP -->
+
+<div id="mainApp" class="hidden">
+
+  <header>
+
+    <div class="header-inner">
+
+      <div
+        class="logo"
+        style="cursor:pointer"
+        onclick="showFeed()"
+      >
+        Hutka
+        <span>Беларусь</span>
+      </div>
+
+      <div class="header-user">
+
+        <button
+          class="small-btn"
+          onclick="openProfile()"
+        >
+          <span id="headerUserName">
+            Профиль
+          </span>
+        </button>
+
+        <div
+          id="headerAvatar"
+          class="avatar"
+        >
+          ?
+        </div>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+      <div class="nav">
+
+        <button
+          id="navFeed"
+          class="active"
+          onclick="showFeed()"
+        >
+          🏠 Лента
+        </button>
+
+        <button
+          id="navSearch"
+          onclick="showSearch()"
+        >
+          🔎 Пошук
+        </button>
+
+        <button
+          onclick="openProfile()"
+        >
+          👤 Профіль
+        </button>
+
+        <button
+          onclick="logout()"
+        >
+          ↪️ Выйсці
+        </button>
+
+      </div>
+
+    </aside>
+
+    <!-- CONTENT -->
+
+    <main id="content">
+
+      <!-- FEED -->
+
+      <section id="feedView">
+
+        <div class="card composer">
+
+          <textarea
+            id="postText"
+            maxlength="280"
+            placeholder="Што новага?"
+          ></textarea>
+
+          <div class="composer-bottom">
+
+            <label class="photo-label">
+              📷 Фото
+              <input
+                id="postPhoto"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+              >
+            </label>
+
+            <button
+              id="publishBtn"
+              class="primary"
+              onclick="createPost()"
+            >
+              Апублікаваць
+            </button>
+
+          </div>
+
+          <div
+            id="selectedPhoto"
+            class="muted"
+            style="margin-top:8px;font-size:13px"
+          ></div>
+
+        </div>
+
+        <div id="feed"></div>
+
+      </section>
+
+      <!-- SEARCH -->
+
+      <section
+        id="searchView"
+        class="hidden"
+      >
+
+        <div class="card">
+
+          <input
+            id="searchInput"
+            class="search"
+            placeholder="Пошук людзей і пастоў..."
+            autocomplete="off"
+          >
+
+        </div>
+
+        <div id="searchResults"></div>
+
+      </section>
+
+      <!-- PROFILE -->
+
+      <section
+        id="profileView"
+        class="hidden"
+      >
+
+        <div id="profileContent"></div>
+
+      </section>
+
+    </main>
+
+    <!-- RIGHT -->
+
+    <aside class="rightbar">
+
+      <div class="info-card">
+
+        <div class="info-title">
+          Hutka 🇧🇾
+        </div>
+
+        <div class="muted">
+          Маленькая сетка для вялікіх
+          гісторый.
+        </div>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+
+<div
+  id="profileModal"
+  class="modal hidden"
+>
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <strong>
+        Рэдагаваць профіль
+      </strong>
+
+      <button
+        class="close"
+        onclick="closeProfileModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <form id="profileForm">
+
+      <div class="field">
+        <label>Имя</label>
+        <input
+          id="profileName"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Username</label>
+        <input
+          id="profileUsername"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>О себе</label>
+        <textarea
+          id="profileBio"
+          maxlength="300"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label>Аватар</label>
+        <input
+          id="profileAvatar"
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif"
+        >
+      </div>
+
+      <button
+        class="primary"
+        type="submit"
+      >
+        Сохранить
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+<script>
+
+/*
+|--------------------------------------------------------------------------
+| НАСТРОЙКА API
+|--------------------------------------------------------------------------
+|
+| Пока сервер не размещён:
+| оставляем пустую строку.
+|
+| После размещения сервера сюда поставим:
+|
+| const API_URL = 'https://твой-сервер.onrender.com';
+|
+*/
+
+const API_URL = '';
+
+let currentUser = null;
+
+
+/* -----------------------------------------------------------------------
+   HELPERS
+------------------------------------------------------------------------ */
+
+function apiUrl(path) {
+  return API_URL + path;
+}
+
+function showToast(message) {
+  const toast =
+    document.getElementById('toast');
+
+  toast.textContent = message;
+  toast.classList.remove('hidden');
+
+  clearTimeout(
+    window.__toastTimer
+  );
+
+  window.__toastTimer =
+    setTimeout(() => {
+      toast.classList.add('hidden');
+    }, 3000);
+}
+
+async function api(
+  path,
+  options = {}
+) {
+  const config = {
+    credentials: 'include',
+    ...options
+  };
+
+  const response =
+    await fetch(
+      apiUrl(path),
+      config
+    );
+
+  let data = {};
+
+  try {
+    data = await response.json();
+  } catch {
+    data = {};
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      data.error ||
+      `Ошибка сервера: ${response.status}`
+    );
+  }
+
+  return data;
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function initials(name) {
+  const value =
+    String(name || '?').trim();
+
+  if (!value) return '?';
+
+  return value
+    .split(/\s+/)
+    .slice(0, 2)
+    .map(x => x[0])
+    .join('')
+    .toUpperCase();
+}
+
+function avatarHtml(
+  user,
+  className = 'avatar'
+) {
+  if (user?.avatar) {
+    return `
+      <img
+        class="${className}"
+        src="${escapeHtml(user.avatar)}"
+        alt=""
+      >
+    `;
+  }
+
+  return `
+    <div class="${className}">
+      ${escapeHtml(
+        initials(user?.name)
+      )}
+    </div>
+  `;
+}
+
+function formatDate(date) {
+  try {
+    return new Intl.DateTimeFormat(
+      'ru-RU',
+      {
+        day: 'numeric',
+        month: 'short',
+        hour: '2-digit',
+        minute: '2-digit'
+      }
+    ).format(new Date(date));
+  } catch {
+    return '';
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   AUTH
+------------------------------------------------------------------------ */
+
+async function checkAuth() {
+  try {
+    const data =
+      await api('/api/me');
+
+    if (data.user) {
+      currentUser =
+        data.user;
+
+      showMainApp();
+      await loadFeed();
+    } else {
+      showAuth();
+    }
+
+  } catch (error) {
+    console.error(error);
+
+    /*
+     * Если API ещё не размещён,
+     * показываем страницу входа.
+     */
+    showAuth();
+  }
+}
+
+function showAuth() {
+  document
+    .getElementById('authScreen')
+    .classList.remove('hidden');
+
+  document
+    .getElementById('mainApp')
+    .classList.add('hidden');
+}
+
+function showMainApp() {
+  document
+    .getElementById('authScreen')
+    .classList.add('hidden');
+
+  document
+    .getElementById('mainApp')
+    .classList.remove('hidden');
+
+  updateHeader();
+}
+
+function updateHeader() {
+  if (!currentUser) return;
+
+  document
+    .getElementById('headerUserName')
+    .textContent =
+      currentUser.name;
+
+  const avatar =
+    document.getElementById(
+      'headerAvatar'
+    );
+
+  if (currentUser.avatar) {
+    avatar.outerHTML = `
+      <img
+        id="headerAvatar"
+        class="avatar"
+        src="${escapeHtml(
+          currentUser.avatar
+        )}"
+        alt=""
+      >
+    `;
+  } else {
+    avatar.textContent =
+      initials(
+        currentUser.name
+      );
+  }
+}
+
+
+/* LOGIN */
+
+document
+  .getElementById('loginForm')
+  .addEventListener(
+    'submit',
+    async event => {
+      event.preventDefault();
+
+      const username =
+        document
+          .getElementById(
+            'loginUsername'
+          )
+          .value;
+
+      const password =
+        document
+          .getElementById(
+            'loginPassword'
+          )
+          .value;
+
+      try {
+        const data =
+          await api(
+            '/api/auth/login',
+            {
+              method: 'POST',
+
+              headers: {
+                'Content-Type':
+                  'application/json'
+              },
+
+              body:
+                JSON.stringify({
+                  username,
+                  password
+                })
+            }
+          );
+
+        currentUser =
+          data.user;
+
+        showMainApp();
+        await loadFeed();
+
+        showToast(
+          'Добро пожаловать в Hutka!'
+        );
+
+      } catch (error) {
+        showToast(
+          error.message
+        );
+      }
+    }
+  );
+
+
+/* REGISTER */
+
+document
+  .getElementById('registerForm')
+  .addEventListener(
+    'submit',
+    async event => {
+      event.preventDefault();
+
+      const name =
+        document
+          .getElementById(
+            'registerName'
+          )
+          .value;
+
+      const username =
+        document
+          .getElementById(
+            'registerUsername'
+          )
+          .value;
+
+      const password =
+        document
+          .getElementById(
+            'registerPassword'
+          )
+          .value;
+
+      try {
+        const data =
+          await api(
+            '/api/auth/register',
+            {
+              method: 'POST',
+
+              headers: {
+                'Content-Type':
+                  'application/json'
+              },
+
+              body:
+                JSON.stringify({
+                  name,
+                  username,
+                  password
+                })
+            }
+          );
+
+        currentUser =
+          data.user;
+
+        showMainApp();
+        await loadFeed();
+
+        showToast(
+          'Аккаунт создан!'
+        );
+
+      } catch (error) {
+        showToast(
+          error.message
+        );
+      }
+    }
+  );
+
+
+/* AUTH SWITCH */
+
+document
+  .getElementById('showRegister')
+  .addEventListener(
+    'click',
+    () => {
+      document
+        .getElementById(
+          'loginForm'
+        )
+        .classList.add(
+          'hidden'
+        );
+
+      document
+        .getElementById(
+          'registerForm'
+        )
+        .classList.remove(
+          'hidden'
+        );
+
+      document
+        .getElementById(
+          'loginSwitch'
+        )
+        .classList.add(
+          'hidden'
+        );
+
+      document
+        .getElementById(
+          'registerSwitch'
+        )
+        .classList.remove(
+          'hidden'
+        );
+    }
+  );
+
+document
+  .getElementById('showLogin')
+  .addEventListener(
+    'click',
+    () => {
+      document
+        .getElementById(
+          'registerForm'
+        )
+        .classList.add(
+          'hidden'
+        );
+
+      document
+        .getElementById(
+          'loginForm'
+        )
+        .classList.remove(
+          'hidden'
+        );
+
+      document
+        .getElementById(
+          'registerSwitch'
+        )
+        .classList.add(
+          'hidden'
+        );
+
+      document
+        .getElementById(
+          'loginSwitch'
+        )
+        .classList.remove(
+          'hidden'
+        );
+    }
+  );
+
+
+/* LOGOUT */
+
+async function logout() {
+  try {
+    await api(
+      '/api/auth/logout',
+      {
+        method: 'POST'
+      }
+    );
+  } catch (error) {
+    console.error(error);
+  }
+
+  currentUser = null;
+
+  showAuth();
+}
+
+
+/* -----------------------------------------------------------------------
+   NAVIGATION
+------------------------------------------------------------------------ */
+
+function setActiveNav(id) {
+  document
+    .querySelectorAll('.nav button')
+    .forEach(
+      button =>
+        button.classList.remove(
+          'active'
+        )
+    );
+
+  const element =
+    document.getElementById(id);
+
+  if (element) {
+    element.classList.add(
+      'active'
+    );
+  }
+}
+
+function showFeed() {
+  document
+    .getElementById(
+      'feedView'
+    )
+    .classList.remove(
+      'hidden'
+    );
+
+  document
+    .getElementById(
+      'searchView'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+  document
+    .getElementById(
+      'profileView'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+  setActiveNav(
+    'navFeed'
+  );
+}
+
+function showSearch() {
+  document
+    .getElementById(
+      'feedView'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+  document
+    .getElementById(
+      'searchView'
+    )
+    .classList.remove(
+      'hidden'
+    );
+
+  document
+    .getElementById(
+      'profileView'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+  setActiveNav(
+    'navSearch'
+  );
+
+  document
+    .getElementById(
+      'searchInput'
+    )
+    .focus();
+}
+
+async function openProfile() {
+  document
+    .getElementById(
+      'feedView'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+  document
+    .getElementById(
+      'searchView'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+  document
+    .getElementById(
+      'profileView'
+    )
+    .classList.remove(
+      'hidden'
+    );
+
+  document
+    .querySelectorAll(
+      '.nav button'
+    )
+    .forEach(
+      button =>
+        button.classList.remove(
+          'active'
+        )
+    );
+
+  await loadProfile(
+    currentUser.username
+  );
+}
+
+
+/* -----------------------------------------------------------------------
+   FEED
+------------------------------------------------------------------------ */
+
+async function loadFeed() {
+  const feed =
+    document.getElementById(
+      'feed'
+    );
+
+  feed.innerHTML = `
+    <div class="empty">
+      Загружаем Hutka...
+    </div>
+  `;
+
+  try {
+    const data =
+      await api(
+        '/api/posts'
+      );
+
+    renderPosts(
+      data.posts || []
+    );
+
+  } catch (error) {
+    feed.innerHTML = `
+      <div class="card empty">
+        Не удалось загрузить ленту.<br>
+        <small>
+          ${escapeHtml(
+            error.message
+          )}
+        </small>
+      </div>
+    `;
+  }
+}
+
+function renderPosts(posts) {
+  const feed =
+    document.getElementById(
+      'feed'
+    );
+
+  if (!posts.length) {
+    feed.innerHTML = `
+      <div class="card empty">
+        Пока здесь пусто.<br>
+        Напиши первый пост!
+      </div>
+    `;
+
+    return;
+  }
+
+  feed.innerHTML =
+    posts
+      .map(
+        postHtml
+      )
+      .join('');
+}
+
+function postHtml(post) {
+  const user =
+    post.user || {};
+
+  return `
+    <article
+      class="card"
+      id="post-${post.id}"
+    >
+
+      <div class="post-head">
+
+        ${avatarHtml(
+          user
+        )}
+
+        <div class="post-user">
+
+          <div class="post-name">
+            ${escapeHtml(
+              user.name
+            )}
+          </div>
+
+          <div class="post-handle">
+            ${escapeHtml(
+              user.handle ||
+              '@' +
+                user.username
+            )}
+          </div>
+
+        </div>
+
+        <div class="post-date">
+          ${formatDate(
+            post.createdAt
+          )}
+        </div>
+
+      </div>
+
+      ${
+        post.text
+          ? `
+            <div class="post-text">
+              ${escapeHtml(
+                post.text
+              )}
+            </div>
+          `
+          : ''
+      }
+
+      ${
+        post.media
+          ? `
+            <img
+              class="post-image"
+              src="${escapeHtml(
+                post.media
+              )}"
+              alt=""
+              loading="lazy"
+            >
+          `
+          : ''
+      }
+
+      <div class="post-actions">
+
+        <button
+          class="${
+            post.liked
+              ? 'liked'
+              : ''
+          }"
+          onclick="toggleLike(${post.id})"
+        >
+          ❤️ ${post.likes || 0}
+        </button>
+
+        <button
+          onclick="showToast('Комментарии скоро будут')"
+        >
+          💬 ${post.comments || 0}
+        </button>
+
+        <button
+          onclick="showToast('Репосты скоро будут')"
+        >
+          🔁 ${post.reposts || 0}
+        </button>
+
+      </div>
+
+    </article>
+  `;
+}
+
+
+/* CREATE POST */
+
+async function createPost() {
+  const text =
+    document
+      .getElementById(
+        'postText'
+      )
+      .value
+      .trim();
+
+  const file =
+    document
+      .getElementById(
+        'postPhoto'
+      )
+      .files[0];
+
+  if (!text && !file) {
+    showToast(
+      'Добавь текст или фото'
+    );
+
+    return;
+  }
+
+  const button =
+    document.getElementById(
+      'publishBtn'
+    );
+
+  button.disabled = true;
+  button.textContent =
+    'Публикуем...';
+
+  try {
+    const form =
+      new FormData();
+
+    form.append(
+      'text',
+      text
+    );
+
+    if (file) {
+      form.append(
+        'photo',
+        file
+      );
+    }
+
+    await api(
+      '/api/posts',
+      {
+        method: 'POST',
+        body: form
+      }
+    );
+
+    document
+      .getElementById(
+        'postText'
+      )
+      .value = '';
+
+    document
+      .getElementById(
+        'postPhoto'
+      )
+      .value = '';
+
+    document
+      .getElementById(
+        'selectedPhoto'
+      )
+      .textContent = '';
+
+    await loadFeed();
+
+    showToast(
+      'Пост опубликован!'
+    );
+
+  } catch (error) {
+    showToast(
+      error.message
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent =
+      'Апублікаваць';
+  }
+}
+
+
+/* LIKE */
+
+async function toggleLike(
+  postId
+) {
+  try {
+    await api(
+      `/api/posts/${postId}/like`,
+      {
+        method: 'POST'
+      }
+    );
+
+    await loadFeed();
+
+  } catch (error) {
+    showToast(
+      error.message
+    );
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   SEARCH
+------------------------------------------------------------------------ */
+
+let searchTimer = null;
+
+document
+  .getElementById(
+    'searchInput'
+  )
+  .addEventListener(
+    'input',
+    event => {
+      clearTimeout(
+        searchTimer
+      );
+
+      const q =
+        event.target.value
+          .trim();
+
+      searchTimer =
+        setTimeout(
+          () => search(q),
+          300
+        );
+    }
+  );
+
+async function search(q) {
+  const results =
+    document.getElementById(
+      'searchResults'
+    );
+
+  if (!q) {
+    results.innerHTML = '';
+    return;
+  }
+
+  results.innerHTML = `
+    <div class="card empty">
+      Ищем...
+    </div>
+  `;
+
+  try {
+    const data =
+      await api(
+        '/api/search?q=' +
+        encodeURIComponent(q)
+      );
+
+    let html = '';
+
+    if (
+      data.users &&
+      data.users.length
+    ) {
+      html += `
+        <div class="card">
+          <strong>
+            Люди
+          </strong>
+      `;
+
+      data.users.forEach(
+        user => {
+          html += `
+            <div
+              class="result"
+              style="cursor:pointer"
+              onclick="loadProfile('${escapeHtml(
+                user.username
+              )}')"
+            >
+
+              <div class="result-user">
+
+                ${avatarHtml(
+                  user
+                )}
+
+                <div>
+                  <strong>
+                    ${escapeHtml(
+                      user.name
+                    )}
+                  </strong>
+
+                  <div class="muted">
+                    ${escapeHtml(
+                      user.handle
+                    )}
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          `;
+        }
+      );
+
+      html += `
+        </div>
+      `;
+    }
+
+    if (
+      data.posts &&
+      data.posts.length
+    ) {
+      html += `
+        <div>
+          ${data.posts
+            .map(
+              postHtml
+            )
+            .join('')}
+        </div>
+      `;
+    }
+
+    if (!html) {
+      html = `
+        <div class="card empty">
+          Ничего не найдено.
+        </div>
+      `;
+    }
+
+    results.innerHTML =
+      html;
+
+  } catch (error) {
+    results.innerHTML = `
+      <div class="card empty">
+        Ошибка поиска:<br>
+        ${escapeHtml(
+          error.message
+        )}
+      </div>
+    `;
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   PROFILE
+------------------------------------------------------------------------ */
+
+async function loadProfile(
+  username
+) {
+  const profile =
+    document.getElementById(
+      'profileContent'
+    );
+
+  profile.innerHTML = `
+    <div class="card empty">
+      Загружаем профиль...
+    </div>
+  `;
+
+  document
+    .getElementById(
+      'feedView'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+  document
+    .getElementById(
+      'searchView'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+  document
+    .getElementById(
+      'profileView'
+    )
+    .classList.remove(
+      'hidden'
+    );
+
+  try {
+    const data =
+      await api(
+        `/api/users/${encodeURIComponent(
+          username
+        )}`
+      );
+
+    const user =
+      data.user;
+
+    const isMe =
+      currentUser &&
+      currentUser.username ===
+        user.username;
+
+    profile.innerHTML = `
+
+      <div class="card">
+
+        <div class="profile-head">
+
+          ${avatarHtml(
+            user,
+            'profile-avatar'
+          )}
+
+          <div>
+
+            <div class="profile-name">
+              ${escapeHtml(
+                user.name
+              )}
+            </div>
+
+            <div class="muted">
+              ${escapeHtml(
+                user.handle
+              )}
+            </div>
+
+          </div>
+
+        </div>
+
+        ${
+          user.bio
+            ? `
+              <div
+                style="margin-top:15px"
+              >
+                ${escapeHtml(
+                  user.bio
+                )}
+              </div>
+            `
+            : ''
+        }
+
+        <div class="profile-stats">
+
+          <div class="stat">
+            <strong>
+              ${user.posts || 0}
+            </strong>
+            <span>
+              постов
+            </span>
+          </div>
+
+          <div class="stat">
+            <strong>
+              ${user.followers || 0}
+            </strong>
+            <span>
+              подписчиков
+            </span>
+          </div>
+
+          <div class="stat">
+            <strong>
+              ${user.following || 0}
+            </strong>
+            <span>
+              подписок
+            </span>
+          </div>
+
+        </div>
+
+        ${
+          isMe
+            ? `
+              <button
+                class="primary"
+                style="margin-top:18px"
+                onclick="openProfileModal()"
+              >
+                Редактировать профиль
+              </button>
+            `
+            : ''
+        }
+
+      </div>
+
+    `;
+
+  } catch (error) {
+    profile.innerHTML = `
+      <div class="card empty">
+        ${escapeHtml(
+          error.message
+        )}
+      </div>
+    `;
+  }
+}
+
+
+/* EDIT PROFILE */
+
+function openProfileModal() {
+  if (!currentUser) return;
+
+  document
+    .getElementById(
+      'profileName'
+    )
+    .value =
+      currentUser.name || '';
+
+  document
+    .getElementById(
+      'profileUsername'
+    )
+    .value =
+      currentUser.username || '';
+
+  document
+    .getElementById(
+      'profileBio'
+    )
+    .value =
+      currentUser.bio || '';
+
+  document
+    .getElementById(
+      'profileAvatar'
+    )
+    .value = '';
+
+  document
+    .getElementById(
+      'profileModal'
+    )
+    .classList.remove(
+      'hidden'
+    );
+}
+
+function closeProfileModal() {
+  document
+    .getElementById(
+      'profileModal'
+    )
+    .classList.add(
+      'hidden'
+    );
+}
+
+document
+  .getElementById(
+    'profileForm'
+  )
+  .addEventListener(
+    'submit',
+    async event => {
+      event.preventDefault();
+
+      try {
+        const form =
+          new FormData();
+
+        form.append(
+          'name',
+          document
+            .getElementById(
+              'profileName'
+            )
+            .value
+        );
+
+        form.append(
+          'username',
+          document
+            .getElementById(
+              'profileUsername'
+            )
+            .value
+        );
+
+        form.append(
+          'bio',
+          document
+            .getElementById(
+              'profileBio'
+            )
+            .value
+        );
+
+        const file =
+          document
+            .getElementById(
+              'profileAvatar'
+            )
+            .files[0];
+
+        if (file) {
+          form.append(
+            'avatar',
+            file
+          );
+        }
+
+        const data =
+          await api(
+            '/api/me',
+            {
+              method: 'PUT',
+              body: form
+            }
+          );
+
+        currentUser =
+          data.user;
+
+        updateHeader();
+
+        closeProfileModal();
+
+        await loadProfile(
+          currentUser.username
+        );
+
+        showToast(
+          'Профиль сохранён'
+        );
+
+      } catch (error) {
+        showToast(
+          error.message
+        );
+      }
+    }
+  );
+
+
+/* PHOTO NAME */
+
+document
+  .getElementById(
+    'postPhoto'
+  )
+  .addEventListener(
+    'change',
+    event => {
+      const file =
+        event.target.files[0];
+
+      document
+        .getElementById(
+          'selectedPhoto'
+        )
+        .textContent =
+          file
+            ? `Выбрано: ${file.name}`
+            : '';
+    }
+  );
+
+
+/* -----------------------------------------------------------------------
+   START
+------------------------------------------------------------------------ */
+
+checkAuth();
+
+</script>
+
+</body>
+        </html>
