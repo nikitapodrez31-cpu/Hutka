@@ -20,25 +20,38 @@ const UPLOAD_DIR = path.join(ROOT, 'uploads');
 fs.mkdirSync(DB_DIR, { recursive: true });
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
+
+/* -----------------------------------------------------------------------
+   DATABASE
+------------------------------------------------------------------------ */
+
+function emptyDB() {
+  return {
+    users: [],
+    posts: [],
+    likes: [],
+    comments: []
+  };
+}
+
 function loadDB() {
   if (!fs.existsSync(DB_FILE)) {
-    return {
-      users: [],
-      posts: [],
-      likes: []
-    };
+    return emptyDB();
   }
 
   try {
-    return JSON.parse(
+    const data = JSON.parse(
       fs.readFileSync(DB_FILE, 'utf8')
     );
+
+    if (!data.users) data.users = [];
+    if (!data.posts) data.posts = [];
+    if (!data.likes) data.likes = [];
+    if (!data.comments) data.comments = [];
+
+    return data;
   } catch {
-    return {
-      users: [],
-      posts: [],
-      likes: []
-    };
+    return emptyDB();
   }
 }
 
@@ -60,18 +73,16 @@ function nextId(items) {
   return (
     items.reduce(
       (max, item) =>
-        Math.max(
-          max,
-          Number(item.id) || 0
-        ),
+        Math.max(max, Number(item.id) || 0),
       0
     ) + 1
   );
 }
 
-/* =========================================================
+
+/* -----------------------------------------------------------------------
    DEMO DATA
-========================================================= */
+------------------------------------------------------------------------ */
 
 if (!db.users.length) {
   const password =
@@ -85,8 +96,7 @@ if (!db.users.length) {
       password_hash: password,
       bio: 'Гуляю, думаю, фатаграфую.',
       avatar: null,
-      created_at:
-        new Date().toISOString()
+      created_at: new Date().toISOString()
     },
     {
       id: 2,
@@ -95,8 +105,7 @@ if (!db.users.length) {
       password_hash: password,
       bio: 'Музыка, Мінск і добрыя людзі.',
       avatar: null,
-      created_at:
-        new Date().toISOString()
+      created_at: new Date().toISOString()
     },
     {
       id: 3,
@@ -105,8 +114,7 @@ if (!db.users.length) {
       password_hash: password,
       bio: 'Маленькія рэчы маюць значэнне.',
       avatar: null,
-      created_at:
-        new Date().toISOString()
+      created_at: new Date().toISOString()
     }
   ];
 
@@ -116,27 +124,27 @@ if (!db.users.length) {
       user_id: 1,
       text: 'Добры вечар, Hutka! 🇧🇾',
       media: null,
-      created_at:
-        new Date().toISOString()
+      created_at: new Date().toISOString()
     },
     {
       id: 2,
       user_id: 2,
       text: 'Мінск сёння асабліва прыгожы.',
       media: null,
-      created_at:
-        new Date().toISOString()
+      created_at: new Date().toISOString()
     }
   ];
 
   db.likes = [];
+  db.comments = [];
 
   saveDB();
 }
 
-/* =========================================================
+
+/* -----------------------------------------------------------------------
    MIDDLEWARE
-========================================================= */
+------------------------------------------------------------------------ */
 
 app.use(
   express.json({
@@ -151,62 +159,71 @@ app.use(
   express.static(UPLOAD_DIR)
 );
 
-/* =========================================================
-   MULTER / IMAGE UPLOAD
-========================================================= */
+
+/* -----------------------------------------------------------------------
+   FILE UPLOADS
+------------------------------------------------------------------------ */
 
 const storage =
   multer.diskStorage({
-    destination: (_, __, cb) => {
-      cb(null, UPLOAD_DIR);
+    destination: (_, __, callback) => {
+      callback(null, UPLOAD_DIR);
     },
 
-    filename: (_, file, cb) => {
-      const ext = path
-        .extname(file.originalname)
-        .toLowerCase()
-        .replace(
-          /[^.a-z0-9]/g,
-          ''
-        );
+    filename: (_, file, callback) => {
+      const ext =
+        path
+          .extname(file.originalname)
+          .toLowerCase()
+          .replace(
+            /[^.a-z0-9]/g,
+            ''
+          );
 
       const filename =
         `${Date.now()}-${Math.random()
           .toString(36)
           .slice(2)}${ext || '.jpg'}`;
 
-      cb(
+      callback(
         null,
         filename
       );
     }
   });
 
-const upload = multer({
-  storage,
+const upload =
+  multer({
+    storage,
 
-  limits: {
-    fileSize:
-      8 * 1024 * 1024
-  },
+    limits: {
+      fileSize:
+        8 * 1024 * 1024
+    },
 
-  fileFilter: (_, file, cb) => {
-    const allowed =
-      /^image\/(jpeg|png|webp|gif)$/i.test(
-        file.mimetype
+    fileFilter: (_, file, callback) => {
+      const allowed =
+        /^image\/(jpeg|png|webp|gif)$/i;
+
+      callback(
+        null,
+        allowed.test(
+          file.mimetype
+        )
       );
+    }
+  });
 
-    cb(null, allowed);
-  }
-});
 
-/* =========================================================
+/* -----------------------------------------------------------------------
    AUTH
-========================================================= */
+------------------------------------------------------------------------ */
 
-function sign(id) {
+function sign(userId) {
   return jwt.sign(
-    { id },
+    {
+      id: userId
+    },
     JWT_SECRET,
     {
       expiresIn: '30d'
@@ -242,17 +259,17 @@ function userFromReq(req) {
 }
 
 function safeUser(user) {
+  if (!user) {
+    return null;
+  }
+
   return {
     id: user.id,
     name: user.name,
-    handle:
-      '@' + user.username,
-    username:
-      user.username,
-    bio:
-      user.bio || '',
-    avatar:
-      user.avatar || null
+    handle: '@' + user.username,
+    username: user.username,
+    bio: user.bio || '',
+    avatar: user.avatar || null
   };
 }
 
@@ -268,8 +285,7 @@ function requireAuth(
     return res
       .status(401)
       .json({
-        error:
-          'AUTH_REQUIRED'
+        error: 'AUTH_REQUIRED'
       });
   }
 
@@ -278,9 +294,10 @@ function requireAuth(
   next();
 }
 
-/* =========================================================
-   POST FORMAT
-========================================================= */
+
+/* -----------------------------------------------------------------------
+   POSTS
+------------------------------------------------------------------------ */
 
 function postShape(
   post,
@@ -288,14 +305,9 @@ function postShape(
 ) {
   const user =
     db.users.find(
-      item =>
-        item.id ===
-        post.user_id
+      u =>
+        u.id === post.user_id
     );
-
-  if (!user) {
-    return null;
-  }
 
   const likes =
     db.likes.filter(
@@ -305,34 +317,38 @@ function postShape(
     ).length;
 
   const liked =
-    viewerId
-      ? db.likes.some(
-          like =>
-            like.post_id ===
-              post.id &&
-            like.user_id ===
-              viewerId
-        )
-      : false;
+    db.likes.some(
+      like =>
+        like.post_id ===
+          post.id &&
+        like.user_id ===
+          viewerId
+    );
+
+  const comments =
+    db.comments.filter(
+      comment =>
+        comment.post_id ===
+        post.id
+    ).length;
 
   return {
     id: post.id,
     text: post.text,
     media: post.media,
-    createdAt:
-      post.created_at,
+    createdAt: post.created_at,
     likes,
     liked,
-    comments: 0,
+    comments,
     reposts: 0,
-    user:
-      safeUser(user)
+    user: safeUser(user)
   };
 }
 
-/* =========================================================
+
+/* -----------------------------------------------------------------------
    CURRENT USER
-========================================================= */
+------------------------------------------------------------------------ */
 
 app.get(
   '/api/me',
@@ -348,9 +364,10 @@ app.get(
   }
 );
 
-/* =========================================================
+
+/* -----------------------------------------------------------------------
    REGISTER
-========================================================= */
+------------------------------------------------------------------------ */
 
 app.post(
   '/api/auth/register',
@@ -425,9 +442,7 @@ app.post(
     }
 
     const user = {
-      id: nextId(
-        db.users
-      ),
+      id: nextId(db.users),
       name,
       username,
       password_hash:
@@ -464,15 +479,15 @@ app.post(
     );
 
     res.json({
-      user:
-        safeUser(user)
+      user: safeUser(user)
     });
   }
 );
 
-/* =========================================================
+
+/* -----------------------------------------------------------------------
    LOGIN
-========================================================= */
+------------------------------------------------------------------------ */
 
 app.post(
   '/api/auth/login',
@@ -492,8 +507,8 @@ app.post(
 
     const user =
       db.users.find(
-        item =>
-          item.username ===
+        u =>
+          u.username ===
           username
       );
 
@@ -531,15 +546,15 @@ app.post(
     );
 
     res.json({
-      user:
-        safeUser(user)
+      user: safeUser(user)
     });
   }
 );
 
-/* =========================================================
+
+/* -----------------------------------------------------------------------
    LOGOUT
-========================================================= */
+------------------------------------------------------------------------ */
 
 app.post(
   '/api/auth/logout',
@@ -554,9 +569,10 @@ app.post(
   }
 );
 
-/* =========================================================
-   POSTS
-========================================================= */
+
+/* -----------------------------------------------------------------------
+   GET POSTS
+------------------------------------------------------------------------ */
 
 app.get(
   '/api/posts',
@@ -573,22 +589,21 @@ app.get(
         .slice(0, 100);
 
     res.json({
-      posts:
-        posts
-          .map(post =>
-            postShape(
-              post,
-              viewer?.id
-            )
+      posts: posts.map(
+        post =>
+          postShape(
+            post,
+            viewer?.id
           )
-          .filter(Boolean)
+      )
     });
   }
 );
 
-/* =========================================================
+
+/* -----------------------------------------------------------------------
    CREATE POST
-========================================================= */
+------------------------------------------------------------------------ */
 
 app.post(
   '/api/posts',
@@ -624,16 +639,13 @@ app.post(
     }
 
     const post = {
-      id: nextId(
-        db.posts
-      ),
+      id: nextId(db.posts),
       user_id:
         req.user.id,
       text,
-      media:
-        req.file
-          ? `/uploads/${req.file.filename}`
-          : null,
+      media: req.file
+        ? `/uploads/${req.file.filename}`
+        : null,
       created_at:
         new Date().toISOString()
     };
@@ -643,27 +655,24 @@ app.post(
     saveDB();
 
     res.json({
-      post:
-        postShape(
-          post,
-          req.user.id
-        )
+      post: postShape(
+        post,
+        req.user.id
+      )
     });
   }
 );
 
-/* =========================================================
-   LIKE
-========================================================= */
 
-app.post(
-  '/api/posts/:id/like',
-  requireAuth,
+/* -----------------------------------------------------------------------
+   COMMENTS
+------------------------------------------------------------------------ */
+
+app.get(
+  '/api/posts/:id/comments',
   (req, res) => {
     const postId =
-      Number(
-        req.params.id
-      );
+      Number(req.params.id);
 
     const postExists =
       db.posts.some(
@@ -673,6 +682,201 @@ app.post(
       );
 
     if (!postExists) {
+      return res
+        .status(404)
+        .json({
+          error:
+            'Пост не найден'
+        });
+    }
+
+    const comments =
+      db.comments
+        .filter(
+          comment =>
+            comment.post_id ===
+            postId
+        )
+        .sort(
+          (a, b) =>
+            a.id - b.id
+        )
+        .map(comment => {
+          const user =
+            db.users.find(
+              u =>
+                u.id ===
+                comment.user_id
+            );
+
+          return {
+            id: comment.id,
+            text: comment.text,
+            createdAt:
+              comment.created_at,
+            user: safeUser(user)
+          };
+        });
+
+    res.json({
+      comments
+    });
+  }
+);
+
+
+app.post(
+  '/api/posts/:id/comments',
+  requireAuth,
+  (req, res) => {
+    const postId =
+      Number(req.params.id);
+
+    const text =
+      String(
+        req.body.text || ''
+      ).trim();
+
+    const postExists =
+      db.posts.some(
+        post =>
+          post.id ===
+          postId
+      );
+
+    if (!postExists) {
+      return res
+        .status(404)
+        .json({
+          error:
+            'Пост не найден'
+        });
+    }
+
+    if (!text) {
+      return res
+        .status(400)
+        .json({
+          error:
+            'Комментарий не может быть пустым'
+        });
+    }
+
+    if (
+      text.length > 500
+    ) {
+      return res
+        .status(400)
+        .json({
+          error:
+            'Максимум 500 символов'
+        });
+    }
+
+    const comment = {
+      id:
+        nextId(
+          db.comments
+        ),
+      post_id: postId,
+      user_id:
+        req.user.id,
+      text,
+      created_at:
+        new Date().toISOString()
+    };
+
+    db.comments.push(
+      comment
+    );
+
+    saveDB();
+
+    res.json({
+      comment: {
+        id: comment.id,
+        text: comment.text,
+        createdAt:
+          comment.created_at,
+        user: safeUser(
+          req.user
+        )
+      }
+    });
+  }
+);
+
+
+app.delete(
+  '/api/comments/:id',
+  requireAuth,
+  (req, res) => {
+    const commentId =
+      Number(req.params.id);
+
+    const index =
+      db.comments.findIndex(
+        comment =>
+          comment.id ===
+          commentId
+      );
+
+    if (index === -1) {
+      return res
+        .status(404)
+        .json({
+          error:
+            'Комментарий не найден'
+        });
+    }
+
+    const comment =
+      db.comments[index];
+
+    if (
+      comment.user_id !==
+      req.user.id
+    ) {
+      return res
+        .status(403)
+        .json({
+          error:
+            'Можно удалить только свой комментарий'
+        });
+    }
+
+    db.comments.splice(
+      index,
+      1
+    );
+
+    saveDB();
+
+    res.json({
+      ok: true
+    });
+  }
+);
+
+
+/* -----------------------------------------------------------------------
+   LIKE
+------------------------------------------------------------------------ */
+
+app.post(
+  '/api/posts/:id/like',
+  requireAuth,
+  (req, res) => {
+    const postId =
+      Number(req.params.id);
+
+    if (
+      !db.posts.some(
+        post =>
+          post.id ===
+          postId
+      )
+    ) {
       return res
         .status(404)
         .json({
@@ -719,9 +923,10 @@ app.post(
   }
 );
 
-/* =========================================================
+
+/* -----------------------------------------------------------------------
    SEARCH
-========================================================= */
+------------------------------------------------------------------------ */
 
 app.get(
   '/api/search',
@@ -738,7 +943,7 @@ app.get(
       });
     }
 
-    const query =
+    const q =
       raw.toLowerCase();
 
     const users =
@@ -747,10 +952,10 @@ app.get(
           user =>
             user.name
               .toLowerCase()
-              .includes(query) ||
+              .includes(q) ||
             user.username
               .toLowerCase()
-              .includes(query)
+              .includes(q)
         )
         .slice(0, 20)
         .map(safeUser);
@@ -763,25 +968,21 @@ app.get(
         .filter(post => {
           const user =
             db.users.find(
-              item =>
-                item.id ===
+              u =>
+                u.id ===
                 post.user_id
             );
-
-          if (!user) {
-            return false;
-          }
 
           return (
             post.text
               .toLowerCase()
-              .includes(query) ||
+              .includes(q) ||
             user.name
               .toLowerCase()
-              .includes(query) ||
+              .includes(q) ||
             user.username
               .toLowerCase()
-              .includes(query)
+              .includes(q)
           );
         })
         .sort(
@@ -792,22 +993,21 @@ app.get(
 
     res.json({
       users,
-      posts:
-        posts
-          .map(post =>
-            postShape(
-              post,
-              viewer?.id
-            )
+      posts: posts.map(
+        post =>
+          postShape(
+            post,
+            viewer?.id
           )
-          .filter(Boolean)
+      )
     });
   }
 );
 
-/* =========================================================
-   EDIT PROFILE
-========================================================= */
+
+/* -----------------------------------------------------------------------
+   UPDATE PROFILE
+------------------------------------------------------------------------ */
 
 app.put(
   '/api/me',
@@ -894,31 +1094,28 @@ app.put(
 
     res.json({
       user:
-        safeUser(
-          req.user
-        )
+        safeUser(req.user)
     });
   }
 );
 
-/* =========================================================
+
+/* -----------------------------------------------------------------------
    USER PROFILE
-========================================================= */
+------------------------------------------------------------------------ */
 
 app.get(
   '/api/users/:username',
   (req, res) => {
     const username =
-      String(
-        req.params.username
-      )
+      req.params.username
         .replace(/^@/, '')
         .toLowerCase();
 
     const user =
       db.users.find(
-        item =>
-          item.username ===
+        u =>
+          u.username ===
           username
       );
 
@@ -949,20 +1146,14 @@ app.get(
   }
 );
 
-/* =========================================================
-   STATIC FILES
-========================================================= */
+
+/* -----------------------------------------------------------------------
+   FRONTEND
+------------------------------------------------------------------------ */
 
 app.use(
   express.static(ROOT)
 );
-
-/*
- * ВАЖНО:
- * Этот маршрут должен быть последним,
- * чтобы /api/* и /uploads/* обрабатывались
- * своими обработчиками.
- */
 
 app.get(
   '*',
@@ -976,9 +1167,10 @@ app.get(
   }
 );
 
-/* =========================================================
+
+/* -----------------------------------------------------------------------
    START SERVER
-========================================================= */
+------------------------------------------------------------------------ */
 
 app.listen(
   PORT,
