@@ -18,7 +18,7 @@
 
     :root {
       --bg: #f5f5f5;
-      --card: #ffffff;
+      --card: #fff;
       --text: #171717;
       --muted: #777;
       --border: #e5e5e5;
@@ -27,8 +27,13 @@
       --radius: 18px;
     }
 
+    html,
     body {
       margin: 0;
+      min-height: 100%;
+    }
+
+    body {
       background: var(--bg);
       color: var(--text);
       font-family:
@@ -253,6 +258,7 @@
 
     .post-user {
       flex: 1;
+      min-width: 0;
     }
 
     .post-name {
@@ -267,6 +273,7 @@
     .post-date {
       color: var(--muted);
       font-size: 12px;
+      white-space: nowrap;
     }
 
     .post-text {
@@ -288,6 +295,7 @@
       display: flex;
       gap: 8px;
       margin-top: 14px;
+      flex-wrap: wrap;
     }
 
     .post-actions button {
@@ -298,9 +306,85 @@
       color: #444;
     }
 
+    .post-actions button:hover {
+      background: #e9e9e9;
+    }
+
     .post-actions button.liked {
       background: #111;
       color: white;
+    }
+
+    /* COMMENTS */
+
+    .comments-box {
+      margin-top: 14px;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+
+    .comment {
+      display: flex;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .comment:last-child {
+      border-bottom: 0;
+    }
+
+    .comment-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .comment-author {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .comment-text {
+      margin-top: 3px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .comment-date {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .comment-delete {
+      border: 0;
+      background: transparent;
+      color: var(--danger);
+      font-size: 12px;
+      padding: 3px;
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .comment-form input {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 9px 11px;
+      outline: none;
+    }
+
+    .comment-form button {
+      border: 0;
+      background: #111;
+      color: white;
+      border-radius: 11px;
+      padding: 9px 13px;
     }
 
     /* RIGHT BAR */
@@ -568,6 +652,21 @@
       .logo span {
         display: none;
       }
+
+      .header-user .small-btn {
+        max-width: 130px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .post-date {
+        display: none;
+      }
+
+      .comment-form {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -578,16 +677,23 @@
 
 <div id="toast" class="toast hidden"></div>
 
-<!-- AUTH -->
+
+<!-- =========================================================
+     AUTH
+========================================================= -->
 
 <div id="authScreen" class="auth-screen hidden">
+
   <div class="auth-card">
 
-    <div class="auth-title">Hutka</div>
+    <div class="auth-title">
+      Hutka
+    </div>
 
     <div class="auth-subtitle">
       Маленькая беларуская социальная сеть.
     </div>
+
 
     <!-- LOGIN -->
 
@@ -595,6 +701,7 @@
 
       <div class="field">
         <label>Username</label>
+
         <input
           id="loginUsername"
           type="text"
@@ -606,6 +713,7 @@
 
       <div class="field">
         <label>Пароль</label>
+
         <input
           id="loginPassword"
           type="password"
@@ -615,18 +723,26 @@
         >
       </div>
 
-      <button class="primary" type="submit">
+      <button
+        class="primary"
+        type="submit"
+      >
         Увайсці
       </button>
 
     </form>
 
+
     <!-- REGISTER -->
 
-    <form id="registerForm" class="hidden">
+    <form
+      id="registerForm"
+      class="hidden"
+    >
 
       <div class="field">
         <label>Имя</label>
+
         <input
           id="registerName"
           type="text"
@@ -637,6 +753,7 @@
 
       <div class="field">
         <label>Username</label>
+
         <input
           id="registerUsername"
           type="text"
@@ -647,6 +764,7 @@
 
       <div class="field">
         <label>Пароль</label>
+
         <input
           id="registerPassword"
           type="password"
@@ -656,16 +774,21 @@
         >
       </div>
 
-      <button class="primary" type="submit">
+      <button
+        class="primary"
+        type="submit"
+      >
         Стварыць акаунт
       </button>
 
     </form>
 
+
     <div class="auth-switch">
 
       <span id="loginSwitch">
         Нет аккаунта?
+
         <button
           class="link-btn"
           id="showRegister"
@@ -675,8 +798,12 @@
         </button>
       </span>
 
-      <span id="registerSwitch" class="hidden">
+      <span
+        id="registerSwitch"
+        class="hidden"
+      >
         Уже есть аккаунт?
+
         <button
           class="link-btn"
           id="showLogin"
@@ -689,9 +816,13 @@
     </div>
 
   </div>
+
 </div>
 
-<!-- MAIN APP -->
+
+<!-- =========================================================
+     MAIN APP
+========================================================= -->
 
 <div id="mainApp" class="hidden">
 
@@ -732,7 +863,9 @@
 
   </header>
 
+
   <div class="layout">
+
 
     <!-- SIDEBAR -->
 
@@ -771,9 +904,11 @@
 
     </aside>
 
+
     <!-- CONTENT -->
 
     <main id="content">
+
 
       <!-- FEED -->
 
@@ -790,12 +925,15 @@
           <div class="composer-bottom">
 
             <label class="photo-label">
+
               📷 Фото
+
               <input
                 id="postPhoto"
                 type="file"
                 accept="image/jpeg,image/png,image/webp,image/gif"
               >
+
             </label>
 
             <button
@@ -820,6 +958,7 @@
 
       </section>
 
+
       <!-- SEARCH -->
 
       <section
@@ -842,6 +981,7 @@
 
       </section>
 
+
       <!-- PROFILE -->
 
       <section
@@ -855,6 +995,7 @@
 
     </main>
 
+
     <!-- RIGHT -->
 
     <aside class="rightbar">
@@ -866,8 +1007,7 @@
         </div>
 
         <div class="muted">
-          Маленькая сетка для вялікіх
-          гісторый.
+          Маленькая сетка для вялікіх гісторый.
         </div>
 
       </div>
@@ -878,7 +1018,10 @@
 
 </div>
 
-<!-- EDIT PROFILE MODAL -->
+
+<!-- =========================================================
+     EDIT PROFILE MODAL
+========================================================= -->
 
 <div
   id="profileModal"
@@ -902,40 +1045,57 @@
 
     </div>
 
+
     <form id="profileForm">
 
       <div class="field">
+
         <label>Имя</label>
+
         <input
           id="profileName"
           required
         >
+
       </div>
 
+
       <div class="field">
+
         <label>Username</label>
+
         <input
           id="profileUsername"
           required
         >
+
       </div>
 
+
       <div class="field">
+
         <label>О себе</label>
+
         <textarea
           id="profileBio"
           maxlength="300"
         ></textarea>
+
       </div>
 
+
       <div class="field">
+
         <label>Аватар</label>
+
         <input
           id="profileAvatar"
           type="file"
           accept="image/jpeg,image/png,image/webp,image/gif"
         >
+
       </div>
+
 
       <button
         class="primary"
@@ -950,120 +1110,227 @@
 
 </div>
 
+
 <script>
 
-/*
-|--------------------------------------------------------------------------
-| НАСТРОЙКА API
-|--------------------------------------------------------------------------
-|
-| Пока сервер не размещён:
-| оставляем пустую строку.
-|
-| После размещения сервера сюда поставим:
-|
-| const API_URL = 'https://твой-сервер.onrender.com';
-|
-*/
+/* =========================================================
+   API
+========================================================= */
 
-const API_URL = 'https://hutka-server.onrender.com';;
+const API_URL =
+  'https://hutka-server.onrender.com';
 
 let currentUser = null;
 
 
-/* -----------------------------------------------------------------------
+/* =========================================================
    HELPERS
------------------------------------------------------------------------- */
+========================================================= */
 
 function apiUrl(path) {
   return API_URL + path;
 }
 
+
 function showToast(message) {
+
   const toast =
     document.getElementById('toast');
 
-  toast.textContent = message;
-  toast.classList.remove('hidden');
+  toast.textContent =
+    message;
+
+  toast.classList.remove(
+    'hidden'
+  );
 
   clearTimeout(
     window.__toastTimer
   );
 
   window.__toastTimer =
-    setTimeout(() => {
-      toast.classList.add('hidden');
-    }, 3000);
+    setTimeout(
+      () => {
+        toast.classList.add(
+          'hidden'
+        );
+      },
+      3500
+    );
 }
+
 
 async function api(
   path,
   options = {}
 ) {
+
   const config = {
     credentials: 'include',
     ...options
   };
 
-  const response =
-    await fetch(
-      apiUrl(path),
-      config
+  let response;
+
+  try {
+
+    response =
+      await fetch(
+        apiUrl(path),
+        config
+      );
+
+  } catch (error) {
+
+    console.error(
+      'FETCH ERROR:',
+      error
     );
+
+    throw new Error(
+      'Не удалось подключиться к серверу Hutka. Проверь, запущен ли Render.'
+    );
+  }
+
 
   let data = {};
 
-  try {
-    data = await response.json();
-  } catch {
-    data = {};
+  const contentType =
+    response.headers.get(
+      'content-type'
+    ) || '';
+
+
+  if (
+    contentType.includes(
+      'application/json'
+    )
+  ) {
+
+    try {
+
+      data =
+        await response.json();
+
+    } catch {
+
+      data = {};
+
+    }
+
+  } else {
+
+    const text =
+      await response.text();
+
+    data = {
+      error:
+        text ||
+        `Ошибка сервера: ${response.status}`
+    };
+
   }
 
+
   if (!response.ok) {
+
     throw new Error(
       data.error ||
       `Ошибка сервера: ${response.status}`
     );
+
   }
+
 
   return data;
 }
 
+
 function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
+
+  return String(
+    value ?? ''
+  )
+    .replaceAll(
+      '&',
+      '&amp;'
+    )
+    .replaceAll(
+      '<',
+      '&lt;'
+    )
+    .replaceAll(
+      '>',
+      '&gt;'
+    )
+    .replaceAll(
+      '"',
+      '&quot;'
+    )
+    .replaceAll(
+      "'",
+      '&#039;'
+    );
 }
 
-function initials(name) {
-  const value =
-    String(name || '?').trim();
 
-  if (!value) return '?';
+function initials(name) {
+
+  const value =
+    String(
+      name || '?'
+    ).trim();
+
+  if (!value) {
+    return '?';
+  }
 
   return value
     .split(/\s+/)
     .slice(0, 2)
-    .map(x => x[0])
+    .map(
+      x => x[0]
+    )
     .join('')
     .toUpperCase();
 }
+
+
+function mediaUrl(url) {
+
+  if (!url) {
+    return '';
+  }
+
+  if (
+    url.startsWith('http://') ||
+    url.startsWith('https://')
+  ) {
+    return url;
+  }
+
+  return API_URL + url;
+}
+
 
 function avatarHtml(
   user,
   className = 'avatar'
 ) {
+
   if (user?.avatar) {
+
     return `
       <img
         class="${className}"
-        src="${escapeHtml(user.avatar)}"
+        src="${escapeHtml(
+          mediaUrl(user.avatar)
+        )}"
         alt=""
+        loading="lazy"
       >
     `;
+
   }
 
   return `
@@ -1075,8 +1342,11 @@ function avatarHtml(
   `;
 }
 
+
 function formatDate(date) {
+
   try {
+
     return new Intl.DateTimeFormat(
       'ru-RU',
       {
@@ -1085,44 +1355,56 @@ function formatDate(date) {
         hour: '2-digit',
         minute: '2-digit'
       }
-    ).format(new Date(date));
+    ).format(
+      new Date(date)
+    );
+
   } catch {
+
     return '';
+
   }
 }
 
 
-/* -----------------------------------------------------------------------
+/* =========================================================
    AUTH
------------------------------------------------------------------------- */
+========================================================= */
 
 async function checkAuth() {
+
   try {
+
     const data =
       await api('/api/me');
 
     if (data.user) {
+
       currentUser =
         data.user;
 
       showMainApp();
+
       await loadFeed();
+
     } else {
+
       showAuth();
+
     }
 
   } catch (error) {
+
     console.error(error);
 
-    /*
-     * Если API ещё не размещён,
-     * показываем страницу входа.
-     */
     showAuth();
+
   }
 }
 
+
 function showAuth() {
+
   document
     .getElementById('authScreen')
     .classList.remove('hidden');
@@ -1132,7 +1414,9 @@ function showAuth() {
     .classList.add('hidden');
 }
 
+
 function showMainApp() {
+
   document
     .getElementById('authScreen')
     .classList.add('hidden');
@@ -1144,46 +1428,71 @@ function showMainApp() {
   updateHeader();
 }
 
+
 function updateHeader() {
-  if (!currentUser) return;
+
+  if (!currentUser) {
+    return;
+  }
 
   document
-    .getElementById('headerUserName')
+    .getElementById(
+      'headerUserName'
+    )
     .textContent =
       currentUser.name;
 
-  const avatar =
+
+  const oldAvatar =
     document.getElementById(
       'headerAvatar'
     );
 
+
   if (currentUser.avatar) {
-    avatar.outerHTML = `
+
+    oldAvatar.outerHTML = `
       <img
         id="headerAvatar"
         class="avatar"
         src="${escapeHtml(
-          currentUser.avatar
+          mediaUrl(
+            currentUser.avatar
+          )
         )}"
         alt=""
       >
     `;
+
   } else {
-    avatar.textContent =
-      initials(
-        currentUser.name
-      );
+
+    oldAvatar.outerHTML = `
+      <div
+        id="headerAvatar"
+        class="avatar"
+      >
+        ${escapeHtml(
+          initials(
+            currentUser.name
+          )
+        )}
+      </div>
+    `;
+
   }
 }
 
 
-/* LOGIN */
+/* =========================================================
+   LOGIN
+========================================================= */
 
 document
   .getElementById('loginForm')
   .addEventListener(
     'submit',
     async event => {
+
       event.preventDefault();
 
       const username =
@@ -1191,7 +1500,8 @@ document
           .getElementById(
             'loginUsername'
           )
-          .value;
+          .value
+          .trim();
 
       const password =
         document
@@ -1200,7 +1510,9 @@ document
           )
           .value;
 
+
       try {
+
         const data =
           await api(
             '/api/auth/login',
@@ -1220,47 +1532,61 @@ document
             }
           );
 
+
         currentUser =
           data.user;
 
         showMainApp();
+
         await loadFeed();
 
         showToast(
           'Добро пожаловать в Hutka!'
         );
 
+
       } catch (error) {
+
         showToast(
           error.message
         );
+
       }
+
     }
   );
 
 
-/* REGISTER */
+/* =========================================================
+   REGISTER
+========================================================= */
 
 document
   .getElementById('registerForm')
   .addEventListener(
     'submit',
     async event => {
+
       event.preventDefault();
+
 
       const name =
         document
           .getElementById(
             'registerName'
           )
-          .value;
+          .value
+          .trim();
+
 
       const username =
         document
           .getElementById(
             'registerUsername'
           )
-          .value;
+          .value
+          .trim();
+
 
       const password =
         document
@@ -1269,7 +1595,9 @@ document
           )
           .value;
 
+
       try {
+
         const data =
           await api(
             '/api/auth/register',
@@ -1290,32 +1618,43 @@ document
             }
           );
 
+
         currentUser =
           data.user;
 
         showMainApp();
+
         await loadFeed();
 
         showToast(
           'Аккаунт создан!'
         );
 
+
       } catch (error) {
+
         showToast(
           error.message
         );
+
       }
+
     }
   );
 
 
-/* AUTH SWITCH */
+/* =========================================================
+   AUTH SWITCH
+========================================================= */
 
 document
-  .getElementById('showRegister')
+  .getElementById(
+    'showRegister'
+  )
   .addEventListener(
     'click',
     () => {
+
       document
         .getElementById(
           'loginForm'
@@ -1347,14 +1686,19 @@ document
         .classList.remove(
           'hidden'
         );
+
     }
   );
 
+
 document
-  .getElementById('showLogin')
+  .getElementById(
+    'showLogin'
+  )
   .addEventListener(
     'click',
     () => {
+
       document
         .getElementById(
           'registerForm'
@@ -1386,22 +1730,30 @@ document
         .classList.remove(
           'hidden'
         );
+
     }
   );
 
 
-/* LOGOUT */
+/* =========================================================
+   LOGOUT
+========================================================= */
 
 async function logout() {
+
   try {
+
     await api(
       '/api/auth/logout',
       {
         method: 'POST'
       }
     );
+
   } catch (error) {
+
     console.error(error);
+
   }
 
   currentUser = null;
@@ -1410,13 +1762,16 @@ async function logout() {
 }
 
 
-/* -----------------------------------------------------------------------
+/* =========================================================
    NAVIGATION
------------------------------------------------------------------------- */
+========================================================= */
 
 function setActiveNav(id) {
+
   document
-    .querySelectorAll('.nav button')
+    .querySelectorAll(
+      '.nav button'
+    )
     .forEach(
       button =>
         button.classList.remove(
@@ -1424,17 +1779,23 @@ function setActiveNav(id) {
         )
     );
 
+
   const element =
     document.getElementById(id);
 
+
   if (element) {
+
     element.classList.add(
       'active'
     );
+
   }
 }
 
+
 function showFeed() {
+
   document
     .getElementById(
       'feedView'
@@ -1462,9 +1823,13 @@ function showFeed() {
   setActiveNav(
     'navFeed'
   );
+
+  loadFeed();
 }
 
+
 function showSearch() {
+
   document
     .getElementById(
       'feedView'
@@ -1493,6 +1858,7 @@ function showSearch() {
     'navSearch'
   );
 
+
   document
     .getElementById(
       'searchInput'
@@ -1500,7 +1866,9 @@ function showSearch() {
     .focus();
 }
 
+
 async function openProfile() {
+
   document
     .getElementById(
       'feedView'
@@ -1525,6 +1893,7 @@ async function openProfile() {
       'hidden'
     );
 
+
   document
     .querySelectorAll(
       '.nav button'
@@ -1536,21 +1905,28 @@ async function openProfile() {
         )
     );
 
-  await loadProfile(
-    currentUser.username
-  );
+
+  if (currentUser) {
+
+    await loadProfile(
+      currentUser.username
+    );
+
+  }
 }
 
 
-/* -----------------------------------------------------------------------
+/* =========================================================
    FEED
------------------------------------------------------------------------- */
+========================================================= */
 
 async function loadFeed() {
+
   const feed =
     document.getElementById(
       'feed'
     );
+
 
   feed.innerHTML = `
     <div class="empty">
@@ -1558,20 +1934,25 @@ async function loadFeed() {
     </div>
   `;
 
+
   try {
+
     const data =
       await api(
         '/api/posts'
       );
 
+
     renderPosts(
       data.posts || []
     );
 
+
   } catch (error) {
+
     feed.innerHTML = `
       <div class="card empty">
-        Не удалось загрузить ленту.<br>
+        Не удалось загрузить ленту.<br><br>
         <small>
           ${escapeHtml(
             error.message
@@ -1579,16 +1960,21 @@ async function loadFeed() {
         </small>
       </div>
     `;
+
   }
 }
 
+
 function renderPosts(posts) {
+
   const feed =
     document.getElementById(
       'feed'
     );
 
+
   if (!posts.length) {
+
     feed.innerHTML = `
       <div class="card empty">
         Пока здесь пусто.<br>
@@ -1599,17 +1985,23 @@ function renderPosts(posts) {
     return;
   }
 
+
   feed.innerHTML =
     posts
-      .map(
-        postHtml
-      )
+      .map(postHtml)
       .join('');
 }
 
+
+/* =========================================================
+   POST HTML
+========================================================= */
+
 function postHtml(post) {
+
   const user =
     post.user || {};
+
 
   return `
     <article
@@ -1619,15 +2011,13 @@ function postHtml(post) {
 
       <div class="post-head">
 
-        ${avatarHtml(
-          user
-        )}
+        ${avatarHtml(user)}
 
         <div class="post-user">
 
           <div class="post-name">
             ${escapeHtml(
-              user.name
+              user.name || 'Пользователь'
             )}
           </div>
 
@@ -1635,7 +2025,7 @@ function postHtml(post) {
             ${escapeHtml(
               user.handle ||
               '@' +
-                user.username
+                (user.username || '')
             )}
           </div>
 
@@ -1649,6 +2039,7 @@ function postHtml(post) {
 
       </div>
 
+
       ${
         post.text
           ? `
@@ -1661,13 +2052,14 @@ function postHtml(post) {
           : ''
       }
 
+
       ${
         post.media
           ? `
             <img
               class="post-image"
               src="${escapeHtml(
-                post.media
+                mediaUrl(post.media)
               )}"
               alt=""
               loading="lazy"
@@ -1675,6 +2067,7 @@ function postHtml(post) {
           `
           : ''
       }
+
 
       <div class="post-actions">
 
@@ -1689,28 +2082,39 @@ function postHtml(post) {
           ❤️ ${post.likes || 0}
         </button>
 
+
         <button
-          onclick="showToast('Комментарии скоро будут')"
+          onclick="toggleComments(${post.id})"
         >
           💬 ${post.comments || 0}
         </button>
 
+
         <button
-          onclick="showToast('Репосты скоро будут')"
+          onclick="showToast('Репосты скоро появятся')"
         >
           🔁 ${post.reposts || 0}
         </button>
 
       </div>
 
+
+      <div
+        id="comments-${post.id}"
+        class="comments-box hidden"
+      ></div>
+
     </article>
   `;
 }
 
 
-/* CREATE POST */
+/* =========================================================
+   CREATE POST
+========================================================= */
 
 async function createPost() {
+
   const text =
     document
       .getElementById(
@@ -1719,6 +2123,7 @@ async function createPost() {
       .value
       .trim();
 
+
   const file =
     document
       .getElementById(
@@ -1726,7 +2131,9 @@ async function createPost() {
       )
       .files[0];
 
+
   if (!text && !file) {
+
     showToast(
       'Добавь текст или фото'
     );
@@ -1734,30 +2141,40 @@ async function createPost() {
     return;
   }
 
+
   const button =
     document.getElementById(
       'publishBtn'
     );
 
+
   button.disabled = true;
+
   button.textContent =
     'Публикуем...';
 
+
   try {
+
     const form =
       new FormData();
+
 
     form.append(
       'text',
       text
     );
 
+
     if (file) {
+
       form.append(
         'photo',
         file
       );
+
     }
+
 
     await api(
       '/api/posts',
@@ -1767,11 +2184,13 @@ async function createPost() {
       }
     );
 
+
     document
       .getElementById(
         'postText'
       )
       .value = '';
+
 
     document
       .getElementById(
@@ -1779,36 +2198,48 @@ async function createPost() {
       )
       .value = '';
 
+
     document
       .getElementById(
         'selectedPhoto'
       )
       .textContent = '';
 
+
     await loadFeed();
+
 
     showToast(
       'Пост опубликован!'
     );
 
+
   } catch (error) {
+
     showToast(
       error.message
     );
+
+
   } finally {
+
     button.disabled = false;
+
     button.textContent =
       'Апублікаваць';
+
   }
 }
 
 
-/* LIKE */
+/* =========================================================
+   LIKE
+========================================================= */
 
-async function toggleLike(
-  postId
-) {
+async function toggleLike(postId) {
+
   try {
+
     await api(
       `/api/posts/${postId}/like`,
       {
@@ -1816,21 +2247,373 @@ async function toggleLike(
       }
     );
 
+
     await loadFeed();
 
+
   } catch (error) {
+
     showToast(
       error.message
     );
+
   }
 }
 
 
-/* -----------------------------------------------------------------------
+/* =========================================================
+   COMMENTS
+========================================================= */
+
+async function toggleComments(
+  postId
+) {
+
+  const box =
+    document.getElementById(
+      `comments-${postId}`
+    );
+
+
+  if (!box) {
+    return;
+  }
+
+
+  if (
+    !box.classList.contains(
+      'hidden'
+    )
+  ) {
+
+    box.classList.add(
+      'hidden'
+    );
+
+    return;
+
+  }
+
+
+  box.classList.remove(
+    'hidden'
+  );
+
+
+  await loadComments(
+    postId
+  );
+}
+
+
+async function loadComments(
+  postId
+) {
+
+  const box =
+    document.getElementById(
+      `comments-${postId}`
+    );
+
+
+  if (!box) {
+    return;
+  }
+
+
+  box.innerHTML = `
+    <div class="muted">
+      Загружаем комментарии...
+    </div>
+  `;
+
+
+  try {
+
+    const data =
+      await api(
+        `/api/posts/${postId}/comments`
+      );
+
+
+    const comments =
+      data.comments || [];
+
+
+    let html = '';
+
+
+    if (!comments.length) {
+
+      html += `
+        <div
+          class="muted"
+          style="padding:8px 0"
+        >
+          Пока нет комментариев.
+        </div>
+      `;
+
+    } else {
+
+      html += comments
+        .map(
+          comment => {
+
+            const canDelete =
+              currentUser &&
+              comment.user &&
+              currentUser.id ===
+                comment.user.id;
+
+
+            return `
+              <div class="comment">
+
+                ${avatarHtml(
+                  comment.user,
+                  'avatar'
+                )}
+
+                <div class="comment-content">
+
+                  <div>
+                    <span class="comment-author">
+                      ${escapeHtml(
+                        comment.user?.name ||
+                        'Пользователь'
+                      )}
+                    </span>
+                  </div>
+
+                  <div class="comment-text">
+                    ${escapeHtml(
+                      comment.text
+                    )}
+                  </div>
+
+                  <div class="comment-date">
+                    ${formatDate(
+                      comment.createdAt
+                    )}
+                  </div>
+
+                </div>
+
+                ${
+                  canDelete
+                    ? `
+                      <button
+                        class="comment-delete"
+                        onclick="deleteComment(${comment.id}, ${postId})"
+                      >
+                        Удалить
+                      </button>
+                    `
+                    : ''
+                }
+
+              </div>
+            `;
+          }
+        )
+        .join('');
+
+    }
+
+
+    html += `
+      <form
+        class="comment-form"
+        onsubmit="submitComment(event, ${postId})"
+      >
+
+        <input
+          id="comment-input-${postId}"
+          maxlength="500"
+          placeholder="Написать комментарий..."
+          required
+        >
+
+        <button type="submit">
+          Отправить
+        </button>
+
+      </form>
+    `;
+
+
+    box.innerHTML =
+      html;
+
+
+  } catch (error) {
+
+    box.innerHTML = `
+      <div class="muted">
+        Не удалось загрузить комментарии.<br>
+        ${escapeHtml(
+          error.message
+        )}
+      </div>
+    `;
+
+  }
+}
+
+
+async function submitComment(
+  event,
+  postId
+) {
+
+  event.preventDefault();
+
+
+  const input =
+    document.getElementById(
+      `comment-input-${postId}`
+    );
+
+
+  if (!input) {
+    return;
+  }
+
+
+  const text =
+    input.value.trim();
+
+
+  if (!text) {
+    return;
+  }
+
+
+  input.disabled = true;
+
+
+  try {
+
+    await api(
+      `/api/posts/${postId}/comments`,
+      {
+        method: 'POST',
+
+        headers: {
+          'Content-Type':
+            'application/json'
+        },
+
+        body:
+          JSON.stringify({
+            text
+          })
+      }
+    );
+
+
+    await loadComments(
+      postId
+    );
+
+
+    await loadFeed();
+
+
+    const box =
+      document.getElementById(
+        `comments-${postId}`
+      );
+
+
+    if (box) {
+
+      box.classList.remove(
+        'hidden'
+      );
+
+      await loadComments(
+        postId
+      );
+
+    }
+
+
+  } catch (error) {
+
+    showToast(
+      error.message
+    );
+
+    input.disabled = false;
+
+  }
+}
+
+
+async function deleteComment(
+  commentId,
+  postId
+) {
+
+  if (
+    !confirm(
+      'Удалить комментарий?'
+    )
+  ) {
+    return;
+  }
+
+
+  try {
+
+    await api(
+      `/api/comments/${commentId}`,
+      {
+        method: 'DELETE'
+      }
+    );
+
+
+    await loadFeed();
+
+
+    const box =
+      document.getElementById(
+        `comments-${postId}`
+      );
+
+
+    if (box) {
+
+      box.classList.remove(
+        'hidden'
+      );
+
+      await loadComments(
+        postId
+      );
+
+    }
+
+
+  } catch (error) {
+
+    showToast(
+      error.message
+    );
+
+  }
+}
+
+
+/* =========================================================
    SEARCH
------------------------------------------------------------------------- */
+========================================================= */
 
 let searchTimer = null;
+
 
 document
   .getElementById(
@@ -1839,32 +2622,43 @@ document
   .addEventListener(
     'input',
     event => {
+
       clearTimeout(
         searchTimer
       );
 
+
       const q =
-        event.target.value
-          .trim();
+        event.target.value.trim();
+
 
       searchTimer =
         setTimeout(
           () => search(q),
           300
         );
+
     }
   );
 
+
 async function search(q) {
+
   const results =
     document.getElementById(
       'searchResults'
     );
 
+
   if (!q) {
-    results.innerHTML = '';
+
+    results.innerHTML =
+      '';
+
     return;
+
   }
+
 
   results.innerHTML = `
     <div class="card empty">
@@ -1872,33 +2666,41 @@ async function search(q) {
     </div>
   `;
 
+
   try {
+
     const data =
       await api(
         '/api/search?q=' +
         encodeURIComponent(q)
       );
 
+
     let html = '';
+
 
     if (
       data.users &&
       data.users.length
     ) {
+
       html += `
         <div class="card">
+
           <strong>
             Люди
           </strong>
       `;
 
+
       data.users.forEach(
         user => {
+
           html += `
             <div
               class="result"
               style="cursor:pointer"
-              onclick="loadProfile('${escapeHtml(
+              onclick="loadProfileByUsername('${escapeJs(
                 user.username
               )}')"
             >
@@ -1910,6 +2712,7 @@ async function search(q) {
                 )}
 
                 <div>
+
                   <strong>
                     ${escapeHtml(
                       user.name
@@ -1921,76 +2724,131 @@ async function search(q) {
                       user.handle
                     )}
                   </div>
+
                 </div>
 
               </div>
 
             </div>
           `;
+
         }
       );
+
 
       html += `
         </div>
       `;
+
     }
+
 
     if (
       data.posts &&
       data.posts.length
     ) {
+
       html += `
         <div>
           ${data.posts
-            .map(
-              postHtml
-            )
+            .map(postHtml)
             .join('')}
         </div>
       `;
+
     }
 
+
     if (!html) {
+
       html = `
         <div class="card empty">
           Ничего не найдено.
         </div>
       `;
+
     }
+
 
     results.innerHTML =
       html;
 
+
   } catch (error) {
+
     results.innerHTML = `
       <div class="card empty">
-        Ошибка поиска:<br>
+        Ошибка поиска:<br><br>
         ${escapeHtml(
           error.message
         )}
       </div>
     `;
+
   }
 }
 
 
-/* -----------------------------------------------------------------------
+function escapeJs(value) {
+
+  return String(
+    value ?? ''
+  )
+    .replaceAll(
+      '\\',
+      '\\\\'
+    )
+    .replaceAll(
+      "'",
+      "\\'"
+    )
+    .replaceAll(
+      '"',
+      '\\"'
+    )
+    .replaceAll(
+      '\n',
+      '\\n'
+    )
+    .replaceAll(
+      '\r',
+      '\\r'
+    );
+}
+
+
+async function loadProfileByUsername(
+  username
+) {
+
+  await openProfile();
+
+  await loadProfile(
+    username
+  );
+}
+
+
+/* =========================================================
    PROFILE
------------------------------------------------------------------------- */
+========================================================= */
 
 async function loadProfile(
   username
 ) {
+
   const profile =
     document.getElementById(
       'profileContent'
     );
+
 
   profile.innerHTML = `
     <div class="card empty">
       Загружаем профиль...
     </div>
   `;
+
 
   document
     .getElementById(
@@ -2000,6 +2858,7 @@ async function loadProfile(
       'hidden'
     );
 
+
   document
     .getElementById(
       'searchView'
@@ -2007,6 +2866,7 @@ async function loadProfile(
     .classList.add(
       'hidden'
     );
+
 
   document
     .getElementById(
@@ -2016,7 +2876,9 @@ async function loadProfile(
       'hidden'
     );
 
+
   try {
+
     const data =
       await api(
         `/api/users/${encodeURIComponent(
@@ -2024,13 +2886,16 @@ async function loadProfile(
         )}`
       );
 
+
     const user =
       data.user;
+
 
     const isMe =
       currentUser &&
       currentUser.username ===
         user.username;
+
 
     profile.innerHTML = `
 
@@ -2061,6 +2926,7 @@ async function loadProfile(
 
         </div>
 
+
         ${
           user.bio
             ? `
@@ -2075,36 +2941,49 @@ async function loadProfile(
             : ''
         }
 
+
         <div class="profile-stats">
 
           <div class="stat">
+
             <strong>
               ${user.posts || 0}
             </strong>
+
             <span>
               постов
             </span>
+
           </div>
 
+
           <div class="stat">
+
             <strong>
               ${user.followers || 0}
             </strong>
+
             <span>
               подписчиков
             </span>
+
           </div>
 
+
           <div class="stat">
+
             <strong>
               ${user.following || 0}
             </strong>
+
             <span>
               подписок
             </span>
+
           </div>
 
         </div>
+
 
         ${
           isMe
@@ -2124,7 +3003,9 @@ async function loadProfile(
 
     `;
 
+
   } catch (error) {
+
     profile.innerHTML = `
       <div class="card empty">
         ${escapeHtml(
@@ -2132,14 +3013,21 @@ async function loadProfile(
         )}
       </div>
     `;
+
   }
 }
 
 
-/* EDIT PROFILE */
+/* =========================================================
+   EDIT PROFILE
+========================================================= */
 
 function openProfileModal() {
-  if (!currentUser) return;
+
+  if (!currentUser) {
+    return;
+  }
+
 
   document
     .getElementById(
@@ -2148,12 +3036,14 @@ function openProfileModal() {
     .value =
       currentUser.name || '';
 
+
   document
     .getElementById(
       'profileUsername'
     )
     .value =
       currentUser.username || '';
+
 
   document
     .getElementById(
@@ -2162,11 +3052,13 @@ function openProfileModal() {
     .value =
       currentUser.bio || '';
 
+
   document
     .getElementById(
       'profileAvatar'
     )
     .value = '';
+
 
   document
     .getElementById(
@@ -2177,7 +3069,9 @@ function openProfileModal() {
     );
 }
 
+
 function closeProfileModal() {
+
   document
     .getElementById(
       'profileModal'
@@ -2187,6 +3081,7 @@ function closeProfileModal() {
     );
 }
 
+
 document
   .getElementById(
     'profileForm'
@@ -2194,11 +3089,15 @@ document
   .addEventListener(
     'submit',
     async event => {
+
       event.preventDefault();
 
+
       try {
+
         const form =
           new FormData();
+
 
         form.append(
           'name',
@@ -2209,6 +3108,7 @@ document
             .value
         );
 
+
         form.append(
           'username',
           document
@@ -2217,6 +3117,7 @@ document
             )
             .value
         );
+
 
         form.append(
           'bio',
@@ -2227,6 +3128,7 @@ document
             .value
         );
 
+
         const file =
           document
             .getElementById(
@@ -2234,12 +3136,16 @@ document
             )
             .files[0];
 
+
         if (file) {
+
           form.append(
             'avatar',
             file
           );
+
         }
+
 
         const data =
           await api(
@@ -2250,31 +3156,41 @@ document
             }
           );
 
+
         currentUser =
           data.user;
+
 
         updateHeader();
 
         closeProfileModal();
 
+
         await loadProfile(
           currentUser.username
         );
+
 
         showToast(
           'Профиль сохранён'
         );
 
+
       } catch (error) {
+
         showToast(
           error.message
         );
+
       }
+
     }
   );
 
 
-/* PHOTO NAME */
+/* =========================================================
+   PHOTO NAME
+========================================================= */
 
 document
   .getElementById(
@@ -2283,8 +3199,10 @@ document
   .addEventListener(
     'change',
     event => {
+
       const file =
         event.target.files[0];
+
 
       document
         .getElementById(
@@ -2294,17 +3212,43 @@ document
           file
             ? `Выбрано: ${file.name}`
             : '';
+
     }
   );
 
 
-/* -----------------------------------------------------------------------
+/* =========================================================
+   CLOSE MODAL BY BACKGROUND
+========================================================= */
+
+document
+  .getElementById(
+    'profileModal'
+  )
+  .addEventListener(
+    'click',
+    event => {
+
+      if (
+        event.target.id ===
+        'profileModal'
+      ) {
+
+        closeProfileModal();
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
    START
------------------------------------------------------------------------- */
+========================================================= */
 
 checkAuth();
 
 </script>
 
 </body>
-        </html>
+  </html>
