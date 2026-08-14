@@ -43,8 +43,15 @@ app.use((req, res, next) => {
   const origin = req.headers.origin;
 
   if (origin && allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header(
+      'Access-Control-Allow-Origin',
+      origin
+    );
+
+    res.header(
+      'Access-Control-Allow-Credentials',
+      'true'
+    );
   }
 
   res.header(
@@ -92,9 +99,11 @@ function emptyDB() {
     users: [],
     posts: [],
     likes: [],
-    comments: []
+    comments: [],
+    reposts: []
   };
 }
+
 
 function loadDB() {
   if (!fs.existsSync(DB_FILE)) {
@@ -103,27 +112,41 @@ function loadDB() {
 
   try {
     const data = JSON.parse(
-      fs.readFileSync(DB_FILE, 'utf8')
+      fs.readFileSync(
+        DB_FILE,
+        'utf8'
+      )
     );
 
     return {
-      users: Array.isArray(data.users)
-        ? data.users
-        : [],
+      users:
+        Array.isArray(data.users)
+          ? data.users
+          : [],
 
-      posts: Array.isArray(data.posts)
-        ? data.posts
-        : [],
+      posts:
+        Array.isArray(data.posts)
+          ? data.posts
+          : [],
 
-      likes: Array.isArray(data.likes)
-        ? data.likes
-        : [],
+      likes:
+        Array.isArray(data.likes)
+          ? data.likes
+          : [],
 
-      comments: Array.isArray(data.comments)
-        ? data.comments
-        : []
+      comments:
+        Array.isArray(data.comments)
+          ? data.comments
+          : [],
+
+      reposts:
+        Array.isArray(data.reposts)
+          ? data.reposts
+          : []
     };
+
   } catch (error) {
+
     console.error(
       'Ошибка чтения базы:',
       error
@@ -133,11 +156,23 @@ function loadDB() {
   }
 }
 
+
 let db = loadDB();
+
+
+/*
+ * На случай, если старая база была создана
+ * до появления репостов.
+ */
+if (!Array.isArray(db.reposts)) {
+  db.reposts = [];
+  saveDB();
+}
 
 
 function saveDB() {
   try {
+
     const tmp =
       DB_FILE + '.tmp';
 
@@ -155,7 +190,9 @@ function saveDB() {
       tmp,
       DB_FILE
     );
+
   } catch (error) {
+
     console.error(
       'Ошибка сохранения базы:',
       error
@@ -183,6 +220,7 @@ function nextId(items) {
 ========================================================= */
 
 if (!db.users.length) {
+
   const password =
     bcrypt.hashSync(
       'hutka123',
@@ -190,63 +228,103 @@ if (!db.users.length) {
     );
 
   db.users = [
+
     {
       id: 1,
+
       name: 'Аня Н.',
+
       username: 'anya',
-      password_hash: password,
-      bio: 'Гуляю, думаю, фатаграфую.',
+
+      password_hash:
+        password,
+
+      bio:
+        'Гуляю, думаю, фатаграфую.',
+
       avatar: null,
+
       created_at:
         new Date().toISOString()
     },
 
     {
       id: 2,
+
       name: 'Дзіма К.',
+
       username: 'dzima',
-      password_hash: password,
-      bio: 'Музыка, Мінск і добрыя людзі.',
+
+      password_hash:
+        password,
+
+      bio:
+        'Музыка, Мінск і добрыя людзі.',
+
       avatar: null,
+
       created_at:
         new Date().toISOString()
     },
 
     {
       id: 3,
+
       name: 'Вольга',
+
       username: 'volha',
-      password_hash: password,
-      bio: 'Маленькія рэчы маюць значэнне.',
+
+      password_hash:
+        password,
+
+      bio:
+        'Маленькія рэчы маюць значэнне.',
+
       avatar: null,
+
       created_at:
         new Date().toISOString()
     }
   ];
 
+
   db.posts = [
+
     {
       id: 1,
+
       user_id: 1,
-      text: 'Добры вечар, Hutka! 🇧🇾',
+
+      text:
+        'Добры вечар, Hutka! 🇧🇾',
+
       media: null,
+
       created_at:
         new Date().toISOString()
     },
 
     {
       id: 2,
+
       user_id: 2,
-      text: 'Мінск сёння асабліва прыгожы.',
+
+      text:
+        'Мінск сёння асабліва прыгожы.',
+
       media: null,
+
       created_at:
         new Date().toISOString()
     }
   ];
 
+
   db.likes = [];
 
   db.comments = [];
+
+  db.reposts = [];
 
   saveDB();
 }
@@ -259,14 +337,23 @@ if (!db.users.length) {
 const storage =
   multer.diskStorage({
 
-    destination: (_, __, callback) => {
+    destination: (
+      _,
+      __,
+      callback
+    ) => {
+
       callback(
         null,
         UPLOAD_DIR
       );
     },
 
-    filename: (_, file, callback) => {
+    filename: (
+      _,
+      file,
+      callback
+    ) => {
 
       const ext =
         path
@@ -316,11 +403,14 @@ const upload =
           file.mimetype
         )
       ) {
+
         callback(
           null,
           true
         );
+
       } else {
+
         callback(
           new Error(
             'Разрешены только изображения JPG, PNG, WEBP или GIF'
@@ -336,11 +426,14 @@ const upload =
 ========================================================= */
 
 function sign(userId) {
+
   return jwt.sign(
     {
       id: userId
     },
+
     JWT_SECRET,
+
     {
       expiresIn: '30d'
     }
@@ -374,6 +467,7 @@ function userFromReq(req) {
     );
 
   } catch {
+
     return null;
   }
 }
@@ -386,14 +480,22 @@ function safeUser(user) {
   }
 
   return {
-    id: user.id,
-    name: user.name,
+
+    id:
+      user.id,
+
+    name:
+      user.name,
+
     handle:
       '@' + user.username,
+
     username:
       user.username,
+
     bio:
       user.bio || '',
+
     avatar:
       user.avatar || null
   };
@@ -410,6 +512,7 @@ function requireAuth(
     userFromReq(req);
 
   if (!user) {
+
     return res
       .status(401)
       .json({
@@ -435,12 +538,13 @@ function setSessionCookie(
 
   res.cookie(
     'hutka_session',
+
     sign(userId),
+
     {
       httpOnly: true,
 
-      sameSite:
-        'none',
+      sameSite: 'none',
 
       secure: true,
 
@@ -473,12 +577,14 @@ function postShape(
         post.user_id
     );
 
+
   const likes =
     db.likes.filter(
       like =>
         like.post_id ===
         post.id
     ).length;
+
 
   const liked =
     !!db.likes.find(
@@ -489,6 +595,7 @@ function postShape(
           viewerId
     );
 
+
   const comments =
     db.comments.filter(
       comment =>
@@ -496,9 +603,29 @@ function postShape(
         post.id
     ).length;
 
+
+  const reposts =
+    db.reposts.filter(
+      repost =>
+        repost.post_id ===
+        post.id
+    ).length;
+
+
+  const reposted =
+    !!db.reposts.find(
+      repost =>
+        repost.post_id ===
+          post.id &&
+        repost.user_id ===
+          viewerId
+    );
+
+
   return {
 
-    id: post.id,
+    id:
+      post.id,
 
     text:
       post.text || '',
@@ -515,7 +642,9 @@ function postShape(
 
     comments,
 
-    reposts: 0,
+    reposts,
+
+    reposted,
 
     user:
       safeUser(user)
@@ -532,8 +661,12 @@ app.get(
   (req, res) => {
 
     res.json({
+
       ok: true,
-      service: 'Hutka',
+
+      service:
+        'Hutka',
+
       time:
         new Date().toISOString()
     });
@@ -553,6 +686,7 @@ app.get(
       userFromReq(req);
 
     res.json({
+
       user:
         user
           ? safeUser(user)
@@ -568,7 +702,11 @@ app.get(
 
 app.post(
   '/api/auth/register',
-  async (req, res) => {
+
+  async (
+    req,
+    res
+  ) => {
 
     try {
 
@@ -576,6 +714,7 @@ app.post(
         String(
           req.body.name || ''
         ).trim();
+
 
       const username =
         String(
@@ -588,15 +727,18 @@ app.post(
           )
           .toLowerCase();
 
+
       const password =
         String(
           req.body.password || ''
         );
 
+
       if (
         name.length < 2 ||
         name.length > 50
       ) {
+
         return res
           .status(400)
           .json({
@@ -605,11 +747,13 @@ app.post(
           });
       }
 
+
       if (
         !/^[a-z0-9_]{3,24}$/.test(
           username
         )
       ) {
+
         return res
           .status(400)
           .json({
@@ -618,9 +762,11 @@ app.post(
           });
       }
 
+
       if (
         password.length < 6
       ) {
+
         return res
           .status(400)
           .json({
@@ -629,6 +775,7 @@ app.post(
           });
       }
 
+
       if (
         db.users.some(
           user =>
@@ -636,6 +783,7 @@ app.post(
             username
         )
       ) {
+
         return res
           .status(409)
           .json({
@@ -643,6 +791,7 @@ app.post(
               'Этот username уже занят'
           });
       }
+
 
       const user = {
 
@@ -667,6 +816,7 @@ app.post(
           new Date().toISOString()
       };
 
+
       db.users.push(user);
 
       saveDB();
@@ -676,10 +826,13 @@ app.post(
         user.id
       );
 
+
       res.json({
+
         user:
           safeUser(user)
       });
+
 
     } catch (error) {
 
@@ -702,7 +855,11 @@ app.post(
 
 app.post(
   '/api/auth/login',
-  async (req, res) => {
+
+  async (
+    req,
+    res
+  ) => {
 
     try {
 
@@ -717,10 +874,12 @@ app.post(
           )
           .toLowerCase();
 
+
       const password =
         String(
           req.body.password || ''
         );
+
 
       const user =
         db.users.find(
@@ -728,6 +887,7 @@ app.post(
             u.username ===
             username
         );
+
 
       if (
         !user ||
@@ -747,15 +907,19 @@ app.post(
           });
       }
 
+
       setSessionCookie(
         res,
         user.id
       );
 
+
       res.json({
+
         user:
           safeUser(user)
       });
+
 
     } catch (error) {
 
@@ -778,17 +942,23 @@ app.post(
 
 app.post(
   '/api/auth/logout',
+
   (req, res) => {
 
     res.clearCookie(
       'hutka_session',
+
       {
         httpOnly: true,
+
         sameSite: 'none',
+
         secure: true,
+
         path: '/'
       }
     );
+
 
     res.json({
       ok: true
@@ -803,10 +973,12 @@ app.post(
 
 app.get(
   '/api/posts',
+
   (req, res) => {
 
     const viewer =
       userFromReq(req);
+
 
     const posts =
       [...db.posts]
@@ -814,9 +986,14 @@ app.get(
           (a, b) =>
             b.id - a.id
         )
-        .slice(0, 100);
+        .slice(
+          0,
+          100
+        );
+
 
     res.json({
+
       posts:
         posts.map(
           post =>
@@ -830,12 +1007,17 @@ app.get(
 );
 
 
-/* CREATE POST */
+/* =========================================================
+   CREATE POST
+========================================================= */
 
 app.post(
   '/api/posts',
+
   requireAuth,
+
   upload.single('photo'),
+
   (req, res) => {
 
     try {
@@ -845,10 +1027,12 @@ app.post(
           req.body.text || ''
         ).trim();
 
+
       if (
         !text &&
         !req.file
       ) {
+
         return res
           .status(400)
           .json({
@@ -857,9 +1041,11 @@ app.post(
           });
       }
 
+
       if (
         text.length > 280
       ) {
+
         return res
           .status(400)
           .json({
@@ -867,6 +1053,7 @@ app.post(
               'Максимум 280 символов'
           });
       }
+
 
       const post = {
 
@@ -887,17 +1074,21 @@ app.post(
           new Date().toISOString()
       };
 
+
       db.posts.push(post);
 
       saveDB();
 
+
       res.json({
+
         post:
           postShape(
             post,
             req.user.id
           )
       });
+
 
     } catch (error) {
 
@@ -920,13 +1111,16 @@ app.post(
 
 app.post(
   '/api/posts/:id/like',
+
   requireAuth,
+
   (req, res) => {
 
     const postId =
       Number(
         req.params.id
       );
+
 
     if (
       !db.posts.some(
@@ -935,6 +1129,7 @@ app.post(
           postId
       )
     ) {
+
       return res
         .status(404)
         .json({
@@ -942,6 +1137,7 @@ app.post(
             'Пост не найден'
         });
     }
+
 
     const index =
       db.likes.findIndex(
@@ -952,7 +1148,9 @@ app.post(
             postId
       );
 
+
     let liked;
+
 
     if (index >= 0) {
 
@@ -966,6 +1164,7 @@ app.post(
     } else {
 
       db.likes.push({
+
         user_id:
           req.user.id,
 
@@ -976,9 +1175,12 @@ app.post(
       liked = true;
     }
 
+
     saveDB();
 
+
     res.json({
+
       liked,
 
       likes:
@@ -1001,12 +1203,14 @@ app.post(
 
 app.get(
   '/api/posts/:id/comments',
+
   (req, res) => {
 
     const postId =
       Number(
         req.params.id
       );
+
 
     const post =
       db.posts.find(
@@ -1015,7 +1219,9 @@ app.get(
           postId
       );
 
+
     if (!post) {
+
       return res
         .status(404)
         .json({
@@ -1023,6 +1229,7 @@ app.get(
             'Пост не найден'
         });
     }
+
 
     const comments =
       db.comments
@@ -1045,6 +1252,7 @@ app.get(
                   comment.user_id
               );
 
+
             return {
 
               id:
@@ -1062,6 +1270,7 @@ app.get(
           }
         );
 
+
     res.json({
       comments
     });
@@ -1073,13 +1282,16 @@ app.get(
 
 app.post(
   '/api/posts/:id/comments',
+
   requireAuth,
+
   (req, res) => {
 
     const postId =
       Number(
         req.params.id
       );
+
 
     const post =
       db.posts.find(
@@ -1088,7 +1300,9 @@ app.post(
           postId
       );
 
+
     if (!post) {
+
       return res
         .status(404)
         .json({
@@ -1097,12 +1311,15 @@ app.post(
         });
     }
 
+
     const text =
       String(
         req.body.text || ''
       ).trim();
 
+
     if (!text) {
+
       return res
         .status(400)
         .json({
@@ -1111,9 +1328,11 @@ app.post(
         });
     }
 
+
     if (
       text.length > 500
     ) {
+
       return res
         .status(400)
         .json({
@@ -1121,6 +1340,7 @@ app.post(
             'Комментарий максимум 500 символов'
         });
     }
+
 
     const comment = {
 
@@ -1141,13 +1361,16 @@ app.post(
         new Date().toISOString()
     };
 
+
     db.comments.push(
       comment
     );
 
     saveDB();
 
+
     res.json({
+
       comment: {
 
         id:
@@ -1173,13 +1396,16 @@ app.post(
 
 app.delete(
   '/api/comments/:id',
+
   requireAuth,
+
   (req, res) => {
 
     const commentId =
       Number(
         req.params.id
       );
+
 
     const index =
       db.comments.findIndex(
@@ -1190,7 +1416,9 @@ app.delete(
             req.user.id
       );
 
+
     if (index < 0) {
+
       return res
         .status(404)
         .json({
@@ -1199,15 +1427,185 @@ app.delete(
         });
     }
 
+
     db.comments.splice(
       index,
       1
     );
 
+
     saveDB();
+
 
     res.json({
       ok: true
+    });
+  }
+);
+
+
+/* =========================================================
+   REPOSTS
+========================================================= */
+
+
+/* CREATE REPOST */
+
+app.post(
+  '/api/posts/:id/repost',
+
+  requireAuth,
+
+  (req, res) => {
+
+    const postId =
+      Number(
+        req.params.id
+      );
+
+
+    const post =
+      db.posts.find(
+        p =>
+          p.id ===
+          postId
+      );
+
+
+    if (!post) {
+
+      return res
+        .status(404)
+        .json({
+          error:
+            'Пост не найден'
+        });
+    }
+
+
+    const existing =
+      db.reposts.find(
+        repost =>
+          repost.post_id ===
+            postId &&
+          repost.user_id ===
+            req.user.id
+      );
+
+
+    /*
+     * Если пользователь уже репостил,
+     * второй раз ничего не создаём.
+     */
+    if (existing) {
+
+      return res.json({
+
+        ok: true,
+
+        reposted: true,
+
+        reposts:
+          db.reposts.filter(
+            repost =>
+              repost.post_id ===
+              postId
+          ).length
+      });
+    }
+
+
+    const repost = {
+
+      id:
+        nextId(
+          db.reposts
+        ),
+
+      post_id:
+        postId,
+
+      user_id:
+        req.user.id,
+
+      created_at:
+        new Date().toISOString()
+    };
+
+
+    db.reposts.push(
+      repost
+    );
+
+
+    saveDB();
+
+
+    res.json({
+
+      ok: true,
+
+      reposted: true,
+
+      reposts:
+        db.reposts.filter(
+          item =>
+            item.post_id ===
+            postId
+        ).length
+    });
+  }
+);
+
+
+/* REMOVE REPOST */
+
+app.delete(
+  '/api/posts/:id/repost',
+
+  requireAuth,
+
+  (req, res) => {
+
+    const postId =
+      Number(
+        req.params.id
+      );
+
+
+    const index =
+      db.reposts.findIndex(
+        repost =>
+          repost.post_id ===
+            postId &&
+          repost.user_id ===
+            req.user.id
+      );
+
+
+    if (index >= 0) {
+
+      db.reposts.splice(
+        index,
+        1
+      );
+
+      saveDB();
+    }
+
+
+    res.json({
+
+      ok: true,
+
+      reposted: false,
+
+      reposts:
+        db.reposts.filter(
+          repost =>
+            repost.post_id ===
+            postId
+        ).length
     });
   }
 );
@@ -1219,6 +1617,7 @@ app.delete(
 
 app.get(
   '/api/search',
+
   (req, res) => {
 
     const raw =
@@ -1226,15 +1625,21 @@ app.get(
         req.query.q || ''
       ).trim();
 
+
     if (!raw) {
+
       return res.json({
+
         users: [],
+
         posts: []
       });
     }
 
+
     const q =
       raw.toLowerCase();
+
 
     const users =
       db.users
@@ -1248,43 +1653,57 @@ app.get(
               .toLowerCase()
               .includes(q)
         )
-        .slice(0, 20)
-        .map(safeUser);
+        .slice(
+          0,
+          20
+        )
+        .map(
+          safeUser
+        );
+
 
     const viewer =
       userFromReq(req);
 
+
     const posts =
       db.posts
-        .filter(post => {
+        .filter(
+          post => {
 
-          const user =
-            db.users.find(
-              u =>
-                u.id ===
-                post.user_id
+            const user =
+              db.users.find(
+                u =>
+                  u.id ===
+                  post.user_id
+              );
+
+
+            return (
+
+              post.text
+                .toLowerCase()
+                .includes(q) ||
+
+              user.name
+                .toLowerCase()
+                .includes(q) ||
+
+              user.username
+                .toLowerCase()
+                .includes(q)
             );
-
-          return (
-
-            post.text
-              .toLowerCase()
-              .includes(q) ||
-
-            user.name
-              .toLowerCase()
-              .includes(q) ||
-
-            user.username
-              .toLowerCase()
-              .includes(q)
-          );
-        })
+          }
+        )
         .sort(
           (a, b) =>
             b.id - a.id
         )
-        .slice(0, 50);
+        .slice(
+          0,
+          50
+        );
+
 
     res.json({
 
@@ -1309,8 +1728,11 @@ app.get(
 
 app.put(
   '/api/me',
+
   requireAuth,
+
   upload.single('avatar'),
+
   (req, res) => {
 
     const name =
@@ -1318,6 +1740,7 @@ app.put(
         req.body.name ||
           req.user.name
       ).trim();
+
 
     const username =
       String(
@@ -1331,6 +1754,7 @@ app.put(
         )
         .toLowerCase();
 
+
     const bio =
       String(
         req.body.bio ||
@@ -1338,10 +1762,12 @@ app.put(
           ''
       ).trim();
 
+
     if (
       name.length < 2 ||
       name.length > 50
     ) {
+
       return res
         .status(400)
         .json({
@@ -1350,11 +1776,13 @@ app.put(
         });
     }
 
+
     if (
       !/^[a-z0-9_]{3,24}$/.test(
         username
       )
     ) {
+
       return res
         .status(400)
         .json({
@@ -1362,6 +1790,7 @@ app.put(
             'Некорректный username'
         });
     }
+
 
     if (
       db.users.some(
@@ -1372,6 +1801,7 @@ app.put(
             req.user.id
       )
     ) {
+
       return res
         .status(409)
         .json({
@@ -1379,6 +1809,7 @@ app.put(
             'Этот username уже занят'
         });
     }
+
 
     req.user.name =
       name;
@@ -1389,15 +1820,19 @@ app.put(
     req.user.bio =
       bio;
 
+
     if (req.file) {
 
       req.user.avatar =
         `/uploads/${req.file.filename}`;
     }
 
+
     saveDB();
 
+
     res.json({
+
       user:
         safeUser(
           req.user
@@ -1413,12 +1848,17 @@ app.put(
 
 app.get(
   '/api/users/:username',
+
   (req, res) => {
 
     const username =
       req.params.username
-        .replace(/^@/, '')
+        .replace(
+          /^@/,
+          ''
+        )
         .toLowerCase();
+
 
     const user =
       db.users.find(
@@ -1427,7 +1867,9 @@ app.get(
           username
       );
 
+
     if (!user) {
+
       return res
         .status(404)
         .json({
@@ -1436,12 +1878,14 @@ app.get(
         });
     }
 
+
     const posts =
       db.posts.filter(
         post =>
           post.user_id ===
           user.id
       ).length;
+
 
     res.json({
 
@@ -1470,12 +1914,13 @@ app.use(
 
 
 /*
-   Если открыть Render напрямую,
-   отдаём index.html.
-*/
+ * Если открыть Render напрямую,
+ * отдаём index.html.
+ */
 
 app.get(
   '*',
+
   (req, res) => {
 
     const indexPath =
@@ -1484,15 +1929,18 @@ app.get(
         'index.html'
       );
 
+
     if (
       fs.existsSync(
         indexPath
       )
     ) {
+
       return res.sendFile(
         indexPath
       );
     }
+
 
     res
       .status(404)
@@ -1520,22 +1968,27 @@ app.use(
       error
     );
 
+
     if (
       error instanceof
       multer.MulterError
     ) {
+
       return res
         .status(400)
         .json({
+
           error:
             'Ошибка загрузки файла: ' +
             error.message
         });
     }
 
+
     res
       .status(500)
       .json({
+
         error:
           error.message ||
           'Внутренняя ошибка сервера'
@@ -1550,12 +2003,13 @@ app.use(
 
 app.listen(
   PORT,
+
   '0.0.0.0',
+
   () => {
 
     console.log(
       `Hutka online listening on ${PORT}`
     );
-
   }
 );
