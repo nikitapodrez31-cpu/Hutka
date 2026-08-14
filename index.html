@@ -3,41 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101820">
+<meta name="theme-color" content="#8b1e2d">
 <title>Hutka</title>
 
 <style>
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 :root {
-  --bg: #f5f1e8;
+  --bg: #f4efe5;
   --card: #fffdf8;
-  --text: #182027;
-  --muted: #70777c;
-  --border: #ddd6c9;
-  --accent: #b3262e;
-  --accent-dark: #8e1c23;
-  --green: #2e7654;
-  --shadow: 0 10px 35px rgba(0,0,0,.10);
+  --text: #202326;
+  --muted: #73777b;
+  --border: #ded7ca;
+  --accent: #a51f2d;
+  --accent-hover: #861823;
+  --green: #367957;
+  --danger: #c62828;
+  --shadow: 0 10px 35px rgba(0,0,0,.09);
 }
 
 body.dark {
   --bg: #101820;
-  --card: #18232c;
-  --text: #f2f3f4;
-  --muted: #aab2b8;
-  --border: #34414b;
-  --accent: #df4b54;
-  --accent-dark: #bd343d;
-  --green: #4e9b75;
+  --card: #19242c;
+  --text: #f4f5f5;
+  --muted: #a9b1b6;
+  --border: #35434c;
+  --accent: #d84654;
+  --accent-hover: #bd3542;
+  --green: #55a379;
   --shadow: 0 10px 35px rgba(0,0,0,.35);
 }
 
+html {
+  min-height: 100%;
+}
+
 body {
+  margin: 0;
   min-height: 100vh;
   font-family:
     system-ui,
@@ -46,124 +50,149 @@ body {
     "Segoe UI",
     sans-serif;
   background:
-    radial-gradient(circle at 20% 10%, rgba(179,38,46,.06), transparent 30%),
-    radial-gradient(circle at 80% 90%, rgba(46,118,84,.06), transparent 30%),
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(165,31,45,.07),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(54,121,87,.07),
+      transparent 30%
+    ),
     var(--bg);
   color: var(--text);
-  transition: .25s ease;
+  transition: background .25s, color .25s;
 }
 
-/* Белорусский орнамент */
+/* =========================================================
+   ОРНАМЕНТ
+========================================================= */
+
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: .055;
+  z-index: 0;
+  opacity: .045;
+
   background-image:
     linear-gradient(45deg, var(--accent) 25%, transparent 25%),
     linear-gradient(-45deg, var(--accent) 25%, transparent 25%),
     linear-gradient(45deg, transparent 75%, var(--green) 75%),
     linear-gradient(-45deg, transparent 75%, var(--green) 75%);
-  background-size: 42px 42px;
+
+  background-size: 44px 44px;
+
   background-position:
     0 0,
-    0 21px,
-    21px -21px,
-    -21px 0;
-  z-index: 0;
+    0 22px,
+    22px -22px,
+    -22px 0;
 }
 
-/* Аист */
+/* =========================================================
+   АИСТ
+========================================================= */
+
 .stork {
   position: fixed;
   right: 25px;
   top: 80px;
-  width: 110px;
-  height: 150px;
+  width: 120px;
+  height: 160px;
+  opacity: .12;
   pointer-events: none;
   z-index: 0;
-  opacity: .13;
-}
-
-.stork-body {
-  position: absolute;
-  width: 55px;
-  height: 85px;
-  border-radius: 50% 50% 45% 45%;
-  background: white;
-  border: 3px solid var(--text);
-  transform: rotate(-8deg);
-  left: 30px;
-  top: 38px;
 }
 
 .stork-head {
   position: absolute;
-  width: 42px;
-  height: 42px;
+  left: 30px;
+  top: 8px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   background: white;
   border: 3px solid var(--text);
-  left: 25px;
-  top: 5px;
 }
 
 .stork-head::after {
   content: "";
   position: absolute;
-  width: 42px;
+  left: 35px;
+  top: 16px;
+  width: 48px;
   height: 7px;
   background: var(--accent);
-  left: 30px;
-  top: 15px;
   transform: rotate(-5deg);
   transform-origin: left center;
 }
 
 .stork-eye {
   position: absolute;
+  left: 28px;
+  top: 13px;
   width: 5px;
   height: 5px;
   border-radius: 50%;
   background: var(--text);
-  left: 28px;
-  top: 13px;
 }
 
-.stork-leg {
+.stork-body {
   position: absolute;
-  width: 3px;
-  height: 55px;
-  background: var(--accent);
-  bottom: 3px;
-}
-
-.stork-leg.one {
-  left: 48px;
-  transform: rotate(7deg);
-}
-
-.stork-leg.two {
-  left: 68px;
-  transform: rotate(-5deg);
+  left: 35px;
+  top: 48px;
+  width: 55px;
+  height: 88px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid var(--text);
+  transform: rotate(-8deg);
 }
 
 .stork-wing {
   position: absolute;
-  width: 55px;
-  height: 45px;
+  left: 8px;
+  top: 58px;
+  width: 62px;
+  height: 47px;
   border-radius: 50%;
-  background: #f7f7f7;
+  background: #f8f8f8;
   border: 3px solid var(--text);
-  left: 7px;
-  top: 48px;
   transform: rotate(25deg);
 }
 
-/* Общие */
+.stork-leg {
+  position: absolute;
+  bottom: 2px;
+  width: 3px;
+  height: 55px;
+  background: var(--accent);
+}
+
+.stork-leg.one {
+  left: 52px;
+  transform: rotate(7deg);
+}
+
+.stork-leg.two {
+  left: 73px;
+  transform: rotate(-5deg);
+}
+
+/* =========================================================
+   COMMON
+========================================================= */
+
 .hidden {
   display: none !important;
+}
+
+.container {
+  width: min(1100px, calc(100% - 30px));
+  margin: 0 auto;
 }
 
 button,
@@ -177,30 +206,54 @@ button {
   cursor: pointer;
 }
 
-.container {
-  width: min(1100px, calc(100% - 30px));
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
 }
 
-/* Auth */
+.primary-btn {
+  border: 0;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 12px 18px;
+  transition: .2s;
+}
+
+.primary-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.secondary-btn {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 11px;
+  padding: 10px 14px;
+}
+
+/* =========================================================
+   AUTH
+========================================================= */
+
 .auth-screen {
   min-height: 100vh;
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 25px 15px;
-  position: relative;
-  z-index: 2;
 }
 
 .auth-card {
-  width: min(430px, 100%);
+  width: min(440px, 100%);
+  padding: 34px;
+  border-radius: 25px;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 25px;
-  padding: 35px;
   box-shadow: var(--shadow);
 }
 
@@ -210,14 +263,16 @@ button {
 }
 
 .logo h1 {
-  font-size: 46px;
-  letter-spacing: -2px;
+  margin: 0;
   color: var(--accent);
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -2px;
 }
 
 .logo p {
+  margin: 9px 0 0;
   color: var(--muted);
-  margin-top: 4px;
 }
 
 .auth-tabs {
@@ -231,13 +286,13 @@ button {
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text);
+  border-radius: 11px;
   padding: 11px;
-  border-radius: 12px;
 }
 
 .auth-tab.active {
-  background: var(--accent);
   color: white;
+  background: var(--accent);
   border-color: var(--accent);
 }
 
@@ -247,67 +302,47 @@ button {
 
 .form-group label {
   display: block;
-  font-size: 14px;
   color: var(--muted);
+  font-size: 14px;
   margin-bottom: 6px;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
+.form-group input {
   width: 100%;
+  padding: 13px 14px;
   border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: none;
   background: var(--bg);
   color: var(--text);
-  border-radius: 12px;
-  padding: 13px 14px;
-  outline: none;
 }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
+.form-group input:focus {
   border-color: var(--accent);
-}
-
-.primary-btn {
-  width: 100%;
-  border: none;
-  border-radius: 13px;
-  padding: 14px;
-  color: white;
-  background: var(--accent);
-  font-weight: 700;
-  transition: .2s;
-}
-
-.primary-btn:hover {
-  background: var(--accent-dark);
-  transform: translateY(-1px);
-}
-
-.secondary-btn {
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  padding: 9px 13px;
-  background: transparent;
-  color: var(--text);
 }
 
 .auth-message {
   min-height: 22px;
-  text-align: center;
-  color: var(--accent);
-  font-size: 14px;
   margin-top: 12px;
+  text-align: center;
+  color: var(--danger);
+  font-size: 14px;
+  line-height: 1.4;
 }
 
-/* App */
+/* =========================================================
+   APP HEADER
+========================================================= */
+
 .app-header {
   position: sticky;
   top: 0;
-  z-index: 10;
-  background: color-mix(in srgb, var(--card) 94%, transparent);
+  z-index: 20;
+  background: color-mix(
+    in srgb,
+    var(--card) 94%,
+    transparent
+  );
   backdrop-filter: blur(15px);
   border-bottom: 1px solid var(--border);
 }
@@ -317,30 +352,34 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 15px;
+  gap: 12px;
 }
 
 .header-logo {
-  font-weight: 900;
-  font-size: 28px;
   color: var(--accent);
+  font-size: 29px;
+  font-weight: 900;
+  letter-spacing: -1px;
 }
 
 .header-actions {
   display: flex;
-  align-items: center;
   gap: 7px;
 }
 
 .icon-btn {
+  width: 42px;
+  height: 42px;
+  padding: 0;
   border: 1px solid var(--border);
+  border-radius: 11px;
   background: transparent;
   color: var(--text);
-  border-radius: 11px;
-  min-width: 42px;
-  height: 42px;
-  padding: 0 11px;
 }
+
+/* =========================================================
+   MAIN
+========================================================= */
 
 .main-layout {
   width: min(900px, calc(100% - 30px));
@@ -349,21 +388,73 @@ button {
   z-index: 1;
 }
 
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.settings {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow);
+}
+
+.settings h2 {
+  margin: 0 0 15px;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.setting-row:last-child {
+  border-bottom: 0;
+}
+
+.setting-title {
+  font-weight: 700;
+}
+
+.setting-description {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.setting-row select {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* =========================================================
+   CREATE POST
+========================================================= */
+
 .create-post {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 18px;
-  box-shadow: var(--shadow);
   margin-bottom: 18px;
+  box-shadow: var(--shadow);
 }
 
 .create-post textarea {
   width: 100%;
-  min-height: 90px;
+  min-height: 100px;
   resize: vertical;
-  border: none;
-  outline: none;
+  border: 0;
+  outline: 0;
   background: transparent;
   color: var(--text);
   font-size: 16px;
@@ -371,17 +462,39 @@ button {
 
 .create-bottom {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  border-top: 1px solid var(--border);
+  justify-content: space-between;
+  gap: 12px;
   padding-top: 12px;
+  border-top: 1px solid var(--border);
 }
+
+.post-hint {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* =========================================================
+   FEED
+========================================================= */
 
 .feed {
   display: grid;
   gap: 18px;
 }
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 45px 20px;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  border-radius: 18px;
+}
+
+/* =========================================================
+   POST
+========================================================= */
 
 .post {
   background: var(--card);
@@ -395,7 +508,7 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 14px;
 }
 
@@ -406,8 +519,9 @@ button {
 }
 
 .avatar {
-  width: 44px;
-  height: 44px;
+  width: 45px;
+  height: 45px;
+  flex: 0 0 45px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -422,50 +536,70 @@ button {
 }
 
 .post-date {
+  margin-top: 2px;
   color: var(--muted);
   font-size: 12px;
 }
 
 .post-text {
-  line-height: 1.55;
+  line-height: 1.6;
   white-space: pre-wrap;
-  margin-bottom: 16px;
+  word-break: break-word;
+  margin-bottom: 15px;
+}
+
+.post-media {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 15px;
 }
 
 .post-actions {
   display: flex;
-  gap: 7px;
   flex-wrap: wrap;
-  border-top: 1px solid var(--border);
+  gap: 7px;
   padding-top: 12px;
+  border-top: 1px solid var(--border);
 }
 
 .action-btn {
   border: 1px solid var(--border);
+  border-radius: 10px;
   background: transparent;
   color: var(--text);
-  border-radius: 10px;
   padding: 8px 12px;
 }
 
 .action-btn:hover {
-  border-color: var(--accent);
   color: var(--accent);
+  border-color: var(--accent);
 }
+
+.action-btn.active {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* =========================================================
+   COMMENTS
+========================================================= */
 
 .comments {
   margin-top: 14px;
-  border-top: 1px solid var(--border);
   padding-top: 14px;
+  border-top: 1px solid var(--border);
 }
 
 .comment {
-  padding: 9px 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--border);
+  line-height: 1.45;
 }
 
 .comment strong {
-  margin-right: 6px;
+  margin-right: 5px;
 }
 
 .comment-form {
@@ -475,87 +609,51 @@ button {
 }
 
 .comment-form input {
-  min-width: 0;
   flex: 1;
+  min-width: 0;
   border: 1px solid var(--border);
   border-radius: 10px;
+  padding: 10px;
   background: var(--bg);
   color: var(--text);
-  padding: 10px;
+  outline: none;
 }
 
 .comment-form button {
-  border: none;
+  border: 0;
   border-radius: 10px;
   background: var(--accent);
   color: white;
   padding: 0 14px;
 }
 
-.empty {
-  text-align: center;
-  color: var(--muted);
-  padding: 45px 20px;
-  background: var(--card);
-  border: 1px dashed var(--border);
-  border-radius: 18px;
-}
+/* =========================================================
+   MOBILE
+========================================================= */
 
-/* Settings */
-.settings {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 20px;
-  margin-bottom: 18px;
-}
-
-.settings h2 {
-  margin-bottom: 18px;
-}
-
-.setting-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.setting-row:last-child {
-  border-bottom: none;
-}
-
-.setting-title {
-  font-weight: 700;
-}
-
-.setting-description {
-  color: var(--muted);
-  font-size: 13px;
-  margin-top: 3px;
-}
-
-/* Mobile */
 @media (max-width: 650px) {
-  .stork {
-    right: -20px;
-    top: 75px;
-    transform: scale(.7);
-    transform-origin: top right;
-  }
 
   .auth-card {
     padding: 25px 20px;
   }
 
-  .header-logo {
-    font-size: 24px;
+  .logo h1 {
+    font-size: 43px;
+  }
+
+  .stork {
+    right: -25px;
+    top: 70px;
+    transform: scale(.65);
+    transform-origin: top right;
+  }
+
+  .container {
+    width: calc(100% - 18px);
   }
 
   .main-layout {
-    width: min(100% - 18px, 900px);
+    width: calc(100% - 18px);
     margin-top: 15px;
   }
 
@@ -563,8 +661,21 @@ button {
     padding: 16px;
   }
 
-  .header-inner {
-    padding: 0 9px;
+  .create-bottom {
+    align-items: flex-end;
+  }
+
+  .post-hint {
+    max-width: 55%;
+  }
+
+  .setting-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .setting-row select {
+    width: 100%;
   }
 }
 </style>
@@ -572,28 +683,41 @@ button {
 
 <body>
 
-<!-- Аист -->
+<!-- =======================================================
+     АИСТ
+======================================================== -->
+
 <div class="stork" aria-hidden="true">
   <div class="stork-head">
     <span class="stork-eye"></span>
   </div>
+
   <div class="stork-body"></div>
   <div class="stork-wing"></div>
+
   <div class="stork-leg one"></div>
   <div class="stork-leg two"></div>
 </div>
 
-<!-- AUTH -->
+
+<!-- =======================================================
+     AUTH SCREEN
+======================================================== -->
+
 <div id="authScreen" class="auth-screen">
 
   <div class="auth-card">
 
     <div class="logo">
       <h1>Hutka</h1>
-      <p id="authSubtitle">Беларуская сацыяльная сетка</p>
+      <p id="authSubtitle">
+        Беларуская сацыяльная сетка
+      </p>
     </div>
 
+
     <div class="auth-tabs">
+
       <button
         id="loginTab"
         class="auth-tab active"
@@ -609,30 +733,64 @@ button {
         onclick="switchAuth('register')">
         Рэгістрацыя
       </button>
+
     </div>
+
 
     <form id="authForm">
 
+      <!-- NAME -->
+      <div
+        id="nameGroup"
+        class="form-group hidden">
+
+        <label id="nameLabel">
+          Имя
+        </label>
+
+        <input
+          id="name"
+          type="text"
+          maxlength="50"
+          autocomplete="name">
+      </div>
+
+
+      <!-- USERNAME -->
       <div class="form-group">
-        <label id="usernameLabel">Username</label>
+
+        <label id="usernameLabel">
+          Username
+        </label>
+
         <input
           id="username"
           type="text"
+          maxlength="24"
           autocomplete="username"
-          required
-          maxlength="30">
+          required>
+
       </div>
 
+
+      <!-- PASSWORD -->
       <div class="form-group">
-        <label id="passwordLabel">Пароль</label>
+
+        <label id="passwordLabel">
+          Пароль
+        </label>
+
         <input
           id="password"
           type="password"
+          minlength="6"
           autocomplete="current-password"
-          required
-          minlength="4">
+          required>
+
       </div>
 
+
+      <!-- CONFIRM -->
       <div
         id="confirmPasswordGroup"
         class="form-group hidden">
@@ -644,16 +802,20 @@ button {
         <input
           id="confirmPassword"
           type="password"
-          autocomplete="new-password"
-          minlength="4">
+          minlength="6"
+          autocomplete="new-password">
+
       </div>
+
 
       <button
         id="authButton"
         class="primary-btn"
+        style="width:100%;"
         type="submit">
         Увайсці
       </button>
+
 
       <div
         id="authMessage"
@@ -666,7 +828,10 @@ button {
 </div>
 
 
-<!-- MAIN APP -->
+<!-- =======================================================
+     MAIN APP
+======================================================== -->
+
 <div id="mainApp" class="hidden">
 
   <header class="app-header">
@@ -690,7 +855,7 @@ button {
         <button
           class="icon-btn"
           type="button"
-          onclick="showSettings()"
+          onclick="toggleSettings()"
           title="Настройки">
           ⚙️
         </button>
@@ -706,12 +871,17 @@ button {
       </div>
 
     </div>
+
   </header>
 
 
   <main class="main-layout">
 
-    <!-- SETTINGS -->
+
+    <!-- ===================================================
+         SETTINGS
+    ==================================================== -->
+
     <section
       id="settingsPanel"
       class="settings hidden">
@@ -719,6 +889,7 @@ button {
       <h2 id="settingsTitle">
         Настройки
       </h2>
+
 
       <div class="setting-row">
 
@@ -736,11 +907,19 @@ button {
           </div>
         </div>
 
+
         <select
           id="themeSelect"
           onchange="changeTheme(this.value)">
-          <option value="light">☀️ Светлая</option>
-          <option value="dark">🌙 Тёмная</option>
+
+          <option value="light">
+            ☀️ Светлая
+          </option>
+
+          <option value="dark">
+            🌙 Тёмная
+          </option>
+
         </select>
 
       </div>
@@ -762,12 +941,23 @@ button {
           </div>
         </div>
 
+
         <select
           id="languageSelect"
           onchange="changeLanguage(this.value)">
-          <option value="ru">Русский</option>
-          <option value="by">Беларуская</option>
-          <option value="en">English</option>
+
+          <option value="ru">
+            Русский
+          </option>
+
+          <option value="by">
+            Беларуская
+          </option>
+
+          <option value="en">
+            English
+          </option>
+
         </select>
 
       </div>
@@ -775,30 +965,34 @@ button {
     </section>
 
 
-    <!-- CREATE POST -->
+    <!-- ===================================================
+         CREATE POST
+    ==================================================== -->
+
     <section class="create-post">
 
       <textarea
         id="postText"
-        maxlength="5000"
-        placeholder="Што ў вас новага?">
+        maxlength="280"
+        placeholder="Что у вас нового?">
       </textarea>
+
 
       <div class="create-bottom">
 
         <span
           id="postHint"
-          style="color:var(--muted);font-size:13px;">
-          Раскажыце нешта сябрам
+          class="post-hint">
+          Расскажите что-нибудь друзьям
         </span>
 
+
         <button
+          id="publishButton"
           class="primary-btn"
-          style="width:auto;padding:10px 18px;"
           type="button"
-          onclick="createPost()"
-          id="publishButton">
-          Апублікаваць
+          onclick="createPost()">
+          Опубликовать
         </button>
 
       </div>
@@ -806,8 +1000,13 @@ button {
     </section>
 
 
-    <!-- FEED -->
-    <section id="feed" class="feed">
+    <!-- ===================================================
+         FEED
+    ==================================================== -->
+
+    <section
+      id="feed"
+      class="feed">
 
       <div class="empty">
         Загрузка Hutka…
@@ -821,144 +1020,358 @@ button {
 
 
 <script>
-/*
- * ============================================
- * HUTKA FRONTEND
- * ============================================
- *
- * ВАЖНО:
- * Если твой Render API находится по другому адресу,
- * измени только API_BASE ниже.
- *
- * Например:
- * const API_BASE = 'https://hutka-api.onrender.com';
- *
- */
 
-const API_BASE = 'https://hutka-server.onrender.com';;
+/* =========================================================
+   CONFIG
+========================================================= */
+
+const API_BASE =
+  'https://hutka-server.onrender.com';
+
 
 let currentUser = null;
+
 let currentAuthMode = 'login';
-let currentLanguage = localStorage.getItem('hutka_language') || 'ru';
-let currentTheme = localStorage.getItem('hutka_theme') || 'light';
+
+let currentLanguage =
+  localStorage.getItem('hutka_language')
+  || 'ru';
+
+let currentTheme =
+  localStorage.getItem('hutka_theme')
+  || 'light';
 
 
-/* ============================================
-   ПЕРЕВОДЫ
-============================================ */
+/* =========================================================
+   TRANSLATIONS
+========================================================= */
 
 const translations = {
 
   ru: {
-    subtitle: 'Белорусская социальная сеть',
-    login: 'Войти',
-    register: 'Регистрация',
-    password: 'Пароль',
-    confirmPassword: 'Повторите пароль',
-    loginButton: 'Войти',
-    registerButton: 'Зарегистрироваться',
-    postPlaceholder: 'Что у вас нового?',
-    postHint: 'Расскажите что-нибудь друзьям',
-    publish: 'Опубликовать',
-    settings: 'Настройки',
-    theme: 'Тема',
-    themeDescription: 'Светлая или тёмная тема',
-    language: 'Язык',
-    languageDescription: 'Язык интерфейса',
-    light: '☀️ Светлая',
-    dark: '🌙 Тёмная',
-    comments: 'Комментарии',
-    commentPlaceholder: 'Написать комментарий…',
-    send: 'Отправить',
-    repost: 'Репост',
-    like: 'Нравится',
-    noPosts: 'Пока нет публикаций.',
-    loading: 'Загрузка Hutka…',
-    wrongPassword: 'Пароли не совпадают.',
-    emptyPost: 'Напишите что-нибудь.',
-    serverError: 'Сервер временно недоступен.',
-    logout: 'Выйти'
+
+    subtitle:
+      'Белорусская социальная сеть',
+
+    login:
+      'Войти',
+
+    register:
+      'Регистрация',
+
+    name:
+      'Имя',
+
+    username:
+      'Username',
+
+    password:
+      'Пароль',
+
+    confirmPassword:
+      'Повторите пароль',
+
+    loginButton:
+      'Войти',
+
+    registerButton:
+      'Зарегистрироваться',
+
+    postPlaceholder:
+      'Что у вас нового?',
+
+    postHint:
+      'Расскажите что-нибудь друзьям',
+
+    publish:
+      'Опубликовать',
+
+    settings:
+      'Настройки',
+
+    theme:
+      'Тема',
+
+    themeDescription:
+      'Светлая или тёмная тема',
+
+    language:
+      'Язык',
+
+    languageDescription:
+      'Язык интерфейса',
+
+    light:
+      '☀️ Светлая',
+
+    dark:
+      '🌙 Тёмная',
+
+    comments:
+      'Комментарии',
+
+    commentPlaceholder:
+      'Написать комментарий…',
+
+    send:
+      'Отправить',
+
+    repost:
+      'Репост',
+
+    like:
+      'Нравится',
+
+    noPosts:
+      'Пока нет публикаций.',
+
+    loading:
+      'Загрузка Hutka…',
+
+    serverError:
+      'Сервер временно недоступен.',
+
+    passwordMismatch:
+      'Пароли не совпадают.',
+
+    emptyPost:
+      'Напишите что-нибудь.',
+
+    nameRequired:
+      'Введите имя.',
+
+    usernameRequired:
+      'Введите username.',
+
+    passwordRequired:
+      'Введите пароль.'
   },
+
 
   by: {
-    subtitle: 'Беларуская сацыяльная сетка',
-    login: 'Увайсці',
-    register: 'Рэгістрацыя',
-    password: 'Пароль',
-    confirmPassword: 'Паўтарыце пароль',
-    loginButton: 'Увайсці',
-    registerButton: 'Зарэгістравацца',
-    postPlaceholder: 'Што ў вас новага?',
-    postHint: 'Раскажыце нешта сябрам',
-    publish: 'Апублікаваць',
-    settings: 'Налады',
-    theme: 'Тэма',
-    themeDescription: 'Светлая або цёмная тэма',
-    language: 'Мова',
-    languageDescription: 'Мова інтэрфейсу',
-    light: '☀️ Светлая',
-    dark: '🌙 Цёмная',
-    comments: 'Каментарыі',
-    commentPlaceholder: 'Напісаць каментарый…',
-    send: 'Адправіць',
-    repost: 'Рэпост',
-    like: 'Падабаецца',
-    noPosts: 'Пакуль няма публікацый.',
-    loading: 'Загрузка Hutka…',
-    wrongPassword: 'Паролі не супадаюць.',
-    emptyPost: 'Напішыце нешта.',
-    serverError: 'Сервер часова недаступны.',
-    logout: 'Выйсці'
+
+    subtitle:
+      'Беларуская сацыяльная сетка',
+
+    login:
+      'Увайсці',
+
+    register:
+      'Рэгістрацыя',
+
+    name:
+      'Імя',
+
+    username:
+      'Username',
+
+    password:
+      'Пароль',
+
+    confirmPassword:
+      'Паўтарыце пароль',
+
+    loginButton:
+      'Увайсці',
+
+    registerButton:
+      'Зарэгістравацца',
+
+    postPlaceholder:
+      'Што ў вас новага?',
+
+    postHint:
+      'Раскажыце нешта сябрам',
+
+    publish:
+      'Апублікаваць',
+
+    settings:
+      'Налады',
+
+    theme:
+      'Тэма',
+
+    themeDescription:
+      'Светлая або цёмная тэма',
+
+    language:
+      'Мова',
+
+    languageDescription:
+      'Мова інтэрфейсу',
+
+    light:
+      '☀️ Светлая',
+
+    dark:
+      '🌙 Цёмная',
+
+    comments:
+      'Каментарыі',
+
+    commentPlaceholder:
+      'Напісаць каментарый…',
+
+    send:
+      'Адправіць',
+
+    repost:
+      'Рэпост',
+
+    like:
+      'Падабаецца',
+
+    noPosts:
+      'Пакуль няма публікацый.',
+
+    loading:
+      'Загрузка Hutka…',
+
+    serverError:
+      'Сервер часова недаступны.',
+
+    passwordMismatch:
+      'Паролі не супадаюць.',
+
+    emptyPost:
+      'Напішыце нешта.',
+
+    nameRequired:
+      'Увядзіце імя.',
+
+    usernameRequired:
+      'Увядзіце username.',
+
+    passwordRequired:
+      'Увядзіце пароль.'
   },
 
+
   en: {
-    subtitle: 'Belarusian social network',
-    login: 'Login',
-    register: 'Registration',
-    password: 'Password',
-    confirmPassword: 'Confirm password',
-    loginButton: 'Login',
-    registerButton: 'Register',
-    postPlaceholder: 'What is new?',
-    postHint: 'Share something with your friends',
-    publish: 'Publish',
-    settings: 'Settings',
-    theme: 'Theme',
-    themeDescription: 'Light or dark theme',
-    language: 'Language',
-    languageDescription: 'Interface language',
-    light: '☀️ Light',
-    dark: '🌙 Dark',
-    comments: 'Comments',
-    commentPlaceholder: 'Write a comment…',
-    send: 'Send',
-    repost: 'Repost',
-    like: 'Like',
-    noPosts: 'No posts yet.',
-    loading: 'Loading Hutka…',
-    wrongPassword: 'Passwords do not match.',
-    emptyPost: 'Write something.',
-    serverError: 'Server is temporarily unavailable.',
-    logout: 'Logout'
+
+    subtitle:
+      'Belarusian social network',
+
+    login:
+      'Login',
+
+    register:
+      'Registration',
+
+    name:
+      'Name',
+
+    username:
+      'Username',
+
+    password:
+      'Password',
+
+    confirmPassword:
+      'Confirm password',
+
+    loginButton:
+      'Login',
+
+    registerButton:
+      'Register',
+
+    postPlaceholder:
+      'What is new?',
+
+    postHint:
+      'Share something with your friends',
+
+    publish:
+      'Publish',
+
+    settings:
+      'Settings',
+
+    theme:
+      'Theme',
+
+    themeDescription:
+      'Light or dark theme',
+
+    language:
+      'Language',
+
+    languageDescription:
+      'Interface language',
+
+    light:
+      '☀️ Light',
+
+    dark:
+      '🌙 Dark',
+
+    comments:
+      'Comments',
+
+    commentPlaceholder:
+      'Write a comment…',
+
+    send:
+      'Send',
+
+    repost:
+      'Repost',
+
+    like:
+      'Like',
+
+    noPosts:
+      'No posts yet.',
+
+    loading:
+      'Loading Hutka…',
+
+    serverError:
+      'Server is temporarily unavailable.',
+
+    passwordMismatch:
+      'Passwords do not match.',
+
+    emptyPost:
+      'Write something.',
+
+    nameRequired:
+      'Enter your name.',
+
+    usernameRequired:
+      'Enter username.',
+
+    passwordRequired:
+      'Enter password.'
   }
 
 };
 
 
-/* ============================================
-   HELPERS
-============================================ */
-
 function t(key) {
-  return translations[currentLanguage]?.[key]
-    || translations.ru[key]
-    || key;
+
+  return (
+    translations[currentLanguage]?.[key]
+    ||
+    translations.ru[key]
+    ||
+    key
+  );
 }
 
 
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
 function escapeHTML(value) {
 
-  if (value === null || value === undefined) {
+  if (
+    value === null ||
+    value === undefined
+  ) {
     return '';
   }
 
@@ -971,40 +1384,9 @@ function escapeHTML(value) {
 }
 
 
-function getInitial(username) {
-
-  if (!username) {
-    return 'H';
-  }
-
-  return String(username)
-    .trim()
-    .charAt(0)
-    .toUpperCase();
-}
-
-
-function getPostId(post) {
-
-  return post.id
-    ?? post._id
-    ?? post.postId
-    ?? '';
-}
-
-
-function getUsername(post) {
-
-  return post.username
-    ?? post.user?.username
-    ?? post.author?.username
-    ?? 'Hutka';
-}
-
-
-/* ============================================
+/* =========================================================
    THEME
-============================================ */
+========================================================= */
 
 function applyTheme() {
 
@@ -1013,7 +1395,12 @@ function applyTheme() {
     currentTheme === 'dark'
   );
 
-  const select = document.getElementById('themeSelect');
+
+  const select =
+    document.getElementById(
+      'themeSelect'
+    );
+
 
   if (select) {
     select.value = currentTheme;
@@ -1028,10 +1415,12 @@ function toggleTheme() {
       ? 'light'
       : 'dark';
 
+
   localStorage.setItem(
     'hutka_theme',
     currentTheme
   );
+
 
   applyTheme();
 }
@@ -1039,24 +1428,30 @@ function toggleTheme() {
 
 function changeTheme(theme) {
 
-  if (theme !== 'dark' && theme !== 'light') {
+  if (
+    theme !== 'light' &&
+    theme !== 'dark'
+  ) {
     return;
   }
 
+
   currentTheme = theme;
+
 
   localStorage.setItem(
     'hutka_theme',
     theme
   );
 
+
   applyTheme();
 }
 
 
-/* ============================================
+/* =========================================================
    LANGUAGE
-============================================ */
+========================================================= */
 
 function changeLanguage(language) {
 
@@ -1064,14 +1459,19 @@ function changeLanguage(language) {
     return;
   }
 
-  currentLanguage = language;
+
+  currentLanguage =
+    language;
+
 
   localStorage.setItem(
     'hutka_language',
     language
   );
 
+
   applyTranslations();
+
 
   if (currentUser) {
     loadFeed();
@@ -1082,124 +1482,221 @@ function changeLanguage(language) {
 function applyTranslations() {
 
   const languageSelect =
-    document.getElementById('languageSelect');
+    document.getElementById(
+      'languageSelect'
+    );
+
 
   if (languageSelect) {
-    languageSelect.value = currentLanguage;
+    languageSelect.value =
+      currentLanguage;
   }
 
-  document.getElementById('authSubtitle').textContent =
+
+  document.getElementById(
+    'authSubtitle'
+  ).textContent =
     t('subtitle');
 
-  document.getElementById('loginTab').textContent =
+
+  document.getElementById(
+    'loginTab'
+  ).textContent =
     t('login');
 
-  document.getElementById('registerTab').textContent =
+
+  document.getElementById(
+    'registerTab'
+  ).textContent =
     t('register');
 
-  document.getElementById('passwordLabel').textContent =
+
+  document.getElementById(
+    'nameLabel'
+  ).textContent =
+    t('name');
+
+
+  document.getElementById(
+    'usernameLabel'
+  ).textContent =
+    t('username');
+
+
+  document.getElementById(
+    'passwordLabel'
+  ).textContent =
     t('password');
 
-  document.getElementById('confirmPasswordLabel').textContent =
+
+  document.getElementById(
+    'confirmPasswordLabel'
+  ).textContent =
     t('confirmPassword');
 
-  document.getElementById('authButton').textContent =
+
+  document.getElementById(
+    'authButton'
+  ).textContent =
     currentAuthMode === 'login'
       ? t('loginButton')
       : t('registerButton');
 
-  document.getElementById('postText').placeholder =
+
+  document.getElementById(
+    'postText'
+  ).placeholder =
     t('postPlaceholder');
 
-  document.getElementById('postHint').textContent =
+
+  document.getElementById(
+    'postHint'
+  ).textContent =
     t('postHint');
 
-  document.getElementById('publishButton').textContent =
+
+  document.getElementById(
+    'publishButton'
+  ).textContent =
     t('publish');
 
-  document.getElementById('settingsTitle').textContent =
+
+  document.getElementById(
+    'settingsTitle'
+  ).textContent =
     t('settings');
 
-  document.getElementById('themeTitle').textContent =
+
+  document.getElementById(
+    'themeTitle'
+  ).textContent =
     t('theme');
 
-  document.getElementById('themeDescription').textContent =
+
+  document.getElementById(
+    'themeDescription'
+  ).textContent =
     t('themeDescription');
 
-  document.getElementById('languageTitle').textContent =
+
+  document.getElementById(
+    'languageTitle'
+  ).textContent =
     t('language');
 
-  document.getElementById('languageDescription').textContent =
+
+  document.getElementById(
+    'languageDescription'
+  ).textContent =
     t('languageDescription');
 
-  const lightOption =
-    document.querySelector(
-      '#themeSelect option[value="light"]'
-    );
 
-  const darkOption =
-    document.querySelector(
-      '#themeSelect option[value="dark"]'
-    );
+  document.querySelector(
+    '#themeSelect option[value="light"]'
+  ).textContent =
+    t('light');
 
-  if (lightOption) {
-    lightOption.textContent = t('light');
-  }
 
-  if (darkOption) {
-    darkOption.textContent = t('dark');
-  }
+  document.querySelector(
+    '#themeSelect option[value="dark"]'
+  ).textContent =
+    t('dark');
 }
 
 
-/* ============================================
-   AUTH UI
-============================================ */
+/* =========================================================
+   AUTH SWITCH
+========================================================= */
 
 function switchAuth(mode) {
 
-  currentAuthMode = mode;
+  currentAuthMode =
+    mode;
+
 
   const loginTab =
-    document.getElementById('loginTab');
+    document.getElementById(
+      'loginTab'
+    );
 
   const registerTab =
-    document.getElementById('registerTab');
+    document.getElementById(
+      'registerTab'
+    );
+
+  const nameGroup =
+    document.getElementById(
+      'nameGroup'
+    );
 
   const confirmGroup =
-    document.getElementById('confirmPasswordGroup');
+    document.getElementById(
+      'confirmPasswordGroup'
+    );
 
-  const button =
-    document.getElementById('authButton');
+  const authButton =
+    document.getElementById(
+      'authButton'
+    );
 
-  document.getElementById('authMessage').textContent = '';
+  const message =
+    document.getElementById(
+      'authMessage'
+    );
+
+
+  message.textContent = '';
+
 
   if (mode === 'login') {
 
-    loginTab.classList.add('active');
-    registerTab.classList.remove('active');
+    loginTab.classList.add(
+      'active'
+    );
 
-    confirmGroup.classList.add('hidden');
+    registerTab.classList.remove(
+      'active'
+    );
 
-    button.textContent =
+    nameGroup.classList.add(
+      'hidden'
+    );
+
+    confirmGroup.classList.add(
+      'hidden'
+    );
+
+    authButton.textContent =
       t('loginButton');
+
 
   } else {
 
-    loginTab.classList.remove('active');
-    registerTab.classList.add('active');
+    loginTab.classList.remove(
+      'active'
+    );
 
-    confirmGroup.classList.remove('hidden');
+    registerTab.classList.add(
+      'active'
+    );
 
-    button.textContent =
+    nameGroup.classList.remove(
+      'hidden'
+    );
+
+    confirmGroup.classList.remove(
+      'hidden'
+    );
+
+    authButton.textContent =
       t('registerButton');
   }
 }
 
 
-/* ============================================
-   API
-============================================ */
+/* =========================================================
+   API REQUEST
+========================================================= */
 
 async function apiRequest(
   path,
@@ -1208,12 +1705,30 @@ async function apiRequest(
 
   const config = {
     credentials: 'include',
+
+    ...options,
+
     headers: {
-      'Content-Type': 'application/json',
       ...(options.headers || {})
-    },
-    ...options
+    }
   };
+
+
+  /*
+   * JSON автоматически добавляем
+   * только если body является строкой JSON.
+   */
+
+  if (
+    typeof config.body === 'string'
+    &&
+    !config.headers['Content-Type']
+  ) {
+
+    config.headers['Content-Type'] =
+      'application/json';
+  }
+
 
   const response =
     await fetch(
@@ -1221,192 +1736,341 @@ async function apiRequest(
       config
     );
 
+
   let data = null;
 
+
   try {
-    data = await response.json();
+
+    data =
+      await response.json();
+
   } catch {
+
     data = null;
   }
 
+
   if (!response.ok) {
 
-    const message =
+    const error =
+      data?.error
+      ||
       data?.message
-      || data?.error
-      || `HTTP ${response.status}`;
+      ||
+      `HTTP ${response.status}`;
 
-    throw new Error(message);
+
+    throw new Error(
+      error
+    );
   }
+
 
   return data;
 }
 
 
-/* ============================================
+/* =========================================================
    AUTH CHECK
-============================================ */
+========================================================= */
 
 async function checkAuth() {
 
   try {
 
     const data =
-      await apiRequest('/api/me');
+      await apiRequest(
+        '/api/me'
+      );
+
 
     if (
       data &&
-      (
-        data.user ||
-        data.username ||
-        data.authenticated === true
-      )
+      data.user
     ) {
 
       currentUser =
-        data.user
-        || data;
+        data.user;
+
 
       showMain();
 
+
       await loadFeed();
 
-      return;
+
+      return true;
     }
+
 
   } catch (error) {
 
     console.warn(
-      'Auth check failed:',
+      'AUTH CHECK:',
       error
     );
   }
 
+
   showAuth();
+
+
+  return false;
 }
 
 
-/* ============================================
+/* =========================================================
    SHOW AUTH
-============================================ */
+========================================================= */
 
 function showAuth() {
 
   document
-    .getElementById('authScreen')
-    .classList.remove('hidden');
+    .getElementById(
+      'authScreen'
+    )
+    .classList.remove(
+      'hidden'
+    );
+
 
   document
-    .getElementById('mainApp')
-    .classList.add('hidden');
+    .getElementById(
+      'mainApp'
+    )
+    .classList.add(
+      'hidden'
+    );
 }
 
 
-/* ============================================
+/* =========================================================
    SHOW MAIN
-============================================ */
+========================================================= */
 
 function showMain() {
 
   document
-    .getElementById('authScreen')
-    .classList.add('hidden');
+    .getElementById(
+      'authScreen'
+    )
+    .classList.add(
+      'hidden'
+    );
+
 
   document
-    .getElementById('mainApp')
-    .classList.remove('hidden');
+    .getElementById(
+      'mainApp'
+    )
+    .classList.remove(
+      'hidden'
+    );
 }
 
 
-/* ============================================
-   LOGIN / REGISTER
-============================================ */
+/* =========================================================
+   AUTH FORM
+========================================================= */
 
 document
-  .getElementById('authForm')
+  .getElementById(
+    'authForm'
+  )
   .addEventListener(
     'submit',
     async function(event) {
 
       event.preventDefault();
 
-      const username =
+
+      const name =
         document
-          .getElementById('username')
+          .getElementById(
+            'name'
+          )
           .value
           .trim();
 
+
+      const username =
+        document
+          .getElementById(
+            'username'
+          )
+          .value
+          .trim()
+          .replace(
+            /^@/,
+            ''
+          )
+          .toLowerCase();
+
+
       const password =
         document
-          .getElementById('password')
+          .getElementById(
+            'password'
+          )
           .value;
+
 
       const confirmPassword =
         document
-          .getElementById('confirmPassword')
+          .getElementById(
+            'confirmPassword'
+          )
           .value;
+
 
       const message =
         document.getElementById(
           'authMessage'
         );
 
-      message.textContent = '';
-
-      if (!username || !password) {
-        message.textContent =
-          'Заполните все поля.';
-        return;
-      }
-
-      if (
-        currentAuthMode === 'register'
-        && password !== confirmPassword
-      ) {
-
-        message.textContent =
-          t('wrongPassword');
-
-        return;
-      }
 
       const button =
         document.getElementById(
           'authButton'
         );
 
+
+      message.textContent = '';
+
+
+      if (
+        currentAuthMode ===
+        'register'
+        &&
+        !name
+      ) {
+
+        message.textContent =
+          t('nameRequired');
+
+        return;
+      }
+
+
+      if (!username) {
+
+        message.textContent =
+          t('usernameRequired');
+
+        return;
+      }
+
+
+      if (!password) {
+
+        message.textContent =
+          t('passwordRequired');
+
+        return;
+      }
+
+
+      if (
+        currentAuthMode ===
+        'register'
+        &&
+        password !==
+        confirmPassword
+      ) {
+
+        message.textContent =
+          t('passwordMismatch');
+
+        return;
+      }
+
+
       button.disabled = true;
+
 
       try {
 
-        const endpoint =
-          currentAuthMode === 'login'
-            ? '/api/login'
-            : '/api/register';
+        let data;
 
-        const data =
-          await apiRequest(
-            endpoint,
-            {
-              method: 'POST',
-              body: JSON.stringify({
-                username,
-                password
-              })
-            }
+
+        if (
+          currentAuthMode ===
+          'register'
+        ) {
+
+          /*
+           * ВАЖНО:
+           * server.js ожидает name,
+           * username и password.
+           */
+
+          data =
+            await apiRequest(
+              '/api/auth/register',
+              {
+                method: 'POST',
+
+                body:
+                  JSON.stringify({
+
+                    name,
+
+                    username,
+
+                    password
+                  })
+              }
+            );
+
+
+        } else {
+
+          data =
+            await apiRequest(
+              '/api/auth/login',
+              {
+                method: 'POST',
+
+                body:
+                  JSON.stringify({
+
+                    username,
+
+                    password
+                  })
+              }
+            );
+        }
+
+
+        if (
+          !data ||
+          !data.user
+        ) {
+
+          throw new Error(
+            'Сервер не вернул данные пользователя'
           );
+        }
+
 
         currentUser =
-          data?.user
-          || data;
+          data.user;
+
+
+        document
+          .getElementById(
+            'authForm'
+          )
+          .reset();
+
 
         showMain();
 
-        document.getElementById(
-          'authForm'
-        ).reset();
 
         await loadFeed();
+
 
       } catch (error) {
 
@@ -1415,9 +2079,12 @@ document
           error
         );
 
+
         message.textContent =
           error.message
-          || t('serverError');
+          ||
+          t('serverError');
+
 
       } finally {
 
@@ -1428,16 +2095,16 @@ document
   );
 
 
-/* ============================================
+/* =========================================================
    LOGOUT
-============================================ */
+========================================================= */
 
 async function logout() {
 
   try {
 
     await apiRequest(
-      '/api/logout',
+      '/api/auth/logout',
       {
         method: 'POST'
       }
@@ -1446,7 +2113,7 @@ async function logout() {
   } catch (error) {
 
     console.warn(
-      'Logout error:',
+      'LOGOUT ERROR:',
       error
     );
 
@@ -1461,37 +2128,38 @@ async function logout() {
 }
 
 
-/* ============================================
-   FEED
-============================================ */
+/* =========================================================
+   LOAD FEED
+========================================================= */
 
 async function loadFeed() {
 
   const feed =
-    document.getElementById('feed');
+    document.getElementById(
+      'feed'
+    );
+
 
   feed.innerHTML =
     `<div class="empty">${escapeHTML(t('loading'))}</div>`;
 
+
   try {
 
     const data =
-      await apiRequest('/api/posts');
+      await apiRequest(
+        '/api/posts'
+      );
 
-    let posts =
-      Array.isArray(data)
-        ? data
-        : (
-            data?.posts
-            || data?.items
-            || []
-          );
 
-    if (!Array.isArray(posts)) {
-      posts = [];
-    }
+    const posts =
+      Array.isArray(data?.posts)
+        ? data.posts
+        : [];
+
 
     renderPosts(posts);
+
 
   } catch (error) {
 
@@ -1500,34 +2168,42 @@ async function loadFeed() {
       error
     );
 
-    /*
-     * Даже если API временно недоступен,
-     * сам интерфейс продолжает работать.
-     */
 
     feed.innerHTML = `
+
       <div class="empty">
-        ${escapeHTML(t('serverError'))}
+
+        ${escapeHTML(
+          error.message ||
+          t('serverError')
+        )}
+
         <br><br>
+
         <button
           class="secondary-btn"
           onclick="loadFeed()">
           ↻ Повторить
         </button>
+
       </div>
+
     `;
   }
 }
 
 
-/* ============================================
+/* =========================================================
    RENDER POSTS
-============================================ */
+========================================================= */
 
 function renderPosts(posts) {
 
   const feed =
-    document.getElementById('feed');
+    document.getElementById(
+      'feed'
+    );
+
 
   if (!posts.length) {
 
@@ -1537,60 +2213,113 @@ function renderPosts(posts) {
     return;
   }
 
+
   feed.innerHTML =
     posts
-      .map(post => renderPost(post))
+      .map(
+        post =>
+          renderPost(post)
+      )
       .join('');
 }
 
 
 function renderPost(post) {
 
-  const id =
-    getPostId(post);
+  const user =
+    post.user || {};
+
 
   const username =
-    getUsername(post);
+    user.username
+    ||
+    'Hutka';
+
+
+  const initial =
+    username
+      .charAt(0)
+      .toUpperCase();
+
 
   const text =
-    post.text
-    ?? post.content
-    ?? post.body
-    ?? '';
+    post.text || '';
+
 
   const date =
-    post.createdAt
-    ?? post.created_at
-    ?? post.date
-    ?? '';
+    formatDate(
+      post.createdAt
+    );
+
 
   const likes =
-    Number(post.likesCount ?? post.likes ?? 0);
+    Number(
+      post.likes || 0
+    );
+
+
+  const comments =
+    Number(
+      post.comments || 0
+    );
+
 
   const reposts =
     Number(
-      post.repostsCount
-      ?? post.reposts
-      ?? 0
+      post.reposts || 0
     );
 
-  const comments =
-    Array.isArray(post.comments)
-      ? post.comments
-      : [];
+
+  const liked =
+    post.liked
+      ? 'active'
+      : '';
+
+
+  const reposted =
+    post.reposted
+      ? 'active'
+      : '';
+
+
+  let mediaHTML = '';
+
+
+  if (post.media) {
+
+    const mediaUrl =
+      post.media.startsWith('http')
+        ? post.media
+        : API_BASE + post.media;
+
+
+    mediaHTML = `
+
+      <img
+        class="post-media"
+        src="${escapeHTML(mediaUrl)}"
+        alt="Фото"
+        loading="lazy">
+
+    `;
+  }
+
 
   return `
+
     <article
       class="post"
-      data-post-id="${escapeHTML(id)}">
+      data-post-id="${Number(post.id)}">
+
 
       <div class="post-header">
 
         <div class="user-info">
 
           <div class="avatar">
-            ${escapeHTML(getInitial(username))}
+            ${escapeHTML(initial)}
           </div>
+
 
           <div>
 
@@ -1599,7 +2328,7 @@ function renderPost(post) {
             </div>
 
             <div class="post-date">
-              ${escapeHTML(formatDate(date))}
+              ${escapeHTML(date)}
             </div>
 
           </div>
@@ -1609,60 +2338,82 @@ function renderPost(post) {
       </div>
 
 
-      <div class="post-text">
-        ${escapeHTML(text)}
-      </div>
+      ${
+        text
+          ? `
+            <div class="post-text">
+              ${escapeHTML(text)}
+            </div>
+          `
+          : ''
+      }
+
+
+      ${mediaHTML}
 
 
       <div class="post-actions">
 
         <button
-          class="action-btn"
-          onclick="likePost('${escapeHTML(id)}')">
-          ❤️ ${likes}
+          class="action-btn ${liked}"
+          onclick="likePost(${Number(post.id)})">
+
+          ❤️
+          ${likes}
+
         </button>
+
 
         <button
           class="action-btn"
-          onclick="toggleComments('${escapeHTML(id)}')">
-          💬 ${t('comments')}
+          onclick="toggleComments(${Number(post.id)})">
+
+          💬
+          ${t('comments')}
+          ${comments}
+
         </button>
 
+
         <button
-          class="action-btn"
-          onclick="repostPost('${escapeHTML(id)}')">
-          🔁 ${t('repost')} ${reposts}
+          class="action-btn ${reposted}"
+          onclick="repostPost(${Number(post.id)})">
+
+          🔁
+          ${t('repost')}
+          ${reposts}
+
         </button>
 
       </div>
 
 
       <div
-        id="comments-${escapeHTML(id)}"
+        id="comments-${Number(post.id)}"
         class="comments hidden">
 
-        <div class="comments-list">
-
-          ${
-            comments
-              .map(comment =>
-                renderComment(comment)
-              )
-              .join('')
-          }
+        <div
+          id="comments-list-${Number(post.id)}">
 
         </div>
 
+
         <form
           class="comment-form"
-          onsubmit="submitComment(event, '${escapeHTML(id)}')">
+          onsubmit="
+            submitComment(
+              event,
+              ${Number(post.id)}
+            )
+          ">
 
           <input
-            id="comment-input-${escapeHTML(id)}"
+            id="comment-input-${Number(post.id)}"
             type="text"
-            maxlength="1000"
+            maxlength="500"
             placeholder="${escapeHTML(t('commentPlaceholder'))}"
             required>
+
 
           <button type="submit">
             ${escapeHTML(t('send'))}
@@ -1673,33 +2424,14 @@ function renderPost(post) {
       </div>
 
     </article>
+
   `;
 }
 
 
-function renderComment(comment) {
-
-  const username =
-    comment.username
-    ?? comment.user?.username
-    ?? comment.author?.username
-    ?? 'Hutka';
-
-  const text =
-    comment.text
-    ?? comment.content
-    ?? '';
-
-  return `
-    <div class="comment">
-      <strong>
-        @${escapeHTML(username)}
-      </strong>
-      ${escapeHTML(text)}
-    </div>
-  `;
-}
-
+/* =========================================================
+   DATE
+========================================================= */
 
 function formatDate(value) {
 
@@ -1707,18 +2439,21 @@ function formatDate(value) {
     return '';
   }
 
+
+  const date =
+    new Date(value);
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return '';
+  }
+
+
   try {
-
-    const date =
-      new Date(value);
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-      return '';
-    }
 
     return date.toLocaleString(
       currentLanguage === 'en'
@@ -1726,6 +2461,7 @@ function formatDate(value) {
         : currentLanguage === 'by'
           ? 'be-BY'
           : 'ru-RU',
+
       {
         dateStyle: 'short',
         timeStyle: 'short'
@@ -1734,14 +2470,14 @@ function formatDate(value) {
 
   } catch {
 
-    return '';
+    return date.toLocaleString();
   }
 }
 
 
-/* ============================================
+/* =========================================================
    CREATE POST
-============================================ */
+========================================================= */
 
 async function createPost() {
 
@@ -1750,8 +2486,10 @@ async function createPost() {
       'postText'
     );
 
+
   const text =
     textarea.value.trim();
+
 
   if (!text) {
 
@@ -1762,28 +2500,76 @@ async function createPost() {
     return;
   }
 
+
   const button =
     document.getElementById(
       'publishButton'
     );
 
+
   button.disabled = true;
+
 
   try {
 
-    await apiRequest(
-      '/api/posts',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          text
-        })
-      }
+    /*
+     * server.js принимает
+     * multipart/form-data.
+     *
+     * Для текста можно отправить
+     * обычный FormData.
+     */
+
+    const formData =
+      new FormData();
+
+
+    formData.append(
+      'text',
+      text
     );
+
+
+    const response =
+      await fetch(
+        API_BASE +
+        '/api/posts',
+        {
+          method: 'POST',
+
+          credentials:
+            'include',
+
+          body:
+            formData
+        }
+      );
+
+
+    let data = null;
+
+
+    try {
+      data =
+        await response.json();
+    } catch {}
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        data?.error
+        ||
+        `HTTP ${response.status}`
+      );
+    }
+
 
     textarea.value = '';
 
+
     await loadFeed();
+
 
   } catch (error) {
 
@@ -1792,10 +2578,13 @@ async function createPost() {
       error
     );
 
+
     alert(
       error.message
-      || t('serverError')
+      ||
+      t('serverError')
     );
+
 
   } finally {
 
@@ -1804,26 +2593,26 @@ async function createPost() {
 }
 
 
-/* ============================================
+/* =========================================================
    LIKE
-============================================ */
+========================================================= */
 
-async function likePost(id) {
-
-  if (!id) {
-    return;
-  }
+async function likePost(
+  postId
+) {
 
   try {
 
     await apiRequest(
-      `/api/posts/${encodeURIComponent(id)}/like`,
+      `/api/posts/${postId}/like`,
       {
         method: 'POST'
       }
     );
 
+
     await loadFeed();
+
 
   } catch (error) {
 
@@ -1832,34 +2621,36 @@ async function likePost(id) {
       error
     );
 
+
     alert(
       error.message
-      || t('serverError')
+      ||
+      t('serverError')
     );
   }
 }
 
 
-/* ============================================
+/* =========================================================
    REPOST
-============================================ */
+========================================================= */
 
-async function repostPost(id) {
-
-  if (!id) {
-    return;
-  }
+async function repostPost(
+  postId
+) {
 
   try {
 
     await apiRequest(
-      `/api/posts/${encodeURIComponent(id)}/repost`,
+      `/api/posts/${postId}/repost`,
       {
         method: 'POST'
       }
     );
 
+
     await loadFeed();
+
 
   } catch (error) {
 
@@ -1868,30 +2659,141 @@ async function repostPost(id) {
       error
     );
 
+
     alert(
       error.message
-      || t('serverError')
+      ||
+      t('serverError')
     );
   }
 }
 
 
-/* ============================================
+/* =========================================================
    COMMENTS
-============================================ */
+========================================================= */
 
-function toggleComments(id) {
+async function toggleComments(
+  postId
+) {
 
   const box =
     document.getElementById(
-      `comments-${id}`
+      `comments-${postId}`
     );
+
 
   if (!box) {
     return;
   }
 
-  box.classList.toggle('hidden');
+
+  const wasHidden =
+    box.classList.contains(
+      'hidden'
+    );
+
+
+  box.classList.toggle(
+    'hidden'
+  );
+
+
+  if (wasHidden) {
+
+    await loadComments(
+      postId
+    );
+  }
+}
+
+
+async function loadComments(
+  postId
+) {
+
+  const list =
+    document.getElementById(
+      `comments-list-${postId}`
+    );
+
+
+  if (!list) {
+    return;
+  }
+
+
+  list.innerHTML =
+    `<div style="color:var(--muted)">Загрузка…</div>`;
+
+
+  try {
+
+    const data =
+      await apiRequest(
+        `/api/posts/${postId}/comments`
+      );
+
+
+    const comments =
+      Array.isArray(
+        data?.comments
+      )
+        ? data.comments
+        : [];
+
+
+    if (!comments.length) {
+
+      list.innerHTML =
+        `<div style="color:var(--muted);padding:8px 0">Пока нет комментариев.</div>`;
+
+      return;
+    }
+
+
+    list.innerHTML =
+      comments
+        .map(
+          comment => {
+
+            const username =
+              comment.user?.username
+              ||
+              'Hutka';
+
+
+            return `
+
+              <div class="comment">
+
+                <strong>
+                  @${escapeHTML(username)}
+                </strong>
+
+                ${escapeHTML(
+                  comment.text
+                )}
+
+              </div>
+
+            `;
+          }
+        )
+        .join('');
+
+
+  } catch (error) {
+
+    console.error(
+      'COMMENTS ERROR:',
+      error
+    );
+
+
+    list.innerHTML =
+      `<div style="color:var(--danger)">Не удалось загрузить комментарии.</div>`;
+  }
 }
 
 
@@ -1902,42 +2804,75 @@ async function submitComment(
 
   event.preventDefault();
 
+
   const input =
     document.getElementById(
       `comment-input-${postId}`
     );
 
+
   if (!input) {
     return;
   }
 
+
   const text =
     input.value.trim();
+
 
   if (!text) {
     return;
   }
 
+
   try {
 
     await apiRequest(
-      `/api/posts/${encodeURIComponent(postId)}/comments`,
+      `/api/posts/${postId}/comments`,
       {
         method: 'POST',
-        body: JSON.stringify({
-          text
-        })
+
+        body:
+          JSON.stringify({
+            text
+          })
       }
     );
 
+
     input.value = '';
+
+
+    await loadComments(
+      postId
+    );
+
 
     await loadFeed();
 
-    setTimeout(
-      () => toggleComments(postId),
-      50
-    );
+
+    /*
+     * После обновления ленты
+     * снова открываем комментарии.
+     */
+
+    const box =
+      document.getElementById(
+        `comments-${postId}`
+      );
+
+
+    if (box) {
+
+      box.classList.remove(
+        'hidden'
+      );
+
+      await loadComments(
+        postId
+      );
+    }
+
 
   } catch (error) {
 
@@ -1946,34 +2881,35 @@ async function submitComment(
       error
     );
 
+
     alert(
       error.message
-      || t('serverError')
+      ||
+      t('serverError')
     );
   }
 }
 
 
-/* ============================================
+/* =========================================================
    SETTINGS
-============================================ */
+========================================================= */
 
-function showSettings() {
+function toggleSettings() {
 
-  const panel =
-    document.getElementById(
+  document
+    .getElementById(
       'settingsPanel'
+    )
+    .classList.toggle(
+      'hidden'
     );
-
-  panel.classList.toggle(
-    'hidden'
-  );
 }
 
 
-/* ============================================
-   STARTUP
-============================================ */
+/* =========================================================
+   START
+========================================================= */
 
 applyTheme();
 
@@ -1983,31 +2919,30 @@ switchAuth('login');
 
 
 /*
- * КЛЮЧЕВАЯ ЗАЩИТА ОТ ПУСТОГО ЭКРАНА.
+ * КЛЮЧЕВОЙ МОМЕНТ:
  *
- * authScreen НЕ скрывается заранее.
- * mainApp остаётся hidden.
+ * authScreen НЕ имеет hidden.
  *
- * Если Render/API упадёт,
- * пользователь всё равно увидит
- * форму входа.
+ * Даже если Render недоступен,
+ * пользователь увидит форму.
  */
 
 window.addEventListener(
   'load',
   () => {
 
-    checkAuth().catch(
-      error => {
+    checkAuth()
+      .catch(
+        error => {
 
-        console.error(
-          'HUTKA START ERROR:',
-          error
-        );
+          console.error(
+            'HUTKA START ERROR:',
+            error
+          );
 
-        showAuth();
-      }
-    );
+          showAuth();
+        }
+      );
 
   }
 );
@@ -2015,4 +2950,4 @@ window.addEventListener(
 </script>
 
 </body>
-        </html>
+  </html>
