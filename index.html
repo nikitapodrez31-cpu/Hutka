@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Hutka</title>
+  <title>Hutka 🇧🇾</title>
 
   <meta
     name="description"
-    content="Hutka — беларуская сацыяльная сетка"
+    content="Hutka — маленькая беларуская социальная сеть"
   >
 
   <style>
@@ -17,23 +17,25 @@
     }
 
     :root {
-      --bg: #f5f5f5;
-      --card: #fff;
+      --bg: #f4f4f2;
+      --card: #ffffff;
       --text: #171717;
       --muted: #777;
-      --border: #e5e5e5;
+      --border: #e2e2df;
       --accent: #111;
+      --accent-text: #fff;
+      --soft: #f0f0ed;
       --danger: #d33;
+      --shadow: 0 8px 30px rgba(0,0,0,.05);
       --radius: 18px;
     }
 
-    html,
-    body {
-      margin: 0;
-      min-height: 100%;
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
+      margin: 0;
       background: var(--bg);
       color: var(--text);
       font-family:
@@ -43,11 +45,27 @@
         Roboto,
         Arial,
         sans-serif;
+      transition:
+        background .25s,
+        color .25s;
+    }
+
+    body.dark {
+      --bg: #111;
+      --card: #1b1b1b;
+      --text: #f2f2f2;
+      --muted: #999;
+      --border: #303030;
+      --accent: #f2f2f2;
+      --accent-text: #111;
+      --soft: #292929;
+      --shadow: 0 8px 30px rgba(0,0,0,.25);
     }
 
     button,
     input,
-    textarea {
+    textarea,
+    select {
       font: inherit;
     }
 
@@ -68,7 +86,61 @@
       min-height: 100vh;
     }
 
-    /* HEADER */
+    /* =====================================================
+       BELARUS DECORATION
+    ===================================================== */
+
+    .belarus-decoration {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .10;
+      user-select: none;
+    }
+
+    .stork {
+      right: 2%;
+      top: 90px;
+      font-size: 90px;
+      transform: rotate(-8deg);
+      filter: grayscale(1);
+    }
+
+    .ornament-top,
+    .ornament-bottom {
+      position: fixed;
+      left: 0;
+      right: 0;
+      height: 14px;
+      z-index: 1;
+      pointer-events: none;
+      opacity: .20;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent 0 8px,
+          currentColor 8px 10px,
+          transparent 10px 18px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent 0 8px,
+          currentColor 8px 10px,
+          transparent 10px 18px
+        );
+    }
+
+    .ornament-top {
+      top: 64px;
+    }
+
+    .ornament-bottom {
+      bottom: 0;
+    }
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
 
     header {
       position: sticky;
@@ -76,8 +148,12 @@
       z-index: 20;
       height: 64px;
       background: rgba(255,255,255,.94);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
+    }
+
+    body.dark header {
+      background: rgba(17,17,17,.94);
     }
 
     .header-inner {
@@ -108,14 +184,14 @@
     .header-user {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
     }
 
     .avatar {
       width: 38px;
       height: 38px;
       border-radius: 50%;
-      background: #ddd;
+      background: var(--soft);
       object-fit: cover;
 
       display: flex;
@@ -123,20 +199,26 @@
       justify-content: center;
 
       font-weight: 700;
-      color: #555;
+      color: var(--muted);
       flex-shrink: 0;
     }
 
     .small-btn {
       border: 1px solid var(--border);
-      background: white;
+      background: var(--card);
+      color: var(--text);
       border-radius: 12px;
       padding: 8px 12px;
     }
 
-    /* LAYOUT */
+    /* =====================================================
+       LAYOUT
+    ===================================================== */
 
     .layout {
+      position: relative;
+      z-index: 2;
+
       max-width: 1100px;
       margin: auto;
       padding: 22px 18px;
@@ -158,12 +240,14 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 10px;
+      box-shadow: var(--shadow);
     }
 
     .nav button {
       width: 100%;
       text-align: left;
       border: 0;
+      color: var(--text);
       background: transparent;
       padding: 12px;
       border-radius: 12px;
@@ -171,18 +255,38 @@
     }
 
     .nav button:hover {
-      background: #f1f1f1;
+      background: var(--soft);
     }
 
     .nav button.active {
-      background: #111;
-      color: white;
+      background: var(--accent);
+      color: var(--accent-text);
     }
 
-    /* SEARCH */
+    /* =====================================================
+       CARDS
+    ===================================================== */
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 15px;
+      box-shadow: var(--shadow);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
 
     .search {
-      background: white;
+      background: var(--card);
+      color: var(--text);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 11px 13px;
@@ -191,18 +295,12 @@
     }
 
     .search:focus {
-      border-color: #aaa;
+      border-color: #999;
     }
 
-    /* CARDS */
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-      margin-bottom: 15px;
-    }
+    /* =====================================================
+       COMPOSER
+    ===================================================== */
 
     .composer textarea {
       width: 100%;
@@ -212,6 +310,7 @@
       border: 0;
       outline: 0;
       font-size: 16px;
+      color: var(--text);
       background: transparent;
     }
 
@@ -227,7 +326,7 @@
       border: 1px solid var(--border);
       padding: 9px 13px;
       border-radius: 12px;
-      background: white;
+      background: var(--card);
     }
 
     .photo-label input {
@@ -236,8 +335,8 @@
 
     .primary {
       border: 0;
-      background: #111;
-      color: white;
+      background: var(--accent);
+      color: var(--accent-text);
       padding: 10px 17px;
       border-radius: 12px;
       font-weight: 650;
@@ -248,7 +347,9 @@
       cursor: default;
     }
 
-    /* POST */
+    /* =====================================================
+       POST
+    ===================================================== */
 
     .post-head {
       display: flex;
@@ -300,100 +401,33 @@
 
     .post-actions button {
       border: 0;
-      background: #f4f4f4;
+      background: var(--soft);
+      color: var(--text);
       padding: 8px 12px;
       border-radius: 10px;
-      color: #444;
+      transition: .15s;
     }
 
     .post-actions button:hover {
-      background: #e9e9e9;
+      transform: translateY(-1px);
     }
 
-    .post-actions button.liked {
-      background: #111;
-      color: white;
+    .post-actions button.liked,
+    .post-actions button.reposted {
+      background: var(--accent);
+      color: var(--accent-text);
     }
 
-    /* COMMENTS */
-
-    .comments-box {
-      margin-top: 14px;
-      border-top: 1px solid var(--border);
-      padding-top: 14px;
-    }
-
-    .comment {
-      display: flex;
-      gap: 10px;
-      padding: 10px 0;
-      border-bottom: 1px solid #f0f0f0;
-    }
-
-    .comment:last-child {
-      border-bottom: 0;
-    }
-
-    .comment-content {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .comment-author {
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .comment-text {
-      margin-top: 3px;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .comment-date {
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 4px;
-    }
-
-    .comment-delete {
-      border: 0;
-      background: transparent;
-      color: var(--danger);
-      font-size: 12px;
-      padding: 3px;
-    }
-
-    .comment-form {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .comment-form input {
-      flex: 1;
-      min-width: 0;
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 9px 11px;
-      outline: none;
-    }
-
-    .comment-form button {
-      border: 0;
-      background: #111;
-      color: white;
-      border-radius: 11px;
-      padding: 9px 13px;
-    }
-
-    /* RIGHT BAR */
+    /* =====================================================
+       RIGHT BAR
+    ===================================================== */
 
     .info-card {
-      background: white;
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 16px;
+      box-shadow: var(--shadow);
     }
 
     .info-title {
@@ -401,11 +435,16 @@
       margin-bottom: 8px;
     }
 
-    .muted {
-      color: var(--muted);
+    .belarus-mini {
+      margin-top: 15px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      line-height: 1.5;
     }
 
-    /* AUTH */
+    /* =====================================================
+       AUTH
+    ===================================================== */
 
     .auth-screen {
       min-height: 100vh;
@@ -413,16 +452,20 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      position: relative;
+      overflow: hidden;
     }
 
     .auth-card {
       width: 100%;
       max-width: 430px;
-      background: white;
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 24px;
       padding: 28px;
-      box-shadow: 0 15px 50px rgba(0,0,0,.07);
+      box-shadow: 0 15px 50px rgba(0,0,0,.08);
+      position: relative;
+      z-index: 2;
     }
 
     .auth-title {
@@ -448,13 +491,15 @@
     }
 
     .field input,
-    .field textarea {
+    .field textarea,
+    .field select {
       width: 100%;
       padding: 12px;
       border: 1px solid var(--border);
       border-radius: 12px;
       outline: none;
-      background: white;
+      background: var(--card);
+      color: var(--text);
     }
 
     .field textarea {
@@ -477,11 +522,14 @@
     .link-btn {
       border: 0;
       background: transparent;
+      color: var(--text);
       font-weight: 700;
       padding: 0;
     }
 
-    /* PROFILE */
+    /* =====================================================
+       PROFILE
+    ===================================================== */
 
     .profile-head {
       display: flex;
@@ -494,7 +542,7 @@
       height: 75px;
       border-radius: 50%;
       object-fit: cover;
-      background: #ddd;
+      background: var(--soft);
     }
 
     .profile-name {
@@ -517,12 +565,14 @@
       font-size: 13px;
     }
 
-    /* MODAL */
+    /* =====================================================
+       MODAL
+    ===================================================== */
 
     .modal {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.45);
+      background: rgba(0,0,0,.55);
       z-index: 100;
 
       display: flex;
@@ -533,13 +583,15 @@
     }
 
     .modal-card {
-      background: white;
+      background: var(--card);
+      color: var(--text);
       border-radius: 22px;
       padding: 22px;
       width: 100%;
-      max-width: 450px;
+      max-width: 500px;
       max-height: 90vh;
       overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
     }
 
     .modal-head {
@@ -551,14 +603,88 @@
 
     .close {
       border: 0;
-      background: #f1f1f1;
+      background: var(--soft);
+      color: var(--text);
       border-radius: 50%;
       width: 34px;
       height: 34px;
       font-size: 20px;
     }
 
-    /* SEARCH RESULTS */
+    /* =====================================================
+       COMMENTS
+    ===================================================== */
+
+    .comment {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comment:last-child {
+      border-bottom: 0;
+    }
+
+    .comment-head {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .comment-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .comment-body {
+      margin-left: 41px;
+      margin-top: 5px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .comment-delete {
+      margin-left: auto;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .comment-delete:hover {
+      color: var(--danger);
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+    }
+
+    .comment-input {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    /* =====================================================
+       SEARCH RESULTS
+    ===================================================== */
 
     .result {
       padding: 12px 0;
@@ -575,7 +701,72 @@
       align-items: center;
     }
 
-    /* EMPTY */
+    /* =====================================================
+       SETTINGS
+    ===================================================== */
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-row:last-child {
+      border-bottom: 0;
+    }
+
+    .settings-label {
+      font-weight: 650;
+    }
+
+    .settings-description {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .theme-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    .theme-btn,
+    .language-btn {
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+
+    .theme-btn.active,
+    .language-btn.active {
+      background: var(--accent);
+      color: var(--accent-text);
+    }
+
+    .easter-egg {
+      margin-top: 25px;
+      padding: 18px;
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: 15px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .heart {
+      font-size: 25px;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    /* =====================================================
+       EMPTY
+    ===================================================== */
 
     .empty {
       text-align: center;
@@ -583,7 +774,9 @@
       color: var(--muted);
     }
 
-    /* TOAST */
+    /* =====================================================
+       TOAST
+    ===================================================== */
 
     .toast {
       position: fixed;
@@ -600,11 +793,15 @@
 
       max-width: calc(100% - 40px);
       text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,.2);
     }
 
-    /* MOBILE */
+    /* =====================================================
+       MOBILE
+    ===================================================== */
 
     @media (max-width: 850px) {
+
       .layout {
         grid-template-columns: 1fr;
         max-width: 650px;
@@ -633,9 +830,15 @@
         width: auto;
         white-space: nowrap;
       }
+
+      .stork {
+        opacity: .06;
+        right: -10px;
+      }
     }
 
     @media (max-width: 500px) {
+
       .header-inner {
         padding: 0 12px;
       }
@@ -654,10 +857,9 @@
       }
 
       .header-user .small-btn {
-        max-width: 130px;
+        max-width: 120px;
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
       }
 
       .post-date {
@@ -667,448 +869,839 @@
       .comment-form {
         flex-direction: column;
       }
+
+      .comment-form .primary {
+        width: 100%;
+      }
+
+      .settings-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<div id="app"></div>
+  <!-- BELARUS DECORATION -->
 
-<div id="toast" class="toast hidden"></div>
+  <div class="belarus-decoration stork">🪽</div>
+  <div class="ornament-top"></div>
+  <div class="ornament-bottom"></div>
 
 
-<!-- =========================================================
-     AUTH
-========================================================= -->
+  <!-- TOAST -->
 
-<div id="authScreen" class="auth-screen hidden">
+  <div
+    id="toast"
+    class="toast hidden"
+  ></div>
 
-  <div class="auth-card">
 
-    <div class="auth-title">
-      Hutka
+  <!-- =====================================================
+       AUTH
+  ====================================================== -->
+
+  <div
+    id="authScreen"
+    class="auth-screen hidden"
+  >
+
+    <div class="belarus-decoration stork">
+      🪽
     </div>
 
-    <div class="auth-subtitle">
-      Маленькая беларуская социальная сеть.
-    </div>
+    <div class="auth-card">
 
-
-    <!-- LOGIN -->
-
-    <form id="loginForm">
-
-      <div class="field">
-        <label>Username</label>
-
-        <input
-          id="loginUsername"
-          type="text"
-          autocomplete="username"
-          placeholder="@username"
-          required
-        >
+      <div class="auth-title">
+        Hutka 🇧🇾
       </div>
-
-      <div class="field">
-        <label>Пароль</label>
-
-        <input
-          id="loginPassword"
-          type="password"
-          autocomplete="current-password"
-          placeholder="••••••••"
-          required
-        >
-      </div>
-
-      <button
-        class="primary"
-        type="submit"
-      >
-        Увайсці
-      </button>
-
-    </form>
-
-
-    <!-- REGISTER -->
-
-    <form
-      id="registerForm"
-      class="hidden"
-    >
-
-      <div class="field">
-        <label>Имя</label>
-
-        <input
-          id="registerName"
-          type="text"
-          placeholder="Твоё имя"
-          required
-        >
-      </div>
-
-      <div class="field">
-        <label>Username</label>
-
-        <input
-          id="registerUsername"
-          type="text"
-          placeholder="username"
-          required
-        >
-      </div>
-
-      <div class="field">
-        <label>Пароль</label>
-
-        <input
-          id="registerPassword"
-          type="password"
-          autocomplete="new-password"
-          placeholder="Минимум 6 символов"
-          required
-        >
-      </div>
-
-      <button
-        class="primary"
-        type="submit"
-      >
-        Стварыць акаунт
-      </button>
-
-    </form>
-
-
-    <div class="auth-switch">
-
-      <span id="loginSwitch">
-        Нет аккаунта?
-
-        <button
-          class="link-btn"
-          id="showRegister"
-          type="button"
-        >
-          Регистрация
-        </button>
-      </span>
-
-      <span
-        id="registerSwitch"
-        class="hidden"
-      >
-        Уже есть аккаунт?
-
-        <button
-          class="link-btn"
-          id="showLogin"
-          type="button"
-        >
-          Войти
-        </button>
-      </span>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================================================
-     MAIN APP
-========================================================= -->
-
-<div id="mainApp" class="hidden">
-
-  <header>
-
-    <div class="header-inner">
 
       <div
-        class="logo"
-        style="cursor:pointer"
-        onclick="showFeed()"
+        class="auth-subtitle"
+        id="authSubtitle"
       >
-        Hutka
-        <span>Беларусь</span>
+        Маленькая беларуская социальная сеть.
       </div>
 
-      <div class="header-user">
 
-        <button
-          class="small-btn"
-          onclick="openProfile()"
-        >
-          <span id="headerUserName">
-            Профиль
-          </span>
-        </button>
+      <!-- LOGIN -->
 
-        <div
-          id="headerAvatar"
-          class="avatar"
-        >
-          ?
-        </div>
+      <form id="loginForm">
 
-      </div>
+        <div class="field">
 
-    </div>
-
-  </header>
-
-
-  <div class="layout">
-
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-      <div class="nav">
-
-        <button
-          id="navFeed"
-          class="active"
-          onclick="showFeed()"
-        >
-          🏠 Лента
-        </button>
-
-        <button
-          id="navSearch"
-          onclick="showSearch()"
-        >
-          🔎 Пошук
-        </button>
-
-        <button
-          onclick="openProfile()"
-        >
-          👤 Профіль
-        </button>
-
-        <button
-          onclick="logout()"
-        >
-          ↪️ Выйсці
-        </button>
-
-      </div>
-
-    </aside>
-
-
-    <!-- CONTENT -->
-
-    <main id="content">
-
-
-      <!-- FEED -->
-
-      <section id="feedView">
-
-        <div class="card composer">
-
-          <textarea
-            id="postText"
-            maxlength="280"
-            placeholder="Што новага?"
-          ></textarea>
-
-          <div class="composer-bottom">
-
-            <label class="photo-label">
-
-              📷 Фото
-
-              <input
-                id="postPhoto"
-                type="file"
-                accept="image/jpeg,image/png,image/webp,image/gif"
-              >
-
-            </label>
-
-            <button
-              id="publishBtn"
-              class="primary"
-              onclick="createPost()"
-            >
-              Апублікаваць
-            </button>
-
-          </div>
-
-          <div
-            id="selectedPhoto"
-            class="muted"
-            style="margin-top:8px;font-size:13px"
-          ></div>
-
-        </div>
-
-        <div id="feed"></div>
-
-      </section>
-
-
-      <!-- SEARCH -->
-
-      <section
-        id="searchView"
-        class="hidden"
-      >
-
-        <div class="card">
+          <label
+            data-i18n="username"
+          >
+            Username
+          </label>
 
           <input
-            id="searchInput"
-            class="search"
-            placeholder="Пошук людзей і пастоў..."
-            autocomplete="off"
+            id="loginUsername"
+            type="text"
+            autocomplete="username"
+            placeholder="@username"
+            required
           >
 
         </div>
 
-        <div id="searchResults"></div>
 
-      </section>
+        <div class="field">
+
+          <label
+            data-i18n="password"
+          >
+            Пароль
+          </label>
+
+          <input
+            id="loginPassword"
+            type="password"
+            autocomplete="current-password"
+            placeholder="••••••••"
+            required
+          >
+
+        </div>
 
 
-      <!-- PROFILE -->
+        <button
+          class="primary"
+          type="submit"
+          data-i18n="login"
+        >
+          Увайсці
+        </button>
 
-      <section
-        id="profileView"
+      </form>
+
+
+      <!-- REGISTER -->
+
+      <form
+        id="registerForm"
         class="hidden"
       >
 
-        <div id="profileContent"></div>
+        <div class="field">
 
-      </section>
+          <label data-i18n="name">
+            Имя
+          </label>
 
-    </main>
+          <input
+            id="registerName"
+            type="text"
+            placeholder="Твоё имя"
+            required
+          >
 
-
-    <!-- RIGHT -->
-
-    <aside class="rightbar">
-
-      <div class="info-card">
-
-        <div class="info-title">
-          Hutka 🇧🇾
         </div>
 
-        <div class="muted">
-          Маленькая сетка для вялікіх гісторый.
+
+        <div class="field">
+
+          <label>
+            Username
+          </label>
+
+          <input
+            id="registerUsername"
+            type="text"
+            placeholder="username"
+            required
+          >
+
         </div>
+
+
+        <div class="field">
+
+          <label data-i18n="password">
+            Пароль
+          </label>
+
+          <input
+            id="registerPassword"
+            type="password"
+            autocomplete="new-password"
+            placeholder="Минимум 6 символов"
+            required
+          >
+
+        </div>
+
+
+        <button
+          class="primary"
+          type="submit"
+          data-i18n="register"
+        >
+          Стварыць акаунт
+        </button>
+
+      </form>
+
+
+      <div class="auth-switch">
+
+        <span id="loginSwitch">
+
+          <span data-i18n="noAccount">
+            Нет аккаунта?
+          </span>
+
+          <button
+            class="link-btn"
+            id="showRegister"
+            type="button"
+            data-i18n="register"
+          >
+            Регистрация
+          </button>
+
+        </span>
+
+
+        <span
+          id="registerSwitch"
+          class="hidden"
+        >
+
+          <span data-i18n="haveAccount">
+            Уже есть аккаунт?
+          </span>
+
+          <button
+            class="link-btn"
+            id="showLogin"
+            type="button"
+            data-i18n="login"
+          >
+            Войти
+          </button>
+
+        </span>
 
       </div>
-
-    </aside>
-
-  </div>
-
-</div>
-
-
-<!-- =========================================================
-     EDIT PROFILE MODAL
-========================================================= -->
-
-<div
-  id="profileModal"
-  class="modal hidden"
->
-
-  <div class="modal-card">
-
-    <div class="modal-head">
-
-      <strong>
-        Рэдагаваць профіль
-      </strong>
-
-      <button
-        class="close"
-        onclick="closeProfileModal()"
-      >
-        ×
-      </button>
 
     </div>
 
+  </div>
 
-    <form id="profileForm">
 
-      <div class="field">
+  <!-- =====================================================
+       MAIN APP
+  ====================================================== -->
 
-        <label>Имя</label>
+  <div
+    id="mainApp"
+    class="hidden"
+  >
 
-        <input
-          id="profileName"
-          required
+    <header>
+
+      <div class="header-inner">
+
+        <div
+          class="logo"
+          style="cursor:pointer"
+          onclick="showFeed()"
+        >
+          Hutka
+          <span>Беларусь</span>
+        </div>
+
+
+        <div class="header-user">
+
+          <button
+            class="small-btn"
+            onclick="openProfile()"
+          >
+            <span id="headerUserName">
+              Профиль
+            </span>
+          </button>
+
+
+          <div
+            id="headerAvatar"
+            class="avatar"
+          >
+            ?
+          </div>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <div class="layout">
+
+
+      <!-- =================================================
+           SIDEBAR
+      ================================================== -->
+
+      <aside class="sidebar">
+
+        <div class="nav">
+
+          <button
+            id="navFeed"
+            class="active"
+            onclick="showFeed()"
+          >
+            🏠
+            <span data-i18n="feed">
+              Лента
+            </span>
+          </button>
+
+
+          <button
+            id="navSearch"
+            onclick="showSearch()"
+          >
+            🔎
+            <span data-i18n="search">
+              Пошук
+            </span>
+          </button>
+
+
+          <button
+            id="navProfile"
+            onclick="openProfile()"
+          >
+            👤
+            <span data-i18n="profile">
+              Профиль
+            </span>
+          </button>
+
+
+          <button
+            id="navSettings"
+            onclick="showSettings()"
+          >
+            ⚙️
+            <span data-i18n="settings">
+              Настройки
+            </span>
+          </button>
+
+
+          <button
+            onclick="logout()"
+          >
+            ↪️
+            <span data-i18n="logout">
+              Выйсці
+            </span>
+          </button>
+
+        </div>
+
+      </aside>
+
+
+      <!-- =================================================
+           CONTENT
+      ================================================== -->
+
+      <main id="content">
+
+
+        <!-- FEED -->
+
+        <section id="feedView">
+
+          <div class="card composer">
+
+            <textarea
+              id="postText"
+              maxlength="280"
+              data-i18n-placeholder="postPlaceholder"
+              placeholder="Што новага?"
+            ></textarea>
+
+
+            <div class="composer-bottom">
+
+              <label class="photo-label">
+
+                📷
+                <span data-i18n="photo">
+                  Фото
+                </span>
+
+                <input
+                  id="postPhoto"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                >
+
+              </label>
+
+
+              <button
+                id="publishBtn"
+                class="primary"
+                onclick="createPost()"
+              >
+                <span data-i18n="publish">
+                  Апублікаваць
+                </span>
+              </button>
+
+            </div>
+
+
+            <div
+              id="selectedPhoto"
+              class="muted"
+              style="
+                margin-top:8px;
+                font-size:13px
+              "
+            ></div>
+
+          </div>
+
+
+          <div id="feed"></div>
+
+        </section>
+
+
+        <!-- SEARCH -->
+
+        <section
+          id="searchView"
+          class="hidden"
         >
 
-      </div>
+          <div class="card">
+
+            <input
+              id="searchInput"
+              class="search"
+              data-i18n-placeholder="searchPlaceholder"
+              placeholder="Пошук людзей і пастоў..."
+              autocomplete="off"
+            >
+
+          </div>
 
 
-      <div class="field">
+          <div id="searchResults"></div>
 
-        <label>Username</label>
+        </section>
 
-        <input
-          id="profileUsername"
-          required
+
+        <!-- PROFILE -->
+
+        <section
+          id="profileView"
+          class="hidden"
         >
 
-      </div>
+          <div id="profileContent"></div>
+
+        </section>
 
 
-      <div class="field">
+        <!-- SETTINGS -->
 
-        <label>О себе</label>
-
-        <textarea
-          id="profileBio"
-          maxlength="300"
-        ></textarea>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>Аватар</label>
-
-        <input
-          id="profileAvatar"
-          type="file"
-          accept="image/jpeg,image/png,image/webp,image/gif"
+        <section
+          id="settingsView"
+          class="hidden"
         >
 
-      </div>
+          <div class="card">
+
+            <h2
+              style="
+                margin-top:0;
+                margin-bottom:5px
+              "
+              data-i18n="settings"
+            >
+              Настройки
+            </h2>
+
+            <div
+              class="muted"
+              data-i18n="settingsSubtitle"
+            >
+              Настрой Hutka под себя.
+            </div>
 
 
-      <button
-        class="primary"
-        type="submit"
-      >
-        Сохранить
-      </button>
+            <!-- THEME -->
 
-    </form>
+            <div class="settings-row">
+
+              <div>
+
+                <div
+                  class="settings-label"
+                  data-i18n="theme"
+                >
+                  Тема
+                </div>
+
+                <div
+                  class="settings-description"
+                  data-i18n="themeDescription"
+                >
+                  Выбери внешний вид приложения.
+                </div>
+
+              </div>
+
+
+              <div class="theme-buttons">
+
+                <button
+                  id="themeLight"
+                  class="theme-btn"
+                  onclick="setTheme('light')"
+                >
+                  ☀️
+                  <span data-i18n="light">
+                    Светлая
+                  </span>
+                </button>
+
+
+                <button
+                  id="themeDark"
+                  class="theme-btn"
+                  onclick="setTheme('dark')"
+                >
+                  🌙
+                  <span data-i18n="dark">
+                    Тёмная
+                  </span>
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <!-- LANGUAGE -->
+
+            <div class="settings-row">
+
+              <div>
+
+                <div
+                  class="settings-label"
+                  data-i18n="language"
+                >
+                  Язык
+                </div>
+
+                <div
+                  class="settings-description"
+                  data-i18n="languageDescription"
+                >
+                  Язык интерфейса Hutka.
+                </div>
+
+              </div>
+
+
+              <div class="theme-buttons">
+
+                <button
+                  id="langRu"
+                  class="language-btn"
+                  onclick="setLanguage('ru')"
+                >
+                  🇷🇺 RU
+                </button>
+
+
+                <button
+                  id="langBe"
+                  class="language-btn"
+                  onclick="setLanguage('be')"
+                >
+                  🇧🇾 BE
+                </button>
+
+
+                <button
+                  id="langEn"
+                  class="language-btn"
+                  onclick="setLanguage('en')"
+                >
+                  🇬🇧 EN
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <!-- DEVELOPER EASTER EGG -->
+
+            <div class="easter-egg">
+
+              <span class="heart">
+                ❤️
+              </span>
+
+              <strong>
+                Hutka
+              </strong>
+
+              <br>
+
+              <span data-i18n="easterEgg">
+                Если ты нашёл это место — спасибо,
+                что заглянул.
+                Hutka сделана с душой.
+              </span>
+
+              <br><br>
+
+              <span>
+                — Никита, разработчик Hutka 🇧🇾
+              </span>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </main>
+
+
+      <!-- =================================================
+           RIGHT BAR
+      ================================================== -->
+
+      <aside class="rightbar">
+
+        <div class="info-card">
+
+          <div class="info-title">
+            Hutka 🇧🇾
+          </div>
+
+          <div
+            class="muted"
+            data-i18n="rightDescription"
+          >
+            Маленькая сеть для больших историй.
+          </div>
+
+
+          <div class="belarus-mini">
+
+            <div style="font-size:28px">
+              🪽
+            </div>
+
+            <div
+              class="muted"
+              data-i18n="belarusDescription"
+            >
+              Трохі Беларусі ў кожнай гісторыі.
+            </div>
+
+          </div>
+
+        </div>
+
+      </aside>
+
+    </div>
 
   </div>
 
-</div>
+
+  <!-- =====================================================
+       EDIT PROFILE MODAL
+  ====================================================== -->
+
+  <div
+    id="profileModal"
+    class="modal hidden"
+  >
+
+    <div class="modal-card">
+
+      <div class="modal-head">
+
+        <strong
+          data-i18n="editProfile"
+        >
+          Рэдагаваць профіль
+        </strong>
+
+        <button
+          class="close"
+          onclick="closeProfileModal()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <form id="profileForm">
+
+        <div class="field">
+
+          <label data-i18n="name">
+            Имя
+          </label>
+
+          <input
+            id="profileName"
+            required
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Username
+          </label>
+
+          <input
+            id="profileUsername"
+            required
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label data-i18n="about">
+            О себе
+          </label>
+
+          <textarea
+            id="profileBio"
+            maxlength="300"
+          ></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+          <label data-i18n="avatar">
+            Аватар
+          </label>
+
+          <input
+            id="profileAvatar"
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+          >
+
+        </div>
+
+
+        <button
+          class="primary"
+          type="submit"
+        >
+          <span data-i18n="save">
+            Сохранить
+          </span>
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       COMMENTS MODAL
+  ====================================================== -->
+
+  <div
+    id="commentsModal"
+    class="modal hidden"
+  >
+
+    <div class="modal-card">
+
+      <div class="modal-head">
+
+        <strong>
+          💬
+          <span data-i18n="comments">
+            Комментарии
+          </span>
+        </strong>
+
+        <button
+          class="close"
+          onclick="closeComments()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div id="commentsList">
+
+        <div class="empty">
+          Загружаем...
+        </div>
+
+      </div>
+
+
+      <form
+        id="commentForm"
+        class="comment-form"
+      >
+
+        <input
+          id="commentInput"
+          class="comment-input"
+          maxlength="500"
+          data-i18n-placeholder="commentPlaceholder"
+          placeholder="Написать комментарий..."
+          required
+        >
+
+        <button
+          class="primary"
+          type="submit"
+        >
+          ➤
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
 
 
 <script>
@@ -1122,12 +1715,460 @@ const API_URL =
 
 let currentUser = null;
 
+let currentCommentPostId = null;
+
+
+/* =========================================================
+   TRANSLATIONS
+========================================================= */
+
+const translations = {
+
+  ru: {
+
+    username: 'Username',
+
+    password: 'Пароль',
+
+    name: 'Имя',
+
+    about: 'О себе',
+
+    avatar: 'Аватар',
+
+    login: 'Войти',
+
+    register: 'Регистрация',
+
+    noAccount: 'Нет аккаунта?',
+
+    haveAccount: 'Уже есть аккаунт?',
+
+    feed: 'Лента',
+
+    search: 'Поиск',
+
+    profile: 'Профиль',
+
+    settings: 'Настройки',
+
+    logout: 'Выйти',
+
+    photo: 'Фото',
+
+    publish: 'Опубликовать',
+
+    postPlaceholder: 'Что нового?',
+
+    searchPlaceholder:
+      'Поиск людей и постов...',
+
+    commentPlaceholder:
+      'Написать комментарий...',
+
+    comments: 'Комментарии',
+
+    settingsSubtitle:
+      'Настрой Hutka под себя.',
+
+    theme: 'Тема',
+
+    themeDescription:
+      'Выбери внешний вид приложения.',
+
+    light: 'Светлая',
+
+    dark: 'Тёмная',
+
+    language: 'Язык',
+
+    languageDescription:
+      'Язык интерфейса Hutka.',
+
+    editProfile:
+      'Редактировать профиль',
+
+    save: 'Сохранить',
+
+    rightDescription:
+      'Маленькая сеть для больших историй.',
+
+    belarusDescription:
+      'Немного Беларуси в каждой истории.',
+
+    easterEgg:
+      'Если ты нашёл это место — спасибо, что заглянул. Hutka сделана с душой.',
+
+    like: 'Нравится',
+
+    repost: 'Репост',
+
+    delete: 'Удалить',
+
+    people: 'Люди',
+
+    nothingFound:
+      'Ничего не найдено.',
+
+    firstPost:
+      'Пока здесь пусто. Напиши первый пост!'
+
+  },
+
+
+  be: {
+
+    username: 'Username',
+
+    password: 'Пароль',
+
+    name: 'Імя',
+
+    about: 'Пра сябе',
+
+    avatar: 'Аватар',
+
+    login: 'Увайсці',
+
+    register: 'Рэгістрацыя',
+
+    noAccount: 'Няма акаўнта?',
+
+    haveAccount: 'Ужо ёсць акаўнт?',
+
+    feed: 'Стужка',
+
+    search: 'Пошук',
+
+    profile: 'Профіль',
+
+    settings: 'Налады',
+
+    logout: 'Выйсці',
+
+    photo: 'Фота',
+
+    publish: 'Апублікаваць',
+
+    postPlaceholder: 'Што новага?',
+
+    searchPlaceholder:
+      'Пошук людзей і пастоў...',
+
+    commentPlaceholder:
+      'Напісаць каментарый...',
+
+    comments: 'Каментарыі',
+
+    settingsSubtitle:
+      'Наладзь Hutka пад сябе.',
+
+    theme: 'Тэма',
+
+    themeDescription:
+      'Выберы выгляд праграмы.',
+
+    light: 'Светлая',
+
+    dark: 'Цёмная',
+
+    language: 'Мова',
+
+    languageDescription:
+      'Мова інтэрфейсу Hutka.',
+
+    editProfile:
+      'Рэдагаваць профіль',
+
+    save: 'Захаваць',
+
+    rightDescription:
+      'Маленькая сетка для вялікіх гісторый.',
+
+    belarusDescription:
+      'Трохі Беларусі ў кожнай гісторыі.',
+
+    easterEgg:
+      'Калі ты знайшоў гэтае месца — дзякуй, што заглянуў. Hutka зроблена з душой.',
+
+    like: 'Падабаецца',
+
+    repost: 'Рэпост',
+
+    delete: 'Выдаліць',
+
+    people: 'Людзі',
+
+    nothingFound:
+      'Нічога не знойдзена.',
+
+    firstPost:
+      'Пакуль тут пуста. Напішы першы пост!'
+
+  },
+
+
+  en: {
+
+    username: 'Username',
+
+    password: 'Password',
+
+    name: 'Name',
+
+    about: 'About',
+
+    avatar: 'Avatar',
+
+    login: 'Log in',
+
+    register: 'Register',
+
+    noAccount: 'No account?',
+
+    haveAccount: 'Already have an account?',
+
+    feed: 'Feed',
+
+    search: 'Search',
+
+    profile: 'Profile',
+
+    settings: 'Settings',
+
+    logout: 'Log out',
+
+    photo: 'Photo',
+
+    publish: 'Publish',
+
+    postPlaceholder: 'What’s new?',
+
+    searchPlaceholder:
+      'Search people and posts...',
+
+    commentPlaceholder:
+      'Write a comment...',
+
+    comments: 'Comments',
+
+    settingsSubtitle:
+      'Make Hutka yours.',
+
+    theme: 'Theme',
+
+    themeDescription:
+      'Choose the appearance of the app.',
+
+    light: 'Light',
+
+    dark: 'Dark',
+
+    language: 'Language',
+
+    languageDescription:
+      'Hutka interface language.',
+
+    editProfile:
+      'Edit profile',
+
+    save: 'Save',
+
+    rightDescription:
+      'A small network for big stories.',
+
+    belarusDescription:
+      'A little Belarus in every story.',
+
+    easterEgg:
+      'If you found this place — thank you for looking around. Hutka was made with heart.',
+
+    like: 'Like',
+
+    repost: 'Repost',
+
+    delete: 'Delete',
+
+    people: 'People',
+
+    nothingFound:
+      'Nothing found.',
+
+    firstPost:
+      'It is empty here. Write the first post!'
+
+  }
+
+};
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+let language =
+  localStorage.getItem(
+    'hutka_language'
+  ) || 'ru';
+
+
+let theme =
+  localStorage.getItem(
+    'hutka_theme'
+  ) || 'light';
+
+
+function setTheme(value) {
+
+  theme = value;
+
+  localStorage.setItem(
+    'hutka_theme',
+    value
+  );
+
+  document.body.classList.toggle(
+    'dark',
+    value === 'dark'
+  );
+
+  document
+    .getElementById('themeLight')
+    ?.classList.toggle(
+      'active',
+      value === 'light'
+    );
+
+  document
+    .getElementById('themeDark')
+    ?.classList.toggle(
+      'active',
+      value === 'dark'
+    );
+}
+
+
+function setLanguage(value) {
+
+  language = value;
+
+  localStorage.setItem(
+    'hutka_language',
+    value
+  );
+
+  applyLanguage();
+
+  if (
+    !document
+      .getElementById(
+        'settingsView'
+      )
+      .classList.contains('hidden')
+  ) {
+    showSettings();
+  }
+}
+
+
+function t(key) {
+
+  return (
+    translations[language]?.[key] ||
+    translations.ru[key] ||
+    key
+  );
+}
+
+
+function applyLanguage() {
+
+  document
+    .querySelectorAll(
+      '[data-i18n]'
+    )
+    .forEach(
+      element => {
+
+        const key =
+          element.dataset.i18n;
+
+        element.textContent =
+          t(key);
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      '[data-i18n-placeholder]'
+    )
+    .forEach(
+      element => {
+
+        const key =
+          element.dataset.i18nPlaceholder;
+
+        element.placeholder =
+          t(key);
+      }
+    );
+
+
+  document.documentElement.lang =
+    language === 'be'
+      ? 'be'
+      : language === 'en'
+        ? 'en'
+        : 'ru';
+
+
+  document
+    .getElementById('langRu')
+    ?.classList.toggle(
+      'active',
+      language === 'ru'
+    );
+
+  document
+    .getElementById('langBe')
+    ?.classList.toggle(
+      'active',
+      language === 'be'
+    );
+
+  document
+    .getElementById('langEn')
+    ?.classList.toggle(
+      'active',
+      language === 'en'
+    );
+}
+
 
 /* =========================================================
    HELPERS
 ========================================================= */
 
 function apiUrl(path) {
+
+  return API_URL + path;
+}
+
+
+function mediaUrl(path) {
+
+  if (!path) {
+    return '';
+  }
+
+  if (
+    path.startsWith('http://') ||
+    path.startsWith('https://')
+  ) {
+    return path;
+  }
+
   return API_URL + path;
 }
 
@@ -1135,7 +2176,9 @@ function apiUrl(path) {
 function showToast(message) {
 
   const toast =
-    document.getElementById('toast');
+    document.getElementById(
+      'toast'
+    );
 
   toast.textContent =
     message;
@@ -1155,7 +2198,7 @@ function showToast(message) {
           'hidden'
         );
       },
-      3500
+      3000
     );
 }
 
@@ -1166,69 +2209,32 @@ async function api(
 ) {
 
   const config = {
-    credentials: 'include',
+
+    credentials:
+      'include',
+
     ...options
   };
 
-  let response;
 
-  try {
-
-    response =
-      await fetch(
-        apiUrl(path),
-        config
-      );
-
-  } catch (error) {
-
-    console.error(
-      'FETCH ERROR:',
-      error
+  const response =
+    await fetch(
+      apiUrl(path),
+      config
     );
-
-    throw new Error(
-      'Не удалось подключиться к серверу Hutka. Проверь, запущен ли Render.'
-    );
-  }
 
 
   let data = {};
 
-  const contentType =
-    response.headers.get(
-      'content-type'
-    ) || '';
 
+  try {
 
-  if (
-    contentType.includes(
-      'application/json'
-    )
-  ) {
+    data =
+      await response.json();
 
-    try {
+  } catch {
 
-      data =
-        await response.json();
-
-    } catch {
-
-      data = {};
-
-    }
-
-  } else {
-
-    const text =
-      await response.text();
-
-    data = {
-      error:
-        text ||
-        `Ошибка сервера: ${response.status}`
-    };
-
+    data = {};
   }
 
 
@@ -1238,7 +2244,6 @@ async function api(
       data.error ||
       `Ошибка сервера: ${response.status}`
     );
-
   }
 
 
@@ -1281,35 +2286,21 @@ function initials(name) {
       name || '?'
     ).trim();
 
+
   if (!value) {
     return '?';
   }
+
 
   return value
     .split(/\s+/)
     .slice(0, 2)
     .map(
-      x => x[0]
+      x =>
+        x[0]
     )
     .join('')
     .toUpperCase();
-}
-
-
-function mediaUrl(url) {
-
-  if (!url) {
-    return '';
-  }
-
-  if (
-    url.startsWith('http://') ||
-    url.startsWith('https://')
-  ) {
-    return url;
-  }
-
-  return API_URL + url;
 }
 
 
@@ -1324,19 +2315,22 @@ function avatarHtml(
       <img
         class="${className}"
         src="${escapeHtml(
-          mediaUrl(user.avatar)
+          mediaUrl(
+            user.avatar
+          )
         )}"
         alt=""
-        loading="lazy"
       >
     `;
-
   }
+
 
   return `
     <div class="${className}">
       ${escapeHtml(
-        initials(user?.name)
+        initials(
+          user?.name
+        )
       )}
     </div>
   `;
@@ -1348,13 +2342,19 @@ function formatDate(date) {
   try {
 
     return new Intl.DateTimeFormat(
-      'ru-RU',
+      language === 'en'
+        ? 'en-US'
+        : language === 'be'
+          ? 'be-BY'
+          : 'ru-RU',
+
       {
         day: 'numeric',
         month: 'short',
         hour: '2-digit',
         minute: '2-digit'
       }
+
     ).format(
       new Date(date)
     );
@@ -1362,7 +2362,6 @@ function formatDate(date) {
   } catch {
 
     return '';
-
   }
 }
 
@@ -1376,7 +2375,10 @@ async function checkAuth() {
   try {
 
     const data =
-      await api('/api/me');
+      await api(
+        '/api/me'
+      );
+
 
     if (data.user) {
 
@@ -1390,15 +2392,16 @@ async function checkAuth() {
     } else {
 
       showAuth();
-
     }
+
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     showAuth();
-
   }
 }
 
@@ -1406,24 +2409,43 @@ async function checkAuth() {
 function showAuth() {
 
   document
-    .getElementById('authScreen')
-    .classList.remove('hidden');
+    .getElementById(
+      'authScreen'
+    )
+    .classList.remove(
+      'hidden'
+    );
+
 
   document
-    .getElementById('mainApp')
-    .classList.add('hidden');
+    .getElementById(
+      'mainApp'
+    )
+    .classList.add(
+      'hidden'
+    );
 }
 
 
 function showMainApp() {
 
   document
-    .getElementById('authScreen')
-    .classList.add('hidden');
+    .getElementById(
+      'authScreen'
+    )
+    .classList.add(
+      'hidden'
+    );
+
 
   document
-    .getElementById('mainApp')
-    .classList.remove('hidden');
+    .getElementById(
+      'mainApp'
+    )
+    .classList.remove(
+      'hidden'
+    );
+
 
   updateHeader();
 }
@@ -1435,6 +2457,7 @@ function updateHeader() {
     return;
   }
 
+
   document
     .getElementById(
       'headerUserName'
@@ -1443,7 +2466,7 @@ function updateHeader() {
       currentUser.name;
 
 
-  const oldAvatar =
+  const avatar =
     document.getElementById(
       'headerAvatar'
     );
@@ -1451,7 +2474,8 @@ function updateHeader() {
 
   if (currentUser.avatar) {
 
-    oldAvatar.outerHTML = `
+    avatar.outerHTML = `
+
       <img
         id="headerAvatar"
         class="avatar"
@@ -1462,23 +2486,15 @@ function updateHeader() {
         )}"
         alt=""
       >
+
     `;
 
   } else {
 
-    oldAvatar.outerHTML = `
-      <div
-        id="headerAvatar"
-        class="avatar"
-      >
-        ${escapeHtml(
-          initials(
-            currentUser.name
-          )
-        )}
-      </div>
-    `;
-
+    avatar.textContent =
+      initials(
+        currentUser.name
+      );
   }
 }
 
@@ -1488,20 +2504,23 @@ function updateHeader() {
 ========================================================= */
 
 document
-  .getElementById('loginForm')
+  .getElementById(
+    'loginForm'
+  )
   .addEventListener(
     'submit',
     async event => {
 
       event.preventDefault();
 
+
       const username =
         document
           .getElementById(
             'loginUsername'
           )
-          .value
-          .trim();
+          .value;
+
 
       const password =
         document
@@ -1517,7 +2536,9 @@ document
           await api(
             '/api/auth/login',
             {
-              method: 'POST',
+
+              method:
+                'POST',
 
               headers: {
                 'Content-Type':
@@ -1536,12 +2557,18 @@ document
         currentUser =
           data.user;
 
+
         showMainApp();
 
         await loadFeed();
 
+
         showToast(
-          'Добро пожаловать в Hutka!'
+          language === 'en'
+            ? 'Welcome to Hutka!'
+            : language === 'be'
+              ? 'Вітаем у Hutka!'
+              : 'Добро пожаловать в Hutka!'
         );
 
 
@@ -1550,9 +2577,7 @@ document
         showToast(
           error.message
         );
-
       }
-
     }
   );
 
@@ -1562,7 +2587,9 @@ document
 ========================================================= */
 
 document
-  .getElementById('registerForm')
+  .getElementById(
+    'registerForm'
+  )
   .addEventListener(
     'submit',
     async event => {
@@ -1575,8 +2602,7 @@ document
           .getElementById(
             'registerName'
           )
-          .value
-          .trim();
+          .value;
 
 
       const username =
@@ -1584,8 +2610,7 @@ document
           .getElementById(
             'registerUsername'
           )
-          .value
-          .trim();
+          .value;
 
 
       const password =
@@ -1602,7 +2627,9 @@ document
           await api(
             '/api/auth/register',
             {
-              method: 'POST',
+
+              method:
+                'POST',
 
               headers: {
                 'Content-Type':
@@ -1622,12 +2649,18 @@ document
         currentUser =
           data.user;
 
+
         showMainApp();
 
         await loadFeed();
 
+
         showToast(
-          'Аккаунт создан!'
+          language === 'en'
+            ? 'Account created!'
+            : language === 'be'
+              ? 'Акаўнт створаны!'
+              : 'Аккаунт создан!'
         );
 
 
@@ -1636,9 +2669,7 @@ document
         showToast(
           error.message
         );
-
       }
-
     }
   );
 
@@ -1663,6 +2694,7 @@ document
           'hidden'
         );
 
+
       document
         .getElementById(
           'registerForm'
@@ -1670,6 +2702,7 @@ document
         .classList.remove(
           'hidden'
         );
+
 
       document
         .getElementById(
@@ -1679,6 +2712,7 @@ document
           'hidden'
         );
 
+
       document
         .getElementById(
           'registerSwitch'
@@ -1686,7 +2720,6 @@ document
         .classList.remove(
           'hidden'
         );
-
     }
   );
 
@@ -1707,6 +2740,7 @@ document
           'hidden'
         );
 
+
       document
         .getElementById(
           'loginForm'
@@ -1714,6 +2748,7 @@ document
         .classList.remove(
           'hidden'
         );
+
 
       document
         .getElementById(
@@ -1723,6 +2758,7 @@ document
           'hidden'
         );
 
+
       document
         .getElementById(
           'loginSwitch'
@@ -1730,7 +2766,6 @@ document
         .classList.remove(
           'hidden'
         );
-
     }
   );
 
@@ -1746,17 +2781,22 @@ async function logout() {
     await api(
       '/api/auth/logout',
       {
-        method: 'POST'
+        method:
+          'POST'
       }
     );
 
   } catch (error) {
 
-    console.error(error);
-
+    console.error(
+      error
+    );
   }
 
-  currentUser = null;
+
+  currentUser =
+    null;
+
 
   showAuth();
 }
@@ -1765,6 +2805,26 @@ async function logout() {
 /* =========================================================
    NAVIGATION
 ========================================================= */
+
+function hideAllViews() {
+
+  [
+    'feedView',
+    'searchView',
+    'profileView',
+    'settingsView'
+  ].forEach(
+    id => {
+
+      document
+        .getElementById(id)
+        .classList.add(
+          'hidden'
+        );
+    }
+  );
+}
+
 
 function setActiveNav(id) {
 
@@ -1781,7 +2841,9 @@ function setActiveNav(id) {
 
 
   const element =
-    document.getElementById(id);
+    document.getElementById(
+      id
+    );
 
 
   if (element) {
@@ -1789,13 +2851,15 @@ function setActiveNav(id) {
     element.classList.add(
       'active'
     );
-
   }
 }
 
 
 function showFeed() {
 
+  hideAllViews();
+
+
   document
     .getElementById(
       'feedView'
@@ -1804,39 +2868,17 @@ function showFeed() {
       'hidden'
     );
 
-  document
-    .getElementById(
-      'searchView'
-    )
-    .classList.add(
-      'hidden'
-    );
-
-  document
-    .getElementById(
-      'profileView'
-    )
-    .classList.add(
-      'hidden'
-    );
 
   setActiveNav(
     'navFeed'
   );
-
-  loadFeed();
 }
 
 
 function showSearch() {
 
-  document
-    .getElementById(
-      'feedView'
-    )
-    .classList.add(
-      'hidden'
-    );
+  hideAllViews();
+
 
   document
     .getElementById(
@@ -1846,44 +2888,28 @@ function showSearch() {
       'hidden'
     );
 
-  document
-    .getElementById(
-      'profileView'
-    )
-    .classList.add(
-      'hidden'
-    );
 
   setActiveNav(
     'navSearch'
   );
 
 
-  document
-    .getElementById(
-      'searchInput'
-    )
-    .focus();
+  setTimeout(
+    () =>
+      document
+        .getElementById(
+          'searchInput'
+        )
+        .focus(),
+    50
+  );
 }
 
 
 async function openProfile() {
 
-  document
-    .getElementById(
-      'feedView'
-    )
-    .classList.add(
-      'hidden'
-    );
+  hideAllViews();
 
-  document
-    .getElementById(
-      'searchView'
-    )
-    .classList.add(
-      'hidden'
-    );
 
   document
     .getElementById(
@@ -1894,25 +2920,42 @@ async function openProfile() {
     );
 
 
+  setActiveNav(
+    'navProfile'
+  );
+
+
+  await loadProfile(
+    currentUser.username
+  );
+}
+
+
+function showSettings() {
+
+  hideAllViews();
+
+
   document
-    .querySelectorAll(
-      '.nav button'
+    .getElementById(
+      'settingsView'
     )
-    .forEach(
-      button =>
-        button.classList.remove(
-          'active'
-        )
+    .classList.remove(
+      'hidden'
     );
 
 
-  if (currentUser) {
+  setActiveNav(
+    'navSettings'
+  );
 
-    await loadProfile(
-      currentUser.username
-    );
 
-  }
+  setTheme(
+    theme
+  );
+
+
+  applyLanguage();
 }
 
 
@@ -1929,9 +2972,15 @@ async function loadFeed() {
 
 
   feed.innerHTML = `
+
     <div class="empty">
-      Загружаем Hutka...
+      ${language === 'en'
+        ? 'Loading Hutka...'
+        : language === 'be'
+          ? 'Загрузка Hutka...'
+          : 'Загружаем Hutka...'}
     </div>
+
   `;
 
 
@@ -1951,16 +3000,26 @@ async function loadFeed() {
   } catch (error) {
 
     feed.innerHTML = `
+
       <div class="card empty">
-        Не удалось загрузить ленту.<br><br>
+
+        ${language === 'en'
+          ? 'Could not load the feed.'
+          : language === 'be'
+            ? 'Не атрымалася загрузіць стужку.'
+            : 'Не удалось загрузить ленту.'}
+
+        <br>
+
         <small>
           ${escapeHtml(
             error.message
           )}
         </small>
-      </div>
-    `;
 
+      </div>
+
+    `;
   }
 }
 
@@ -1976,10 +3035,15 @@ function renderPosts(posts) {
   if (!posts.length) {
 
     feed.innerHTML = `
+
       <div class="card empty">
-        Пока здесь пусто.<br>
-        Напиши первый пост!
+
+        ${escapeHtml(
+          t('firstPost')
+        )}
+
       </div>
+
     `;
 
     return;
@@ -1988,7 +3052,9 @@ function renderPosts(posts) {
 
   feed.innerHTML =
     posts
-      .map(postHtml)
+      .map(
+        postHtml
+      )
       .join('');
 }
 
@@ -2004,20 +3070,25 @@ function postHtml(post) {
 
 
   return `
+
     <article
       class="card"
       id="post-${post.id}"
     >
 
+
       <div class="post-head">
 
-        ${avatarHtml(user)}
+        ${avatarHtml(
+          user
+        )}
+
 
         <div class="post-user">
 
           <div class="post-name">
             ${escapeHtml(
-              user.name || 'Пользователь'
+              user.name
             )}
           </div>
 
@@ -2025,11 +3096,12 @@ function postHtml(post) {
             ${escapeHtml(
               user.handle ||
               '@' +
-                (user.username || '')
+                user.username
             )}
           </div>
 
         </div>
+
 
         <div class="post-date">
           ${formatDate(
@@ -2043,11 +3115,13 @@ function postHtml(post) {
       ${
         post.text
           ? `
+
             <div class="post-text">
               ${escapeHtml(
                 post.text
               )}
             </div>
+
           `
           : ''
       }
@@ -2056,20 +3130,25 @@ function postHtml(post) {
       ${
         post.media
           ? `
+
             <img
               class="post-image"
               src="${escapeHtml(
-                mediaUrl(post.media)
+                mediaUrl(
+                  post.media
+                )
               )}"
               alt=""
               loading="lazy"
             >
+
           `
           : ''
       }
 
 
       <div class="post-actions">
+
 
         <button
           class="${
@@ -2084,27 +3163,31 @@ function postHtml(post) {
 
 
         <button
-          onclick="toggleComments(${post.id})"
+          onclick="openComments(${post.id})"
         >
           💬 ${post.comments || 0}
         </button>
 
 
         <button
-          onclick="showToast('Репосты скоро появятся')"
+          class="${
+            post.reposted
+              ? 'reposted'
+              : ''
+          }"
+          onclick="toggleRepost(${post.id}, ${
+            post.reposted
+              ? 'true'
+              : 'false'
+          })"
         >
           🔁 ${post.reposts || 0}
         </button>
 
       </div>
 
-
-      <div
-        id="comments-${post.id}"
-        class="comments-box hidden"
-      ></div>
-
     </article>
+
   `;
 }
 
@@ -2135,7 +3218,11 @@ async function createPost() {
   if (!text && !file) {
 
     showToast(
-      'Добавь текст или фото'
+      language === 'en'
+        ? 'Add text or a photo'
+        : language === 'be'
+          ? 'Дадай тэкст або фота'
+          : 'Добавь текст или фото'
     );
 
     return;
@@ -2148,10 +3235,16 @@ async function createPost() {
     );
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
 
-  button.textContent =
-    'Публикуем...';
+
+  button.innerHTML =
+    language === 'en'
+      ? 'Publishing...'
+      : language === 'be'
+        ? 'Публікуем...'
+        : 'Публикуем...';
 
 
   try {
@@ -2172,15 +3265,17 @@ async function createPost() {
         'photo',
         file
       );
-
     }
 
 
     await api(
       '/api/posts',
       {
-        method: 'POST',
-        body: form
+        method:
+          'POST',
+
+        body:
+          form
       }
     );
 
@@ -2210,7 +3305,11 @@ async function createPost() {
 
 
     showToast(
-      'Пост опубликован!'
+      language === 'en'
+        ? 'Post published!'
+        : language === 'be'
+          ? 'Пост апублікаваны!'
+          : 'Пост опубликован!'
     );
 
 
@@ -2220,14 +3319,20 @@ async function createPost() {
       error.message
     );
 
-
   } finally {
 
-    button.disabled = false;
+    button.disabled =
+      false;
 
-    button.textContent =
-      'Апублікаваць';
+    button.innerHTML = `
 
+      <span data-i18n="publish">
+        ${escapeHtml(
+          t('publish')
+        )}
+      </span>
+
+    `;
   }
 }
 
@@ -2236,14 +3341,17 @@ async function createPost() {
    LIKE
 ========================================================= */
 
-async function toggleLike(postId) {
+async function toggleLike(
+  postId
+) {
 
   try {
 
     await api(
       `/api/posts/${postId}/like`,
       {
-        method: 'POST'
+        method:
+          'POST'
       }
     );
 
@@ -2256,7 +3364,66 @@ async function toggleLike(postId) {
     showToast(
       error.message
     );
+  }
+}
 
+
+/* =========================================================
+   REPOST
+========================================================= */
+
+async function toggleRepost(
+  postId,
+  alreadyReposted
+) {
+
+  try {
+
+    const method =
+      alreadyReposted
+        ? 'DELETE'
+        : 'POST';
+
+
+    const data =
+      await api(
+        `/api/posts/${postId}/repost`,
+        {
+          method
+        }
+      );
+
+
+    await loadFeed();
+
+
+    if (data.reposted) {
+
+      showToast(
+        language === 'en'
+          ? 'Post reposted!'
+          : language === 'be'
+            ? 'Пост рэпостнуты!'
+            : 'Пост репостнут!'
+      );
+
+    } else {
+
+      showToast(
+        language === 'en'
+          ? 'Repost removed'
+          : language === 'be'
+            ? 'Рэпост выдалены'
+            : 'Репост отменён'
+      );
+    }
+
+
+  } catch (error) {
+
+    showToast(
+      error.message
+    );
   }
 }
 
@@ -2265,990 +3432,34 @@ async function toggleLike(postId) {
    COMMENTS
 ========================================================= */
 
-async function toggleComments(
+async function openComments(
   postId
 ) {
 
-  const box =
-    document.getElementById(
-      `comments-${postId}`
-    );
+  currentCommentPostId =
+    postId;
 
 
-  if (!box) {
-    return;
-  }
-
-
-  if (
-    !box.classList.contains(
-      'hidden'
+  document
+    .getElementById(
+      'commentsModal'
     )
-  ) {
-
-    box.classList.add(
+    .classList.remove(
       'hidden'
     );
 
-    return;
 
-  }
-
-
-  box.classList.remove(
-    'hidden'
-  );
+  document
+    .getElementById(
+      'commentInput'
+    )
+    .value = '';
 
 
   await loadComments(
     postId
   );
-}
 
 
-async function loadComments(
-  postId
-) {
-
-  const box =
-    document.getElementById(
-      `comments-${postId}`
-    );
-
-
-  if (!box) {
-    return;
-  }
-
-
-  box.innerHTML = `
-    <div class="muted">
-      Загружаем комментарии...
-    </div>
-  `;
-
-
-  try {
-
-    const data =
-      await api(
-        `/api/posts/${postId}/comments`
-      );
-
-
-    const comments =
-      data.comments || [];
-
-
-    let html = '';
-
-
-    if (!comments.length) {
-
-      html += `
-        <div
-          class="muted"
-          style="padding:8px 0"
-        >
-          Пока нет комментариев.
-        </div>
-      `;
-
-    } else {
-
-      html += comments
-        .map(
-          comment => {
-
-            const canDelete =
-              currentUser &&
-              comment.user &&
-              currentUser.id ===
-                comment.user.id;
-
-
-            return `
-              <div class="comment">
-
-                ${avatarHtml(
-                  comment.user,
-                  'avatar'
-                )}
-
-                <div class="comment-content">
-
-                  <div>
-                    <span class="comment-author">
-                      ${escapeHtml(
-                        comment.user?.name ||
-                        'Пользователь'
-                      )}
-                    </span>
-                  </div>
-
-                  <div class="comment-text">
-                    ${escapeHtml(
-                      comment.text
-                    )}
-                  </div>
-
-                  <div class="comment-date">
-                    ${formatDate(
-                      comment.createdAt
-                    )}
-                  </div>
-
-                </div>
-
-                ${
-                  canDelete
-                    ? `
-                      <button
-                        class="comment-delete"
-                        onclick="deleteComment(${comment.id}, ${postId})"
-                      >
-                        Удалить
-                      </button>
-                    `
-                    : ''
-                }
-
-              </div>
-            `;
-          }
-        )
-        .join('');
-
-    }
-
-
-    html += `
-      <form
-        class="comment-form"
-        onsubmit="submitComment(event, ${postId})"
-      >
-
-        <input
-          id="comment-input-${postId}"
-          maxlength="500"
-          placeholder="Написать комментарий..."
-          required
-        >
-
-        <button type="submit">
-          Отправить
-        </button>
-
-      </form>
-    `;
-
-
-    box.innerHTML =
-      html;
-
-
-  } catch (error) {
-
-    box.innerHTML = `
-      <div class="muted">
-        Не удалось загрузить комментарии.<br>
-        ${escapeHtml(
-          error.message
-        )}
-      </div>
-    `;
-
-  }
-}
-
-
-async function submitComment(
-  event,
-  postId
-) {
-
-  event.preventDefault();
-
-
-  const input =
-    document.getElementById(
-      `comment-input-${postId}`
-    );
-
-
-  if (!input) {
-    return;
-  }
-
-
-  const text =
-    input.value.trim();
-
-
-  if (!text) {
-    return;
-  }
-
-
-  input.disabled = true;
-
-
-  try {
-
-    await api(
-      `/api/posts/${postId}/comments`,
-      {
-        method: 'POST',
-
-        headers: {
-          'Content-Type':
-            'application/json'
-        },
-
-        body:
-          JSON.stringify({
-            text
-          })
-      }
-    );
-
-
-    await loadComments(
-      postId
-    );
-
-
-    await loadFeed();
-
-
-    const box =
-      document.getElementById(
-        `comments-${postId}`
-      );
-
-
-    if (box) {
-
-      box.classList.remove(
-        'hidden'
-      );
-
-      await loadComments(
-        postId
-      );
-
-    }
-
-
-  } catch (error) {
-
-    showToast(
-      error.message
-    );
-
-    input.disabled = false;
-
-  }
-}
-
-
-async function deleteComment(
-  commentId,
-  postId
-) {
-
-  if (
-    !confirm(
-      'Удалить комментарий?'
-    )
-  ) {
-    return;
-  }
-
-
-  try {
-
-    await api(
-      `/api/comments/${commentId}`,
-      {
-        method: 'DELETE'
-      }
-    );
-
-
-    await loadFeed();
-
-
-    const box =
-      document.getElementById(
-        `comments-${postId}`
-      );
-
-
-    if (box) {
-
-      box.classList.remove(
-        'hidden'
-      );
-
-      await loadComments(
-        postId
-      );
-
-    }
-
-
-  } catch (error) {
-
-    showToast(
-      error.message
-    );
-
-  }
-}
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-let searchTimer = null;
-
-
-document
-  .getElementById(
-    'searchInput'
-  )
-  .addEventListener(
-    'input',
-    event => {
-
-      clearTimeout(
-        searchTimer
-      );
-
-
-      const q =
-        event.target.value.trim();
-
-
-      searchTimer =
-        setTimeout(
-          () => search(q),
-          300
-        );
-
-    }
-  );
-
-
-async function search(q) {
-
-  const results =
-    document.getElementById(
-      'searchResults'
-    );
-
-
-  if (!q) {
-
-    results.innerHTML =
-      '';
-
-    return;
-
-  }
-
-
-  results.innerHTML = `
-    <div class="card empty">
-      Ищем...
-    </div>
-  `;
-
-
-  try {
-
-    const data =
-      await api(
-        '/api/search?q=' +
-        encodeURIComponent(q)
-      );
-
-
-    let html = '';
-
-
-    if (
-      data.users &&
-      data.users.length
-    ) {
-
-      html += `
-        <div class="card">
-
-          <strong>
-            Люди
-          </strong>
-      `;
-
-
-      data.users.forEach(
-        user => {
-
-          html += `
-            <div
-              class="result"
-              style="cursor:pointer"
-              onclick="loadProfileByUsername('${escapeJs(
-                user.username
-              )}')"
-            >
-
-              <div class="result-user">
-
-                ${avatarHtml(
-                  user
-                )}
-
-                <div>
-
-                  <strong>
-                    ${escapeHtml(
-                      user.name
-                    )}
-                  </strong>
-
-                  <div class="muted">
-                    ${escapeHtml(
-                      user.handle
-                    )}
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-          `;
-
-        }
-      );
-
-
-      html += `
-        </div>
-      `;
-
-    }
-
-
-    if (
-      data.posts &&
-      data.posts.length
-    ) {
-
-      html += `
-        <div>
-          ${data.posts
-            .map(postHtml)
-            .join('')}
-        </div>
-      `;
-
-    }
-
-
-    if (!html) {
-
-      html = `
-        <div class="card empty">
-          Ничего не найдено.
-        </div>
-      `;
-
-    }
-
-
-    results.innerHTML =
-      html;
-
-
-  } catch (error) {
-
-    results.innerHTML = `
-      <div class="card empty">
-        Ошибка поиска:<br><br>
-        ${escapeHtml(
-          error.message
-        )}
-      </div>
-    `;
-
-  }
-}
-
-
-function escapeJs(value) {
-
-  return String(
-    value ?? ''
-  )
-    .replaceAll(
-      '\\',
-      '\\\\'
-    )
-    .replaceAll(
-      "'",
-      "\\'"
-    )
-    .replaceAll(
-      '"',
-      '\\"'
-    )
-    .replaceAll(
-      '\n',
-      '\\n'
-    )
-    .replaceAll(
-      '\r',
-      '\\r'
-    );
-}
-
-
-async function loadProfileByUsername(
-  username
-) {
-
-  await openProfile();
-
-  await loadProfile(
-    username
-  );
-}
-
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-async function loadProfile(
-  username
-) {
-
-  const profile =
-    document.getElementById(
-      'profileContent'
-    );
-
-
-  profile.innerHTML = `
-    <div class="card empty">
-      Загружаем профиль...
-    </div>
-  `;
-
-
-  document
-    .getElementById(
-      'feedView'
-    )
-    .classList.add(
-      'hidden'
-    );
-
-
-  document
-    .getElementById(
-      'searchView'
-    )
-    .classList.add(
-      'hidden'
-    );
-
-
-  document
-    .getElementById(
-      'profileView'
-    )
-    .classList.remove(
-      'hidden'
-    );
-
-
-  try {
-
-    const data =
-      await api(
-        `/api/users/${encodeURIComponent(
-          username
-        )}`
-      );
-
-
-    const user =
-      data.user;
-
-
-    const isMe =
-      currentUser &&
-      currentUser.username ===
-        user.username;
-
-
-    profile.innerHTML = `
-
-      <div class="card">
-
-        <div class="profile-head">
-
-          ${avatarHtml(
-            user,
-            'profile-avatar'
-          )}
-
-          <div>
-
-            <div class="profile-name">
-              ${escapeHtml(
-                user.name
-              )}
-            </div>
-
-            <div class="muted">
-              ${escapeHtml(
-                user.handle
-              )}
-            </div>
-
-          </div>
-
-        </div>
-
-
-        ${
-          user.bio
-            ? `
-              <div
-                style="margin-top:15px"
-              >
-                ${escapeHtml(
-                  user.bio
-                )}
-              </div>
-            `
-            : ''
-        }
-
-
-        <div class="profile-stats">
-
-          <div class="stat">
-
-            <strong>
-              ${user.posts || 0}
-            </strong>
-
-            <span>
-              постов
-            </span>
-
-          </div>
-
-
-          <div class="stat">
-
-            <strong>
-              ${user.followers || 0}
-            </strong>
-
-            <span>
-              подписчиков
-            </span>
-
-          </div>
-
-
-          <div class="stat">
-
-            <strong>
-              ${user.following || 0}
-            </strong>
-
-            <span>
-              подписок
-            </span>
-
-          </div>
-
-        </div>
-
-
-        ${
-          isMe
-            ? `
-              <button
-                class="primary"
-                style="margin-top:18px"
-                onclick="openProfileModal()"
-              >
-                Редактировать профиль
-              </button>
-            `
-            : ''
-        }
-
-      </div>
-
-    `;
-
-
-  } catch (error) {
-
-    profile.innerHTML = `
-      <div class="card empty">
-        ${escapeHtml(
-          error.message
-        )}
-      </div>
-    `;
-
-  }
-}
-
-
-/* =========================================================
-   EDIT PROFILE
-========================================================= */
-
-function openProfileModal() {
-
-  if (!currentUser) {
-    return;
-  }
-
-
-  document
-    .getElementById(
-      'profileName'
-    )
-    .value =
-      currentUser.name || '';
-
-
-  document
-    .getElementById(
-      'profileUsername'
-    )
-    .value =
-      currentUser.username || '';
-
-
-  document
-    .getElementById(
-      'profileBio'
-    )
-    .value =
-      currentUser.bio || '';
-
-
-  document
-    .getElementById(
-      'profileAvatar'
-    )
-    .value = '';
-
-
-  document
-    .getElementById(
-      'profileModal'
-    )
-    .classList.remove(
-      'hidden'
-    );
-}
-
-
-function closeProfileModal() {
-
-  document
-    .getElementById(
-      'profileModal'
-    )
-    .classList.add(
-      'hidden'
-    );
-}
-
-
-document
-  .getElementById(
-    'profileForm'
-  )
-  .addEventListener(
-    'submit',
-    async event => {
-
-      event.preventDefault();
-
-
-      try {
-
-        const form =
-          new FormData();
-
-
-        form.append(
-          'name',
-          document
-            .getElementById(
-              'profileName'
-            )
-            .value
-        );
-
-
-        form.append(
-          'username',
-          document
-            .getElementById(
-              'profileUsername'
-            )
-            .value
-        );
-
-
-        form.append(
-          'bio',
-          document
-            .getElementById(
-              'profileBio'
-            )
-            .value
-        );
-
-
-        const file =
-          document
-            .getElementById(
-              'profileAvatar'
-            )
-            .files[0];
-
-
-        if (file) {
-
-          form.append(
-            'avatar',
-            file
-          );
-
-        }
-
-
-        const data =
-          await api(
-            '/api/me',
-            {
-              method: 'PUT',
-              body: form
-            }
-          );
-
-
-        currentUser =
-          data.user;
-
-
-        updateHeader();
-
-        closeProfileModal();
-
-
-        await loadProfile(
-          currentUser.username
-        );
-
-
-        showToast(
-          'Профиль сохранён'
-        );
-
-
-      } catch (error) {
-
-        showToast(
-          error.message
-        );
-
-      }
-
-    }
-  );
-
-
-/* =========================================================
-   PHOTO NAME
-========================================================= */
-
-document
-  .getElementById(
-    'postPhoto'
-  )
-  .addEventListener(
-    'change',
-    event => {
-
-      const file =
-        event.target.files[0];
-
-
-      document
-        .getElementById(
-          'selectedPhoto'
-        )
-        .textContent =
-          file
-            ? `Выбрано: ${file.name}`
-            : '';
-
-    }
-  );
-
-
-/* =========================================================
-   CLOSE MODAL BY BACKGROUND
-========================================================= */
-
-document
-  .getElementById(
-    'profileModal'
-  )
-  .addEventListener(
-    'click',
-    event => {
-
-      if (
-        event.target.id ===
-        'profileModal'
-      ) {
-
-        closeProfileModal();
-
-      }
-
-    }
-  );
-
-
-/* =========================================================
-   START
-========================================================= */
-
-checkAuth();
-
-</script>
-
-</body>
-  </html>
+  setTimeout(
+    ()
